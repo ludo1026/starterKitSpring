@@ -12,6 +12,8 @@
 
 	<context:component-scan base-package="org.telosys.starterkits.spring" />
 
+ 	<context:annotation-config/>
+
     <!-- the mvc resources tag -->
  	<mvc:resources mapping="/static/**" location="/static/" />
  	
