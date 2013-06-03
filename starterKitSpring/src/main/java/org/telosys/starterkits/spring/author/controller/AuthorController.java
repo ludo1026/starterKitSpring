@@ -27,14 +27,14 @@ import org.telosys.starterkits.spring.author.service.AuthorServices;
 @RequestMapping("/author*")
 public class AuthorController {
 
-	private AuthorServices authorServices = null;
+	private AuthorServices authorServices;
 	
 	@RequestMapping("/create")
 	public ModelAndView create() {
 		return new ModelAndView("author/author", "command", new Author());
 	}
 
-	@RequestMapping(value = "/search")
+	@RequestMapping(value = "/list")
 	public ModelAndView showAuthors() {
 		authorServices = new AuthorServices();
 		ModelAndView mav = new ModelAndView("author/authorList");
@@ -58,7 +58,7 @@ public class AuthorController {
 		ModelAndView modelAndView = new ModelAndView("author/author");
 		if (id != 0){
 			Author authloaded = authorServices.load(id);
-			modelAndView.addObject("authloaded", authloaded);
+			modelAndView.addObject("current", authloaded);
 		}
 		return modelAndView;
 	}

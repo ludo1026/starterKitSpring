@@ -27,7 +27,7 @@ public class Author implements Serializable
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="ID", nullable=false)
-    private int        id           ;
+    private Integer        id           ;
 
 
     //----------------------------------------------------------------------
@@ -53,11 +53,11 @@ public class Author implements Serializable
     //----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
     //----------------------------------------------------------------------
-    public void setId( int value )
+    public void setId( Integer value )
     {
         this.id = value;
     }
-    public int getId()
+    public Integer getId()
     {
         return this.id;
     }
