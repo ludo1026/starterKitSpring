@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ page import="org.telosys.starterkits.strutsjpa.EntityManagerHelper"%>
+<%@ page import="org.telosys.starterkits.springjpa.EntityManagerHelper"%>
 <!DOCTYPE html>
 
 <!-- taglib prefix="s" uri="/struts-tags" -->
@@ -47,7 +47,7 @@ body {
 		<ul>
 		    <%
 			    for (String entite : EntityManagerHelper.getEntityList()) {
-			        out.println("<li><a href=\"" + entite + "/search\">" + entite + "</a></li>");
+			        out.println("<li><a href=\"" + entite + "/list\">" + entite + "</a></li>");
 				}
 		    %>
 	    </ul>
