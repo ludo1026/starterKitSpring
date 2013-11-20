@@ -1,40 +1,33 @@
 /*
  * Service class 
- * Created on $today.date ( Time $today.time )
+ * Created on 20 nov. 2013 ( Time 11:56:30 )
  */
 
-package ${target.javaPackageFromFolder(${SRC})};
+package org.telosys.starterkits.service;
 
 import java.util.List;
 
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name};
-import org.demo.${beanClass.name.toLowerCase()}.dao.Jpa${beanClass.name}DAO;
+import org.telosys.starterkits.bean.Country;
+import org.telosys.starterkits.dao.CountryDAO;
 import org.telosys.starterkits.springjpa.EntityManagerHelper;
-import org.telosys.starterkits.springjpa.IServices;
+import org.telosys.starterkits.springjpa.IService;
 import javax.persistence.PersistenceException;
 
 import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
 
 
-#if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
-#set( $keyType = "${beanClass.name}Key" )
-#else
-#set( $keyType = ${beanClass.keyAttributes.get(0).wrapperType} )
-#end
+public class CountryService implements IService<Country, String> {
 
-public class ${beanClass.name}Services implements IServices<${beanClass.name}, ${keyType}> {
+	protected final Logger LOG = LoggerFactory.getLogger(CountryService.class);
 
-	protected final Logger LOG = LoggerFactory.getLogger(${beanClass.name}Services.class);
-
-	public ${beanClass.name} load(final ${keyType} id) {
+	public Country load(final String code) {
 		if (LOG.isDebugEnabled()) LOG.debug("load");
-		${beanClass.name} ${beanClass.name.toLowerCase()};
+		Country country;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
-			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}DAO.findById(id);
+			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			country = countryDAO.findById(code);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -42,16 +35,16 @@ public class ${beanClass.name}Services implements IServices<${beanClass.name}, $
 		} finally {
 			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
-		return ${beanClass.name.toLowerCase()} ;
+		return country ;
 	}
 
-	public ${beanClass.name} save(final ${beanClass.name} entity) {
+	public Country save(final Country entity) {
 		if (LOG.isDebugEnabled()) LOG.debug("save");
-		${beanClass.name} entityNew;
+		Country entityNew;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
-			entityNew = ${beanClass.name.toLowerCase()}DAO.update(entity);
+			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			entityNew = countryDAO.update(entity);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -62,12 +55,12 @@ public class ${beanClass.name}Services implements IServices<${beanClass.name}, $
 		return entityNew;
 	}
 
-	public void delete(final ${keyType} id) {
+	public void delete(final String code) {
 		if (LOG.isDebugEnabled()) LOG.debug("delete");
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
-			${beanClass.name.toLowerCase()}DAO.delete(id);
+			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			countryDAO.delete(code);
 			EntityManagerHelper.commitAndCloseEntityManager();	
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -77,13 +70,13 @@ public class ${beanClass.name}Services implements IServices<${beanClass.name}, $
 		}
 	}
 
-	public List<${beanClass.name}> search(final ${beanClass.name} ${beanClass.name.toLowerCase()}) {
+	public List<Country> search(final Country country) {
 		if (LOG.isDebugEnabled()) LOG.debug("search");
-		List<${beanClass.name}> liste;
+		List<Country> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
-			liste = ${beanClass.name.toLowerCase()}DAO.search(${beanClass.name.toLowerCase()});
+			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			liste = countryDAO.search(country);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -94,13 +87,13 @@ public class ${beanClass.name}Services implements IServices<${beanClass.name}, $
 		return liste;
 	}
 
-	public List<${beanClass.name}> loadAll() {
+	public List<Country> loadAll() {
 		if (LOG.isDebugEnabled()) LOG.debug("loadAll");
-		List<${beanClass.name}> liste;
+		List<Country> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
-			liste = ${beanClass.name.toLowerCase()}DAO.loadAll();
+			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			liste = countryDAO.loadAll();
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);

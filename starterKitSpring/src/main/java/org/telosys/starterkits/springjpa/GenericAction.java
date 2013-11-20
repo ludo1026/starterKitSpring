@@ -22,7 +22,7 @@ public abstract class GenericAction<T, PK> extends ActionSupport
 	protected final Logger LOG = LoggerFactory.getLogger(GenericAction.class);
 	
 	protected List<T> searchResult = null ;
-	protected abstract IServices<T, PK> getServices();
+	protected abstract IService<T, PK> getServices();
 	protected abstract T getInnerCurrent();
 	protected abstract void setInnerCurrent(T t);
 	protected abstract PK getInnerRestid();

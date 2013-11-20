@@ -1,0 +1,71 @@
+/*
+ * Controller class 
+ * Created on $today.date ( Time $today.time )
+ */
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import ${ENTITY_PKG}.${beanClass.name};
+import ${SERVICE_PKG}.${beanClass.name}Service;
+
+#if ( $beanClass.hasCompositePrimaryKey() )
+import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
+#set( $keyType = "${beanClass.name}Key" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.formatedType(0)" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
+#end
+
+@Controller
+@RequestMapping("/${beanClass.name.toLowerCase()}*")
+public class ${beanClass.name}Controller 
+{
+    private ${beanClass.name}Service ${beanClass.name.toLowerCase()}Service;
+
+	@RequestMapping("/create")
+	public ModelAndView create() {
+		return new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}", "command", new  ${beanClass.name}());
+	}
+
+	@RequestMapping(value = "/list")
+	public ModelAndView show${beanClass.name}s() {
+		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
+		ModelAndView mav = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}List");
+		List<${beanClass.name}> list = ${beanClass.name.toLowerCase()}Service.loadAll();
+		mav.addObject("list${beanClass.name}s", list);
+		return mav;
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}Form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
+		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
+		if (!result.hasErrors()) {
+			${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
+		}
+		return "redirect:/${beanClass.name.toLowerCase()}/search";
+	}
+
+	@RequestMapping(value = "/edit/{$keyName}")
+	public ModelAndView edit(@ModelAttribute("${beanClass.name.toLowerCase()}/edit") ${beanClass.name} ${beanClass.name.toLowerCase()}, @PathVariable("$keyName") $keyType $keyName) {
+		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
+		ModelAndView modelAndView = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}");
+		if (id != null){
+			${beanClass.name} ${beanClass.name.toLowerCase()}loaded = ${beanClass.name.toLowerCase()}Service.load($keyName);
+			modelAndView.addObject("current", ${beanClass.name.toLowerCase()}loaded);
+		}
+		return modelAndView;
+	}
+}

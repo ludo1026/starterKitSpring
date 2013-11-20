@@ -8,7 +8,7 @@ import java.util.List;
  * @param <T>
  * @param <PK>
  */
-public interface IServices<T, PK> {
+public interface IService<T, PK> {
 
 	/**
 	 * Load entity

@@ -1,38 +1,43 @@
 /*
  * Service class 
- * Created on 22 mai 2013 ( Time 15:26:18 )
+ * Created on $today.date ( Time $today.time )
  */
 
-package org.telosys.starterkits.spring.author.service;
+package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-
-import org.telosys.starterkits.spring.author.bean.Author;
-import org.telosys.starterkits.spring.author.dao.JpaAuthorDAO;
+import ${ENTITY_PKG}.${beanClass.name};
+import ${DAO_PKG}.${beanClass.name}DAO;
 import org.telosys.starterkits.springjpa.EntityManagerHelper;
 import org.telosys.starterkits.springjpa.IService;
+import javax.persistence.PersistenceException;
 
 import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
 
+#if ( $beanClass.hasCompositePrimaryKey() )
+import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
+#set( $keyType = "${beanClass.name}Key" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.formatedType(0)" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
+#end
 
-public class AuthorServices implements IService<Author, Integer> {
+public class ${beanClass.name}Service implements IService<${beanClass.name}, ${keyType}> {
 
-	protected final Logger LOG = LoggerFactory.getLogger(AuthorServices.class);
+	protected final Logger LOG = LoggerFactory.getLogger(${beanClass.name}Service.class);
 
-	/**
-	 * Load an author
-	 * @return the loaded author
-	 */
-	public Author load(final Integer id) {
+	public ${beanClass.name} load(final ${keyType} ${keyName}) {
 		if (LOG.isDebugEnabled()) LOG.debug("load");
-		Author author;
+		${beanClass.name} ${beanClass.name.toLowerCase()};
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaAuthorDAO authorDAO = new JpaAuthorDAO();
-			author = authorDAO.findById(id);
+			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}DAO.findById(${keyName});
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -40,20 +45,16 @@ public class AuthorServices implements IService<Author, Integer> {
 		} finally {
 			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
-		return author ;
+		return ${beanClass.name.toLowerCase()} ;
 	}
 
-	/**
-	 * Save an author
-	 * @return the saved Author
-	 */
-	public Author save(final Author entity) {
+	public ${beanClass.name} save(final ${beanClass.name} entity) {
 		if (LOG.isDebugEnabled()) LOG.debug("save");
-		Author entityNew;
+		${beanClass.name} entityNew;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaAuthorDAO authorDAO = new JpaAuthorDAO();
-			entityNew = authorDAO.update(entity);				
+			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			entityNew = ${beanClass.name.toLowerCase()}DAO.update(entity);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -64,15 +65,12 @@ public class AuthorServices implements IService<Author, Integer> {
 		return entityNew;
 	}
 
-	/**
-	 * delete an author
-	 */
-	public void delete(final Integer id) {
+	public void delete(final ${keyType} ${keyName}) {
 		if (LOG.isDebugEnabled()) LOG.debug("delete");
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaAuthorDAO authorDAO = new JpaAuthorDAO();
-			authorDAO.delete(id);
+			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name.toLowerCase()}DAO.delete(${keyName});
 			EntityManagerHelper.commitAndCloseEntityManager();	
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -81,18 +79,14 @@ public class AuthorServices implements IService<Author, Integer> {
 			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
 	}
-	
-	/**
-	 * Search by Author
-	 * @return List of Author
-	 */
-	public List<Author> search(final Author author) {
+
+	public List<${beanClass.name}> search(final ${beanClass.name} ${beanClass.name.toLowerCase()}) {
 		if (LOG.isDebugEnabled()) LOG.debug("search");
-		List<Author> liste;
+		List<${beanClass.name}> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaAuthorDAO authorDAO = new JpaAuthorDAO();
-			liste = authorDAO.search(author);
+			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			liste = ${beanClass.name.toLowerCase()}DAO.search(${beanClass.name.toLowerCase()});
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -103,17 +97,13 @@ public class AuthorServices implements IService<Author, Integer> {
 		return liste;
 	}
 
-	/**
-	 * Load all Authors
-	 * @return List of Authors
-	 */
-	public List<Author> loadAll() {
+	public List<${beanClass.name}> loadAll() {
 		if (LOG.isDebugEnabled()) LOG.debug("loadAll");
-		List<Author> liste;
+		List<${beanClass.name}> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaAuthorDAO authorDAO = new JpaAuthorDAO();
-			liste = authorDAO.loadAll();
+			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			liste = ${beanClass.name.toLowerCase()}DAO.loadAll();
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
@@ -123,5 +113,5 @@ public class AuthorServices implements IService<Author, Integer> {
 		}
 		return liste;
 	}
-	
+
 }
