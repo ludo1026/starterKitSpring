@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 20 nov. 2013 ( Time 11:56:30 )
+ * Created on 20 nov. 2013 ( Time 15:32:39 )
  */
 
 package org.telosys.starterkits.web;
@@ -52,7 +52,7 @@ public class CountryController
 	public ModelAndView edit(@ModelAttribute("country/edit") Country country, @PathVariable("code") String code) {
 		countryService = new CountryService();
 		ModelAndView modelAndView = new ModelAndView("country/country");
-		if (id != null){
+		if (code != null){
 			Country countryloaded = countryService.load(code);
 			modelAndView.addObject("current", countryloaded);
 		}

@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 20 nov. 2013 ( Time 11:56:30 )
+ * Created on 20 nov. 2013 ( Time 15:32:39 )
  */
 
 package org.telosys.starterkits.web;
@@ -34,7 +34,7 @@ public class CountryFormController
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("country") Country country, BindingResult result) {
+	public String save(@ModelAttribute("countryform") Country country, BindingResult result) {
 		countryService = new CountryService();
 		if (!result.hasErrors()) {
 			countryService.save(country);

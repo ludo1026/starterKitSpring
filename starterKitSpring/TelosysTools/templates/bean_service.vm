@@ -36,7 +36,7 @@ public class ${beanClass.name}Service implements IService<${beanClass.name}, ${k
 		${beanClass.name} ${beanClass.name.toLowerCase()};
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new ${beanClass.name}DAO();
 			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}DAO.findById(${keyName});
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -53,7 +53,7 @@ public class ${beanClass.name}Service implements IService<${beanClass.name}, ${k
 		${beanClass.name} entityNew;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new ${beanClass.name}DAO();
 			entityNew = ${beanClass.name.toLowerCase()}DAO.update(entity);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -69,7 +69,7 @@ public class ${beanClass.name}Service implements IService<${beanClass.name}, ${k
 		if (LOG.isDebugEnabled()) LOG.debug("delete");
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new ${beanClass.name}DAO();
 			${beanClass.name.toLowerCase()}DAO.delete(${keyName});
 			EntityManagerHelper.commitAndCloseEntityManager();	
 		} catch (PersistenceException ex) {
@@ -85,7 +85,7 @@ public class ${beanClass.name}Service implements IService<${beanClass.name}, ${k
 		List<${beanClass.name}> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new ${beanClass.name}DAO();
 			liste = ${beanClass.name.toLowerCase()}DAO.search(${beanClass.name.toLowerCase()});
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -102,7 +102,7 @@ public class ${beanClass.name}Service implements IService<${beanClass.name}, ${k
 		List<${beanClass.name}> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			Jpa${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new Jpa${beanClass.name}DAO();
+			${beanClass.name}DAO ${beanClass.name.toLowerCase()}DAO = new ${beanClass.name}DAO();
 			liste = ${beanClass.name.toLowerCase()}DAO.loadAll();
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {

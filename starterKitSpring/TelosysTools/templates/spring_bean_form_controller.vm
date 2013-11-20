@@ -44,7 +44,7 @@ public class ${beanClass.name}FormController
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
+	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
 		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		if (!result.hasErrors()) {
 			${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});

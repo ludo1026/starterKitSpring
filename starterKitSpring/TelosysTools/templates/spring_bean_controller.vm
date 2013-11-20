@@ -62,7 +62,7 @@ public class ${beanClass.name}Controller
 	public ModelAndView edit(@ModelAttribute("${beanClass.name.toLowerCase()}/edit") ${beanClass.name} ${beanClass.name.toLowerCase()}, @PathVariable("$keyName") $keyType $keyName) {
 		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView modelAndView = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}");
-		if (id != null){
+		if ($keyName != null){
 			${beanClass.name} ${beanClass.name.toLowerCase()}loaded = ${beanClass.name.toLowerCase()}Service.load($keyName);
 			modelAndView.addObject("current", ${beanClass.name.toLowerCase()}loaded);
 		}

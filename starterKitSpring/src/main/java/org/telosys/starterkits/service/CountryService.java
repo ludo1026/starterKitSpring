@@ -1,6 +1,6 @@
 /*
  * Service class 
- * Created on 20 nov. 2013 ( Time 11:56:30 )
+ * Created on 20 nov. 2013 ( Time 15:32:39 )
  */
 
 package org.telosys.starterkits.service;
@@ -26,7 +26,7 @@ public class CountryService implements IService<Country, String> {
 		Country country;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			CountryDAO countryDAO = new CountryDAO();
 			country = countryDAO.findById(code);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -43,7 +43,7 @@ public class CountryService implements IService<Country, String> {
 		Country entityNew;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			CountryDAO countryDAO = new CountryDAO();
 			entityNew = countryDAO.update(entity);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -59,7 +59,7 @@ public class CountryService implements IService<Country, String> {
 		if (LOG.isDebugEnabled()) LOG.debug("delete");
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			CountryDAO countryDAO = new CountryDAO();
 			countryDAO.delete(code);
 			EntityManagerHelper.commitAndCloseEntityManager();	
 		} catch (PersistenceException ex) {
@@ -75,7 +75,7 @@ public class CountryService implements IService<Country, String> {
 		List<Country> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			CountryDAO countryDAO = new CountryDAO();
 			liste = countryDAO.search(country);
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {
@@ -92,7 +92,7 @@ public class CountryService implements IService<Country, String> {
 		List<Country> liste;
 		try {
 			EntityManagerHelper.beginTransaction();
-			JpaCountryDAO countryDAO = new JpaCountryDAO();
+			CountryDAO countryDAO = new CountryDAO();
 			liste = countryDAO.loadAll();
 			EntityManagerHelper.commitAndCloseEntityManager();
 		} catch (PersistenceException ex) {

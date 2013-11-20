@@ -1,3 +1,4 @@
+#set( $_ = "$" )
 <%-- Detail screen for ${beanClass.name} entity      --%>
 <%-- Created on $today.date ( Time $today.time )  --%>
 #set( $deletecall = "" )
@@ -25,6 +26,17 @@
 	#set( $deleteparameters = "xxx" )
 	#set( $deleteparameters = "id${beanClass.name.toLowerCase()}" )
 	#set( $urlparameters = "xxx" )
+#end
+
+#if ( $beanClass.hasCompositePrimaryKey() )
+import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
+#set( $keyType = "${beanClass.name}Key" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.formatedType(0)" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
 #end
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -116,7 +128,7 @@
 					<tr>
 						<th align="left">${field.name}</th>
 						#set( $currentFieldName = "$"+"{current." + ${field.name} + "}" )
-						<td><input type="text" name="firstName" value="${currentFieldName}"  /></td>
+						<td><input type="text" name="${field.name}" value="${currentFieldName}"  /></td>
 					</tr>
 #end
 					<tr>
@@ -127,7 +139,8 @@
 					<tr>
 						<td colspan="2">
 						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<input type="button" class="btn btn-info" value="Delete" onclick="directDelete(${deletecall})" />
+							<s:url var="delete${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}form/delete/${_}{current.$keyName}"/>
+							<a class="btn btn-info" href="${_}{delete${beanClass.name}Url}">Delete</a>
 							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
 							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />
 							<input type="button" class="btn btn-info" value="All" 	 onclick="directGet('list')" />

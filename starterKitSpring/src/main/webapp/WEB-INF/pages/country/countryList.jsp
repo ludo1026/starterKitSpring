@@ -1,17 +1,14 @@
-<%-- Detail screen for Country entity      --%>
+<%-- List screen for Country entity      --%>
 <%-- Created on 20 nov. 2013 ( Time 15:32:39 )  --%>
-
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>CountryStore</title>
+<head>
+	<meta charset="utf-8">
+	<title>CountryStore</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Country">
 	
@@ -24,24 +21,25 @@
 		<script type="text/javascript" src="/static/javascript/validation.js"></script>
 		<script type="text/javascript" src="/static/javascript/jquery.js"></script>
 		<script type="text/javascript" src="/static/javascript/bootstrap.js"></script>
-	
+
 		<style>
 			body {
 				padding-top: 60px;
 				/* 60px to make the container go all the way to the bottom of the topbar */
 			}
 		</style>
-	
+		
 		<script type="text/javascript">
-			var urlBaseWelcome = '<s:url value="/" />';
-			var urlBase = '<s:url value="/countryform" />';
+		var urlBaseWelcome = '<c:url value="/" />';
+		var urlBase = '<c:url value="/country" />';
+		
 			function changeActionAndsubmit(url) {
 				document.forms[0].action = urlBase + '/' + url;
 			    document.forms[0].submit();
 			}
 			
 			function directDelete(idcountry) {
-				if (idcountry = 0){
+				if (idcountry == 0){
 					goHome();
 				}else{
 					document.location = urlBase + '/delete/' + idcountry ;
@@ -56,9 +54,9 @@
 				document.location = urlBaseWelcome;
 			}
 		</script>
-	</head>
+</head>
 
-	<body>
+<body>
 	    <div class="navbar navbar-fixed-top">
 	      <div class="navbar-inner">
 	        <div class="container">
@@ -73,37 +71,32 @@
 	        </div>
 	      </div>
 	    </div>
-	
-	    <div class="container">
-	      
-			<form:form modelAttribute="countryForm" cssClass="well" method="post" action="/starterKitSpring/countryform/save">  
-				<table>
-					<thead>
+
+	<div class="container">
+			<table class="table table-bordered">
+				<thead>
 					<tr>
-						<th align="left">code</th>
-												<td><input type="text" name="code" value="${current.code}"  /></td>
+						<th>id</th>
+						<th>firstName</th>
+						<th>lastName</th>
+						<th><a class="btn btn-info" href='<c:url value="create"/>'>new</a></th>
 					</tr>
-					<tr>
-						<th align="left">name</th>
-												<td><input type="text" name="name" value="${current.name}"  /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<form:errors/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<s:url var="deleteCountryUrl" value="/countryform/delete/${current.code}"/>
-							<a class="btn btn-info" href="${deleteCountryUrl}">Delete</a>
-							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
-							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />
-							<input type="button" class="btn btn-info" value="All" 	 onclick="directGet('list')" />
-						</td>
-					</tr>
-				</table>
-			</form:form>	
-	    </div> <!-- /container -->
- 	</body>
+				</thead>
+				<tbody>
+					<c:forEach items="${listCountrys}" var="country" varStatus="status">
+						<tr>
+							<td align="center">${status.count}</td>
+							<td>${country.code}</td>
+							<td>${country.name}</td>
+							<c:url var="editCountryUrl" value="/country/edit/${country.code}"/>
+							<td><a class="btn btn-info" href="${editCountryUrl}">Edit</a></td>
+							
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+	</div>
+	<!-- /container -->
+
+</body>
 </html>
