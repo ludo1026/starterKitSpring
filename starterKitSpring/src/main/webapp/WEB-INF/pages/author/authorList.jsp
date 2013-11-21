@@ -14,13 +14,13 @@
 	
 		<!-- Le style -->
 		
-		<link href="<c:url value="/static/css/bootstrap-responsive.min.css" />" rel="stylesheet"  type="text/css" />   
-		<link href="<c:url value="/static/css/styles.css" />" rel="stylesheet"  type="text/css" />  
-		<link href="<c:url value="/static/css/bootstrap.min.css" />" rel="stylesheet"  type="text/css" />  
+		<link href="<c:url value="/css/bootstrap-responsive.min.css" />" rel="stylesheet"  type="text/css" />   
+		<link href="<c:url value="/css/styles.css" />" rel="stylesheet"  type="text/css" />  
+		<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet"  type="text/css" />  
 		
-		<script type="text/javascript" src="/static/javascript/validation.js"></script>
-		<script type="text/javascript" src="/static/javascript/jquery.js"></script>
-		<script type="text/javascript" src="/static/javascript/bootstrap.js"></script>
+		<script type="text/javascript" src="/js/validation.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.js"></script>
 
 		<style>
 			body {

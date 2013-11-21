@@ -15,7 +15,9 @@
  	<context:annotation-config/>
 
     <!-- the mvc resources tag -->
- 	<mvc:resources mapping="/static/**" location="/static/" />
+ 	<mvc:resources mapping="/css/**" location="/css/" />
+ 	<mvc:resources mapping="/img/**" location="/img/" />
+ 	<mvc:resources mapping="/script/**" location="/script/" />
  	
  	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	

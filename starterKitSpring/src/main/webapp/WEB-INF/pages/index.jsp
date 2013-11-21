@@ -16,15 +16,15 @@
 <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/"%>">
 
 <!-- Le styles -->
-<link href='<s:url value='/static/css/bootstrap.min.css' var='url'/>' rel="stylesheet" />
+<link href='<s:url value='/css/bootstrap.min.css' var='url'/>' rel="stylesheet" />
 <style>
 body {
 	padding-top: 60px;
 	/* 60px to make the container go all the way to the bottom of the topbar */
 }
 </style>
-<link href="<s:url value='/static/css/bootstrap-responsive.min.css' var='url'/>" rel="stylesheet" />
-<link href="<s:url value='/static/css/styles.css' var='url'/>" rel="stylesheet" />
+<link href="<s:url value='/css/bootstrap-responsive.min.css' var='url'/>" rel="stylesheet" />
+<link href="<s:url value='/css/styles.css' var='url'/>" rel="stylesheet" />
 </head>
 
 <body>
@@ -54,9 +54,9 @@ body {
 
     </div> <!-- /container -->
 
-    <script src="<s:url value='/static/javascript/jquery.js' var='url'/>"></script>
-    <script src="<s:url value='/static/javascript/bootstrap.min.js' var='url'/>"></script>
-	<script src="<s:url value='/static/javascript/validation.js' var='url'/>"></script>
+    <script src="<s:url value='/js/jquery.js' var='url'/>"></script>
+    <script src="<s:url value='/js/bootstrap.min.js' var='url'/>"></script>
+	<script src="<s:url value='/js/validation.js' var='url'/>"></script>
 	
 </body>
 </html>
