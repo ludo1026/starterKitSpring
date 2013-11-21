@@ -1,5 +1,5 @@
 <%-- Detail screen for Author entity      --%>
-<%-- Created on 20 nov. 2013 ( Time 16:12:07 )  --%>
+<%-- Created on 21 nov. 2013 ( Time 14:59:59 )  --%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
