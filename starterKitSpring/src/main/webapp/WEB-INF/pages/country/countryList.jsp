@@ -1,5 +1,5 @@
 <%-- List screen for Country entity      --%>
-<%-- Created on 21 nov. 2013 ( Time 15:00:00 )  --%>
+<%-- Created on 21 nov. 2013 ( Time 16:41:57 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
@@ -76,16 +76,14 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>id</th>
-						<th>firstName</th>
-						<th>lastName</th>
+						<th>code</th>
+						<th>name</th>
 						<th><a class="btn btn-info" href='<c:url value="create"/>'>new</a></th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${listCountrys}" var="country" varStatus="status">
+					<c:forEach items="${listCountrys}" var="country">
 						<tr>
-							<td align="center">${status.count}</td>
 							<td>${country.code}</td>
 							<td>${country.name}</td>
 							<c:url var="editCountryUrl" value="/country/edit/${country.code}"/>

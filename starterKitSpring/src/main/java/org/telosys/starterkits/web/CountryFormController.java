@@ -5,6 +5,7 @@
 
 package org.telosys.starterkits.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.service.CountryService;
 
@@ -57,7 +57,8 @@ public class CountryFormController
 	public ModelAndView search(@ModelAttribute("countryform") Country country, BindingResult result) {
 		countryService = new CountryService();
 		ModelAndView mav = new ModelAndView("country/countryList");
-		List<Country> list = countryService.search(country);
+		List<Country> list = new ArrayList<Country>();
+		//.search(country);
 		mav.addObject("listcountrys", list);
 		return mav;
 	}

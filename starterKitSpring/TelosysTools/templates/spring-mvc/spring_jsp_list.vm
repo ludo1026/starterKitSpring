@@ -87,16 +87,19 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>id</th>
-						<th>firstName</th>
-						<th>lastName</th>
+#foreach( $field in $beanClass.attributes )
+#set( $fieldName = "current.${field.name}" )
+#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
+#set( $fieldName = "current.key.${field.name}" )
+#end
+						<th>${field.name.toLowerCase()}</th>
+#end
 						<th><a class="btn btn-info" href='<c:url value="create"/>'>new</a></th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${_}{list${beanClass.name}s}" var="${beanClass.name.toLowerCase()}" varStatus="status">
+					<c:forEach items="${_}{list${beanClass.name}s}" var="${beanClass.name.toLowerCase()}">
 						<tr>
-							<td align="center">${_}{status.count}</td>
 #foreach( $field in $beanClass.attributes )
 #set( $fieldName = "current.${field.name}" )
 #if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )

@@ -1,6 +1,7 @@
-package org.telosys.starterkits.springjpa;
+package org.telosys.starterkits.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author slabbe
@@ -32,9 +33,9 @@ public interface IService<T, PK> {
 
 	/**
 	 * Search entity
-	 * @param element
+	 * @param criteria
 	 * @return list entities
 	 */
-	List<T> search(final T element);
+	List<T> search(final Map<String,Object> criteria);
 
 }

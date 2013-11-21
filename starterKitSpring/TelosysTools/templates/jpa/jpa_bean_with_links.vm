@@ -76,7 +76,7 @@ public class $entity.name implements Serializable
     //----------------------------------------------------------------------
 #foreach( $field in $entity.keyAttributes )
 $field.jpaAnnotations(4)
-    private $field.formatedType(0) $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
+    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 #end
 
 #end
@@ -94,7 +94,7 @@ $field.jpaAnnotations(4)
 ##     
 ## #end
 $field.jpaAnnotations(4)
-    private $field.formatedType(0) $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
+    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
 #end
 #foreach( $field in $linkFields )
@@ -107,8 +107,8 @@ $field.jpaAnnotations(4)
     //----------------------------------------------------------------------
 ## #foreach( $link in $entity.links )
 #foreach( $link in $entity.selectedLinks )
-//$link.jpaAnnotations(4)
-//    private $link.formatedType(10) $link.formatedName(12);
+$link.jpaAnnotations(4)
+    private $link.formatedType(10) $link.formatedName(12);
 
 #end
 
@@ -193,17 +193,17 @@ $field.jpaAnnotations(4)
 ## #foreach( $link in $entity.links )
 #foreach( $link in $entity.selectedLinks )
 #if ( $link.isCardinalityManyToMany() || $link.isCardinalityOneToMany() ) 
-//    @XmlTransient
+    @XmlTransient
 #end
-#if ( $link.setter )//    public void ${link.setter}( ${link.linkType} ${link.javaName} )
-//    {
-//        this.${link.javaName} = ${link.javaName};
-//    }
+#if ( $link.setter )    public void ${link.setter}( ${link.linkType} ${link.javaName} )
+    {
+        this.${link.javaName} = ${link.javaName};
+    }
 #end
-#if ( $link.getter )//    public ${link.linkType} ${link.getter}()
-//    {
-//        return this.${link.javaName};
-//    }
+#if ( $link.getter )    public ${link.linkType} ${link.getter}()
+    {
+        return this.${link.javaName};
+    }
 #end
 
 #end  

@@ -1,0 +1,102 @@
+/*
+ * Service class 
+ * Created on $today.date ( Time $today.time )
+ */
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+import java.util.List;
+import java.util.Map;
+
+import ${ENTITY_PKG}.${beanClass.name};
+import javax.persistence.PersistenceException;
+import ${ROOT_PKG}.persistence.PersistenceServiceProvider;
+import ${ROOT_PKG}.service.IService;
+import ${ROOT_PKG}.persistence.services.${entity.name}Persistence;
+
+import com.opensymphony.xwork2.util.logging.Logger;
+import com.opensymphony.xwork2.util.logging.LoggerFactory;
+
+#if ( $beanClass.hasCompositePrimaryKey() )
+import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
+#set( $keyType = "${beanClass.name}Key" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
+#end
+
+public class ${beanClass.name}Service implements IService<${beanClass.name}, ${keyType}> {
+
+	protected final Logger LOG = LoggerFactory.getLogger(${beanClass.name}Service.class);
+	
+	private ${beanClass.name}Persistence get${beanClass.name}Persistence() {
+		return PersistenceServiceProvider.getService(${beanClass.name}Persistence.class);
+	}
+
+	public ${beanClass.name} load(final ${keyType} ${keyName}) {
+		if (LOG.isDebugEnabled()) LOG.debug("load");
+		${beanClass.name} ${beanClass.name.toLowerCase()};
+		try {
+			${beanClass.name}Persistence ${beanClass.name.toLowerCase()}Persistence = get${beanClass.name}Persistence();
+			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Persistence.load(${keyName});
+		} catch (PersistenceException ex) {
+			LOG.error("Error", ex);
+			throw ex;
+		}
+		return ${beanClass.name.toLowerCase()} ;
+	}
+
+	public ${beanClass.name} save(final ${beanClass.name} ${beanClass.name.toLowerCase()}) {
+		if (LOG.isDebugEnabled()) LOG.debug("save");
+		${beanClass.name} ${beanClass.name.toLowerCase()}Saved;
+		try {
+			${beanClass.name}Persistence ${beanClass.name.toLowerCase()}Persistence = get${beanClass.name}Persistence();
+			${beanClass.name.toLowerCase()}Saved = ${beanClass.name.toLowerCase()}Persistence.save(${beanClass.name.toLowerCase()});
+		} catch (PersistenceException ex) {
+			LOG.error("Error", ex);
+			throw ex;
+		}
+		return ${beanClass.name.toLowerCase()}Saved;
+	}
+
+	public void delete(final ${keyType} ${keyName}) {
+		if (LOG.isDebugEnabled()) LOG.debug("delete");
+		try {
+			${beanClass.name}Persistence ${beanClass.name.toLowerCase()}Persistence = get${beanClass.name}Persistence();
+			${beanClass.name.toLowerCase()}Persistence.delete(${keyName});
+		} catch (PersistenceException ex) {
+			LOG.error("Error", ex);
+			throw ex;
+		}
+	}
+
+	public List<${beanClass.name}> search(final Map<String,Object> criteria) {
+		if (LOG.isDebugEnabled()) LOG.debug("search");
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}s;
+		try {
+			${beanClass.name}Persistence ${beanClass.name.toLowerCase()}Persistence = get${beanClass.name}Persistence();
+			${beanClass.name.toLowerCase()}s = ${beanClass.name.toLowerCase()}Persistence.search(criteria);
+		} catch (PersistenceException ex) {
+			LOG.error("Error", ex);
+			throw ex;
+		}
+		return ${beanClass.name.toLowerCase()}s;
+	}
+
+	public List<${beanClass.name}> loadAll() {
+		if (LOG.isDebugEnabled()) LOG.debug("loadAll");
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}s;
+		try {
+			${beanClass.name}Persistence ${beanClass.name.toLowerCase()}Persistence = get${beanClass.name}Persistence();
+			${beanClass.name.toLowerCase()}s = ${beanClass.name.toLowerCase()}Persistence.loadAll();
+		} catch (PersistenceException ex) {
+			LOG.error("Error", ex);
+			throw ex;
+		}
+		return ${beanClass.name.toLowerCase()}s;
+	}
+
+}

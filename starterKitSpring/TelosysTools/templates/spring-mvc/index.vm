@@ -44,8 +44,9 @@ body {
     <div class="container">
       
 		<ul>
-            <li><a href="author/list">Author</a></li>
-            <li><a href="country/list">Country</a></li>
+#foreach( $entity in $selectedEntities )
+            <li><a href="${entity.name.toLowerCase()}/list">${entity.name}</a></li>
+#end
 	    </ul>
 
     </div> <!-- /container -->

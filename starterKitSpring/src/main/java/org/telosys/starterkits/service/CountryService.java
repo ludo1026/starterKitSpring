@@ -1,17 +1,18 @@
 /*
  * Service class 
- * Created on 20 nov. 2013 ( Time 15:32:39 )
+ * Created on 21 nov. 2013 ( Time 16:18:56 )
  */
 
 package org.telosys.starterkits.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.telosys.starterkits.bean.Country;
-import org.telosys.starterkits.dao.CountryDAO;
-import org.telosys.starterkits.springjpa.EntityManagerHelper;
-import org.telosys.starterkits.springjpa.IService;
 import javax.persistence.PersistenceException;
+import org.telosys.starterkits.persistence.PersistenceServiceProvider;
+import org.telosys.starterkits.service.IService;
+import org.telosys.starterkits.persistence.services.CountryPersistence;
 
 import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
@@ -20,88 +21,72 @@ import com.opensymphony.xwork2.util.logging.LoggerFactory;
 public class CountryService implements IService<Country, String> {
 
 	protected final Logger LOG = LoggerFactory.getLogger(CountryService.class);
+	
+	private CountryPersistence getCountryPersistence() {
+		return PersistenceServiceProvider.getService(CountryPersistence.class);
+	}
 
 	public Country load(final String code) {
 		if (LOG.isDebugEnabled()) LOG.debug("load");
 		Country country;
 		try {
-			EntityManagerHelper.beginTransaction();
-			CountryDAO countryDAO = new CountryDAO();
-			country = countryDAO.findById(code);
-			EntityManagerHelper.commitAndCloseEntityManager();
+			CountryPersistence countryPersistence = getCountryPersistence();
+			country = countryPersistence.load(code);
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
 			throw ex;
-		} finally {
-			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
 		return country ;
 	}
 
-	public Country save(final Country entity) {
+	public Country save(final Country country) {
 		if (LOG.isDebugEnabled()) LOG.debug("save");
-		Country entityNew;
+		Country countrySaved;
 		try {
-			EntityManagerHelper.beginTransaction();
-			CountryDAO countryDAO = new CountryDAO();
-			entityNew = countryDAO.update(entity);
-			EntityManagerHelper.commitAndCloseEntityManager();
+			CountryPersistence countryPersistence = getCountryPersistence();
+			countrySaved = countryPersistence.save(country);
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
 			throw ex;
-		} finally {
-			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
-		return entityNew;
+		return countrySaved;
 	}
 
 	public void delete(final String code) {
 		if (LOG.isDebugEnabled()) LOG.debug("delete");
 		try {
-			EntityManagerHelper.beginTransaction();
-			CountryDAO countryDAO = new CountryDAO();
-			countryDAO.delete(code);
-			EntityManagerHelper.commitAndCloseEntityManager();	
+			CountryPersistence countryPersistence = getCountryPersistence();
+			countryPersistence.delete(code);
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
 			throw ex;
-		} finally {
-			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
 	}
 
-	public List<Country> search(final Country country) {
+	public List<Country> search(final Map<String,Object> criteria) {
 		if (LOG.isDebugEnabled()) LOG.debug("search");
-		List<Country> liste;
+		List<Country> countrys;
 		try {
-			EntityManagerHelper.beginTransaction();
-			CountryDAO countryDAO = new CountryDAO();
-			liste = countryDAO.search(country);
-			EntityManagerHelper.commitAndCloseEntityManager();
+			CountryPersistence countryPersistence = getCountryPersistence();
+			countrys = countryPersistence.search(criteria);
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
 			throw ex;
-		} finally {
-			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
-		return liste;
+		return countrys;
 	}
 
 	public List<Country> loadAll() {
 		if (LOG.isDebugEnabled()) LOG.debug("loadAll");
-		List<Country> liste;
+		List<Country> countrys;
 		try {
-			EntityManagerHelper.beginTransaction();
-			CountryDAO countryDAO = new CountryDAO();
-			liste = countryDAO.loadAll();
-			EntityManagerHelper.commitAndCloseEntityManager();
+			CountryPersistence countryPersistence = getCountryPersistence();
+			countrys = countryPersistence.loadAll();
 		} catch (PersistenceException ex) {
 			LOG.error("Error", ex);
 			throw ex;
-		} finally {
-			if (EntityManagerHelper.isCloseEntityManager() == false) EntityManagerHelper.rollback();
 		}
-		return liste;
+		return countrys;
 	}
 
 }
