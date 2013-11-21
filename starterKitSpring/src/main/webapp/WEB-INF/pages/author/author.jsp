@@ -1,5 +1,6 @@
 <%-- Detail screen for Author entity      --%>
-<%-- Created on 31 mai 2013 ( Time 17:11:01 )  --%>
+<%-- Created on 20 nov. 2013 ( Time 16:12:07 )  --%>
+
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
@@ -13,7 +14,6 @@
 		<title>AuthorStore</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Author">
-		<meta name="author" content="pbq">
 	
 		<!-- Le style -->
 		
@@ -41,7 +41,7 @@
 			}
 			
 			function directDelete(idauthor) {
-				if (idauthor == 0){
+				if (idauthor = 0){
 					goHome();
 				}else{
 					document.location = urlBase + '/delete/' + idauthor ;
@@ -67,8 +67,8 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </a>
-	          <a class="brand" href="#">Author</a>
-	          <input type="button" class="btn btn-info" value="All" 	 onclick="directGet('search')" />
+	          <a class="brand" href="#">AuthorList</a>
+	          <input type="button" class="btn btn-info" value="All" 	 onclick="directGet('list')" />
 	          <input type="button" class="btn btn-info" value="Back to Welcome Page" 	 onclick="goHome()" />
 	        </div>
 	      </div>
@@ -78,17 +78,18 @@
 	      
 			<form:form modelAttribute="authorForm" cssClass="well" method="post" action="/starterKitSpring/authorform/save">  
 				<table>
+					<thead>
 					<tr>
 						<th align="left">id</th>
-						<td><input type="text" name="id" value="${current.id}"  /></td>
+												<td><input type="text" name="id" value="${current.id}"  /></td>
 					</tr>
 					<tr>
 						<th align="left">firstName</th>
-						<td><input type="text" name="firstName" value="${current.firstName}"  /></td>
+												<td><input type="text" name="firstName" value="${current.firstName}"  /></td>
 					</tr>
 					<tr>
 						<th align="left">lastName</th>
-						<td><input type="text" name="lastName" value="${current.lastName}"  /></td>
+												<td><input type="text" name="lastName" value="${current.lastName}"  /></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -98,7 +99,8 @@
 					<tr>
 						<td colspan="2">
 						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<input type="button" class="btn btn-info" value="Delete" onclick="directDelete('${current.id}')" />
+							<s:url var="deleteAuthorUrl" value="/authorform/delete/${current.id}"/>
+							<a class="btn btn-info" href="${deleteAuthorUrl}">Delete</a>
 							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
 							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />
 							<input type="button" class="btn btn-info" value="All" 	 onclick="directGet('list')" />

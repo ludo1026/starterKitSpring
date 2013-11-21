@@ -1,5 +1,5 @@
 <%-- List screen for Author entity      --%>
-<%-- Created on 22 mai 2013 ( Time 15:26:18 )  --%>
+<%-- Created on 20 nov. 2013 ( Time 16:12:07 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
@@ -11,7 +11,6 @@
 	<title>AuthorStore</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Author">
-		<meta name="author" content="pbq">
 	
 		<!-- Le style -->
 		
@@ -87,6 +86,7 @@
 					<c:forEach items="${listAuthors}" var="author" varStatus="status">
 						<tr>
 							<td align="center">${status.count}</td>
+							<td>${author.id}</td>
 							<td>${author.firstName}</td>
 							<td>${author.lastName}</td>
 							<c:url var="editAuthorUrl" value="/author/edit/${author.id}"/>

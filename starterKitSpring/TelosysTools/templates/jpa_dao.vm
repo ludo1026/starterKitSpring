@@ -25,7 +25,7 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 #set( $keyName = "id" )
 #else
 #foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.formatedType(0)" )
+#set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
 #end
 #end
