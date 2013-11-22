@@ -4,7 +4,7 @@
  */
 ## ----------------------------------------------------------------------
 #if ( $entity.hasCompositePrimaryKey() )
-#set( $primaryKeyType = "${entity.name}Key" )
+#set( $primaryKeyType = "${entity.name}Id" )
 #else 
 #set( $primaryKeyType = $entity.keyAttributes[0].wrapperType )
 #end
@@ -18,11 +18,27 @@ import $import;
 
 import $entity.fullName ;
 #if ( $entity.hasCompositePrimaryKey() )
-import ${entity.fullName}Key ;
+import ${entity.fullName}Id ;
 #end
 import ${ROOT_PKG}.persistence.commons.jpa.GenericJpaService;
 import ${ROOT_PKG}.persistence.services.${entity.name}Persistence;
 
+## Clé primaire
+#if ( $beanClass.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
+#set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
+#end
+#end
 /**
  * JPA implementation for basic persistence operations ( entity "${entity.name}" )
  * 
@@ -38,37 +54,11 @@ public class ${entity.name}PersistenceJPA extends GenericJpaService<${entity.nam
 		super(${entity.name}.class);
 	}
 
-	public ${entity.name} load( $fn.argumentsListWithType( $entity.keyAttributes ) ) {
-#if ( $entity.hasCompositePrimaryKey() )
-		// Build the composite key
-		$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
-		return super.load( key );
-#else
-		return super.load( $fn.argumentsList( $entity.keyAttributes ) );
-#end	
-	}
-
-	public boolean delete( $fn.argumentsListWithType( $entity.keyAttributes ) ) {
-#if ( $entity.hasCompositePrimaryKey() )
-		// Build the composite key
-		$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
-		return super.delete( key );
-#else
-		return super.delete( $fn.argumentsList( $entity.keyAttributes ) );
-#end	
-	}
-
-	public boolean delete(${entity.name} entity) {
-		if ( entity != null ) {
-#if ( $entity.hasCompositePrimaryKey() )
-			// Build the composite key
-			$primaryKeyType key = new $primaryKeyType( $fn.argumentsListWithGetter( "entity", $entity.keyAttributes ) );
-			return super.delete( key );
-#else
-			return super.delete( $fn.argumentsListWithGetter( "entity", $entity.keyAttributes ) );
-#end	
-		}
-		return false ;
+	/**
+	 * Delete ${entity.name.toLowerCase()}.
+	 */
+	public boolean delete(${entity.name} ${entity.name.toLowerCase()}) {
+		return delete(${entity.name.toLowerCase()}.$keyGetter());
 	}
 
 }

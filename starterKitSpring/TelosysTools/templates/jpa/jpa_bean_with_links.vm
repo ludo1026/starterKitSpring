@@ -12,7 +12,7 @@
 ## IF COMPOSITE PRIMARY KEY : GENERATE A JAVA CLASS FOR THIS COMPOSITE KEY
 #if ( $entity.hasCompositePrimaryKey() )
 // This Bean has a composite Primary Key  
-$generator.generate($target.entityName ,  "${entity.name}Key.java", $target.folder, "jpa_bean_pk.vm"  )
+$generator.generate($target.entityName ,  "${entity.name}Id.java", $target.folder, "jpa/jpa_bean_pk.vm"  )
 #else 
 // This Bean has a basic Primary Key (not composite) 
 #end
@@ -23,7 +23,6 @@ $generator.generate($target.entityName ,  "${entity.name}Key.java", $target.fold
 #set ( $TRANSIENT_COUNT = $TRANSIENT_COUNT + 1 )
 #end
 #end
-
 package ${target.javaPackageFromFolder($SRC)};
 
 import java.io.Serializable;
@@ -33,6 +32,22 @@ import java.io.Serializable;
 
 #foreach( $import in $entity.imports )
 import $import;
+#end
+## Clé primaire
+#if ( $beanClass.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
+#set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
+#end
 #end
 
 #foreach( $import in $entity.importsJpa )
@@ -47,9 +62,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Persistent class for entity stored in table "${entity.databaseTable}"
- *
- * @author Telosys Tools Generator
- *
  */
 @XmlRootElement  // JAXB annotation for REST Web Services
 @XmlAccessorType(XmlAccessType.PROPERTY) // JAXB accessor = getter/setter pair
@@ -64,132 +76,58 @@ public class $entity.name implements Serializable
     private static final long serialVersionUID = 1L;
 
 #if ( $entity.hasCompositePrimaryKey() )
-    //----------------------------------------------------------------------
-    // ENTITY PRIMARY KEY ( EMBEDDED IN AN EXTERNAL CLASS )  
-    //----------------------------------------------------------------------
 	@EmbeddedId
-    private ${entity.name}Key compositePrimaryKey ;
+    private $keyType $keyName = new $keyType();
 
 #else 
-    //----------------------------------------------------------------------
-    // ENTITY PRIMARY KEY ( BASED ON A SINGLE FIELD )
-    //----------------------------------------------------------------------
-#foreach( $field in $entity.keyAttributes )
-$field.jpaAnnotations(4)
-    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
-#end
+$keyField.jpaAnnotations(4)
+    private $keyType $keyName#if($keyField.hasInitialValue()) = ${keyField.initialValue}#end;
 
 #end
-
-    //----------------------------------------------------------------------
-    // ENTITY DATA FIELDS 
-    //----------------------------------------------------------------------    
+##-- ENTITY DATA FIELDS 
 #foreach( $field in $dataFields )
-## #if ( $field.isUsedInLinkJoinColumn( $entity.selectedLinks ) != true )
-## $field.jpaAnnotations(4)
-##     private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
-##     
-## #else
-##     // "$field.name" (column "$field.databaseName") is not mapped as an attribute because it is used in a link   
-##     
-## #end
 $field.jpaAnnotations(4)
-    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
+    private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
 #end
 #foreach( $field in $linkFields )
 	// "$field.name" (column "$field.databaseName") is not defined by itself because used as FK in a link 
+
 #end
-
-
-    //----------------------------------------------------------------------
-    // ENTITY LINKS ( RELATIONSHIP )
-    //----------------------------------------------------------------------
+##-- ENTITY LINKS ( RELATIONSHIP )
 ## #foreach( $link in $entity.links )
 #foreach( $link in $entity.selectedLinks )
 $link.jpaAnnotations(4)
-    private $link.formatedType(10) $link.formatedName(12);
+    private $link.formatedType(0) $link.formatedName(0);
 
-#end
+#end    
+##-- GETTER & SETTER FOR THE COMPOSITE KEY 
+	public ${keyType} ${keyGetter}() {
+        return ${keyName};
+    }
+ 
+    public void ${keySetter}(${keyType} ${keyName}) {
+        this.${keyName} = ${keyName};
+    }
 
-    //----------------------------------------------------------------------
-    // CONSTRUCTOR(S)
-    //----------------------------------------------------------------------
-    public ${entity.name}()
-    {
-		super();
-#if ( $entity.hasCompositePrimaryKey() )        
-		this.compositePrimaryKey = new ${entity.name}Key();       
-#end
-    }
-    
-#if ( $entity.hasCompositePrimaryKey() )
-    //----------------------------------------------------------------------
-    // GETTER & SETTER FOR THE COMPOSITE KEY 
-    //----------------------------------------------------------------------
-##	public ${entity.name}Key getKey() {
-##        return key;
-##    }
-## 
-##    public void setKey(${entity.name}Key key) {
-##        this.key = key;
-##    }
-##
-#foreach( $field in $entity.keyAttributes )
-#if ( $field.setter )    public void ${field.setter}( $field.type $field.name )
-    {
-        this.compositePrimaryKey.${field.setter}( $field.name ) ;
-    }
-#end
-#if ( $field.getter )    public $field.type ${field.getter}()
-    {
-        return this.compositePrimaryKey.${field.getter}() ;
-    }
-#end
-#end
-
-#else 
-    //----------------------------------------------------------------------
-    // GETTER & SETTER FOR THE KEY FIELD
-    //----------------------------------------------------------------------
-#foreach( $field in $entity.keyAttributes )
-#if ( $field.setter )    public void ${field.setter}( $field.type $field.name )
-    {
-        this.$field.name = $field.name ;
-    }
-#end
-#if ( $field.getter )    public $field.type ${field.getter}()
-    {
-        return this.$field.name;
-    }
-#end
-#end
-#end
-
-    //----------------------------------------------------------------------
-    // GETTERS & SETTERS FOR FIELDS
-    //----------------------------------------------------------------------
+##-- GETTERS & SETTERS FOR FIELDS
 #foreach( $field in $dataFields )
 ## #if ( $field.isUsedInLinkJoinColumn( $entity.selectedLinks ) != true )
-#if ( $field.databaseName )    //--- DATABASE MAPPING : $field.databaseName ( $field.databaseType ) 
-#end
-#if ( $field.setter )    public void ${field.setter}( $field.type $field.name )
+#if ( $field.setter )    public void ${field.setter}( $field.wrapperType $field.name )
     {
         this.$field.name = $field.name;
     }
+
 #end
-#if ( $field.getter )    public $field.type ${field.getter}()
+#if ( $field.getter )    public $field.wrapperType ${field.getter}()
     {
         return this.$field.name;
     }
-#end
 
+#end
 ## #end  
 #end  
-
-    //----------------------------------------------------------------------
-    // GETTERS & SETTERS FOR LINKS
-    //----------------------------------------------------------------------
+##-- GETTERS & SETTERS FOR LINKS
 ## #foreach( $link in $entity.links )
 #foreach( $link in $entity.selectedLinks )
 #if ( $link.isCardinalityManyToMany() || $link.isCardinalityOneToMany() ) 
@@ -199,22 +137,19 @@ $link.jpaAnnotations(4)
     {
         this.${link.javaName} = ${link.javaName};
     }
+
 #end
 #if ( $link.getter )    public ${link.linkType} ${link.getter}()
     {
         return this.${link.javaName};
     }
+
 #end
-
 #end  
-
-    //----------------------------------------------------------------------
-    // toString METHOD
-    //----------------------------------------------------------------------
     public String toString()
     {
 #set( $attributes = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_TEXT, $const.NOT_IN_SELECTED_LINKS ) )    
-$entity.toStringMethodCodeLinesWithKey(8, $attributes, "compositePrimaryKey") 
+$entity.toStringMethodCodeLinesWithKey(8, $attributes, $keyName) 
 ## The "key" is used only if composite key
 #foreach( $field in $entity.getAttributesByCriteria( $const.TEXT ) )
 		// $field.name is not in toString because it's a "long text" field

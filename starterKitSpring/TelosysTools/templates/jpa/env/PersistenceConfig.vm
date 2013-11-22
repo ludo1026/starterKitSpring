@@ -31,7 +31,7 @@ public class PersistenceConfig {
 	/**
 	 * JPA Persistence Unit name defined in "persistence.xml" file
 	 */
-	public static final String JPA_PERSISTENCE_UNIT_NAME = "derby-bookstore";
+	public static final String JPA_PERSISTENCE_UNIT_NAME = "jpa";
 	
 
 }

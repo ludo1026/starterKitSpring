@@ -1,5 +1,5 @@
 <%-- List screen for Author entity      --%>
-<%-- Created on 21 nov. 2013 ( Time 16:41:57 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 16:55:23 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
@@ -77,8 +77,8 @@
 				<thead>
 					<tr>
 						<th>id</th>
-						<th>firstname</th>
-						<th>lastname</th>
+						<th>firstName</th>
+						<th>lastName</th>
 						<th><a class="btn btn-info" href='<c:url value="create"/>'>new</a></th>
 					</tr>
 				</thead>
@@ -90,7 +90,6 @@
 							<td>${author.lastName}</td>
 							<c:url var="editAuthorUrl" value="/author/edit/${author.id}"/>
 							<td><a class="btn btn-info" href="${editAuthorUrl}">Edit</a></td>
-							
 						</tr>
 					</c:forEach>
 				</tbody>

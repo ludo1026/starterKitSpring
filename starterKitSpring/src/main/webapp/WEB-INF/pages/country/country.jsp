@@ -1,5 +1,5 @@
 <%-- Detail screen for Country entity      --%>
-<%-- Created on 21 nov. 2013 ( Time 14:59:59 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:35:26 )  --%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -81,11 +81,11 @@
 					<thead>
 					<tr>
 						<th align="left">code</th>
-												<td><input type="text" name="code" value="${current.code}"  /></td>
+						<td><form:input path="code"  /></td>
 					</tr>
 					<tr>
 						<th align="left">name</th>
-												<td><input type="text" name="name" value="${current.name}"  /></td>
+						<td><form:input path="name"  /></td>
 					</tr>
 					<tr>
 						<td colspan="2">

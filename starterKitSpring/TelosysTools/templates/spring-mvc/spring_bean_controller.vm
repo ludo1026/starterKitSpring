@@ -16,19 +16,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ${ENTITY_PKG}.${beanClass.name};
-import ${SERVICE_PKG}.${beanClass.name}Service;
 
+## Clé primaire
 #if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
-#set( $keyType = "${beanClass.name}Key" )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
 #set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
 #else
 #foreach( $field in $entity.keyAttributes )
 #set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
 #end
 #end
+import ${SERVICE_PKG}.${beanClass.name}Service;
 
+/**
+ * ${beanClass.name}.
+ */
 @Controller
 @RequestMapping("/${beanClass.name.toLowerCase()}*")
 public class ${beanClass.name}Controller 
@@ -58,14 +67,27 @@ public class ${beanClass.name}Controller
 		return "redirect:/${beanClass.name.toLowerCase()}/search";
 	}
 
-	@RequestMapping(value = "/edit/{$keyName}")
-	public ModelAndView edit(@ModelAttribute("${beanClass.name.toLowerCase()}/edit") ${beanClass.name} ${beanClass.name.toLowerCase()}, @PathVariable("$keyName") $keyType $keyName) {
+#set( $keyURLPath = "")
+#set( $keyPathVariable = "")
+#foreach( $field in $entity.keyAttributes )
+#set( $keyURLPath = $keyURLPath+"/{"+${field.formatedName(0)}+"}" )
+#set( $keyPathVariable = $keyPathVariable+", @PathVariable("""+${field.formatedName(0)}+""") "+${field.wrapperType}+" "+${field.formatedName(0)} )
+#end
+	@RequestMapping(value = "/edit${keyURLPath}")
+	public ModelAndView edit(@ModelAttribute("${beanClass.name.toLowerCase()}/edit") ${beanClass.name} ${beanClass.name.toLowerCase()}$keyPathVariable) {
 		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView modelAndView = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}");
-		if ($keyName != null){
-			${beanClass.name} ${beanClass.name.toLowerCase()}loaded = ${beanClass.name.toLowerCase()}Service.load($keyName);
-			modelAndView.addObject("current", ${beanClass.name.toLowerCase()}loaded);
-		}
+
+#if ( $beanClass.hasCompositePrimaryKey() )
+		$keyType $keyName = new $keyType();
+#foreach( $field in $entity.keyAttributes )
+		${keyName}.${field.setter}($field.formatedName(0));
+#end
+
+#end
+		${beanClass.name} ${beanClass.name.toLowerCase()}loaded = ${beanClass.name.toLowerCase()}Service.load($keyName);
+
+		modelAndView.addObject("current", ${beanClass.name.toLowerCase()}loaded);
 		return modelAndView;
 	}
 }

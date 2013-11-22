@@ -1,5 +1,5 @@
 <%-- List screen for Country entity      --%>
-<%-- Created on 21 nov. 2013 ( Time 16:41:57 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 16:55:24 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
@@ -88,7 +88,6 @@
 							<td>${country.name}</td>
 							<c:url var="editCountryUrl" value="/country/edit/${country.code}"/>
 							<td><a class="btn btn-info" href="${editCountryUrl}">Edit</a></td>
-							
 						</tr>
 					</c:forEach>
 				</tbody>

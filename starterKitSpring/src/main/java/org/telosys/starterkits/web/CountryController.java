@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 21 nov. 2013 ( Time 14:59:59 )
+ * Created on 22 nov. 2013 ( Time 16:27:40 )
  */
 
 package org.telosys.starterkits.web;
@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.telosys.starterkits.bean.Country;
+
 import org.telosys.starterkits.service.CountryService;
 
-
+/**
+ * Country.
+ */
 @Controller
 @RequestMapping("/country*")
 public class CountryController 
@@ -52,10 +55,10 @@ public class CountryController
 	public ModelAndView edit(@ModelAttribute("country/edit") Country country, @PathVariable("code") String code) {
 		countryService = new CountryService();
 		ModelAndView modelAndView = new ModelAndView("country/country");
-		if (code != null){
-			Country countryloaded = countryService.load(code);
-			modelAndView.addObject("current", countryloaded);
-		}
+
+		Country countryloaded = countryService.load(code);
+
+		modelAndView.addObject("current", countryloaded);
 		return modelAndView;
 	}
 }

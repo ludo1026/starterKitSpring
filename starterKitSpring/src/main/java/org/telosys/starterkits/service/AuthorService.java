@@ -1,6 +1,6 @@
 /*
  * Service class 
- * Created on 21 nov. 2013 ( Time 15:37:32 )
+ * Created on 22 nov. 2013 ( Time 16:27:32 )
  */
 
 package org.telosys.starterkits.service;
@@ -8,23 +8,25 @@ package org.telosys.starterkits.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.PersistenceException;
-
 import org.telosys.starterkits.bean.Author;
+import javax.persistence.PersistenceException;
 import org.telosys.starterkits.persistence.PersistenceServiceProvider;
+import org.telosys.starterkits.service.IService;
 import org.telosys.starterkits.persistence.services.AuthorPersistence;
 
 import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
 
 
+/**
+ * Service : Author.
+ */
 public class AuthorService implements IService<Author, Integer> {
 
 	protected final Logger LOG = LoggerFactory.getLogger(AuthorService.class);
-
+	
 	private AuthorPersistence getAuthorPersistence() {
-		AuthorPersistence authorPersistence = PersistenceServiceProvider.getService(AuthorPersistence.class);
-		return authorPersistence;
+		return PersistenceServiceProvider.getService(AuthorPersistence.class);
 	}
 
 	public Author load(final Integer id) {

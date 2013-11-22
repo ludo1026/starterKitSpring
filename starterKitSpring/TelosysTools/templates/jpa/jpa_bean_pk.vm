@@ -19,29 +19,24 @@ import $import;
  * @author Telosys Tools Generator
  *
  */
- @Embeddable
-public class ${entity.name}Key implements Serializable
+@Embeddable
+public class ${entity.name}Id implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    //----------------------------------------------------------------------
-    // ENTITY KEY ATTRIBUTES 
-    //----------------------------------------------------------------------
+##-- ENTITY KEY ATTRIBUTES 
 #foreach( $field in $entity.keyAttributes )
 $field.jpaAnnotationsEmbeddedID(4)
-    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
+    private $field.formatedType(0) $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
     
 #end
-
-    //----------------------------------------------------------------------
-    // CONSTRUCTORS
-    //----------------------------------------------------------------------
-    public ${entity.name}Key()
+##-- CONSTRUCTORS
+    public ${entity.name}Id()
     {
         super();
     }
 
-    public ${entity.name}Key( $fn.argumentsListWithType($entity.keyAttributes) )
+    public ${entity.name}Id( $fn.argumentsListWithType($entity.keyAttributes) )
     {
         super();
 #foreach( $field in $entity.keyAttributes )
@@ -49,9 +44,7 @@ $field.jpaAnnotationsEmbeddedID(4)
 #end
     }
     
-    //----------------------------------------------------------------------
-    // GETTERS & SETTERS FOR KEY FIELDS
-    //----------------------------------------------------------------------
+##-- GETTERS & SETTERS FOR KEY FIELDS
 #foreach( $field in $entity.keyAttributes )
 #if ( $field.databaseName ) 
 #end
@@ -59,18 +52,16 @@ $field.jpaAnnotationsEmbeddedID(4)
     {
         this.$field.name = value;
     }
+
 #end
 #if ( $field.getter )    public $field.type ${field.getter}()
     {
         return this.$field.name;
     }
+
 #end
-
 #end  
-
-    //----------------------------------------------------------------------
-    // toString METHOD
-    //----------------------------------------------------------------------
+##-- toString METHOD
     public String toString()
     {
 		StringBuffer sb = new StringBuffer(); 

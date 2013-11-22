@@ -16,7 +16,7 @@
 		#set( $urlparameters = "${urlparameters} + '${AMP}' + " )
 	#end
 	
-	#set( $deletecall = "${deletecall}'${${fieldName}}' />'" )
+	#set( $deletecall = "${deletecall}'${field.name}' />'" )
 	#set( $deleteparameters = "${deleteparameters}${field.name}in" )
 	#set( $urlparameters = "${urlparameters}'restid.${field.name}=' + ${field.name}in" )
   #end
@@ -29,7 +29,6 @@
 #end
 
 #if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 #set( $keyType = "${beanClass.name}Key" )
 #set( $keyName = "id" )
 #else
@@ -121,14 +120,13 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 				<table>
 					<thead>
 #foreach( $field in $beanClass.attributes )
-#set( $fieldName = "current.${field.name}" )
-#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-#set( $fieldName = "current.key.${field.name}" )
-#end
 					<tr>
-						<th align="left">${field.name}</th>
-						#set( $currentFieldName = "$"+"{current." + ${field.name} + "}" )
-						<td><input type="text" name="${field.name}" value="${currentFieldName}"  /></td>
+						<th align="left">${field.formatedName(0)}</th>
+#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
+						<td><form:input path="${keyName}.${field.formatedName(0)}"  /></td>
+#else
+						<td><form:input path="${field.formatedName(0)}"  /></td>
+#end
 					</tr>
 #end
 					<tr>

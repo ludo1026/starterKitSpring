@@ -1,6 +1,6 @@
 /*
  * Service class 
- * Created on 21 nov. 2013 ( Time 16:18:56 )
+ * Created on 22 nov. 2013 ( Time 16:27:41 )
  */
 
 package org.telosys.starterkits.service;
@@ -18,6 +18,9 @@ import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
 
 
+/**
+ * Service : Country.
+ */
 public class CountryService implements IService<Country, String> {
 
 	protected final Logger LOG = LoggerFactory.getLogger(CountryService.class);

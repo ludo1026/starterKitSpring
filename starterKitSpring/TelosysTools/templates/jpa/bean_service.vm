@@ -18,8 +18,8 @@ import com.opensymphony.xwork2.util.logging.Logger;
 import com.opensymphony.xwork2.util.logging.LoggerFactory;
 
 #if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
-#set( $keyType = "${beanClass.name}Key" )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
 #set( $keyName = "id" )
 #else
 #foreach( $field in $entity.keyAttributes )
@@ -28,6 +28,9 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 #end
 #end
 
+/**
+ * Service : ${beanClass.name}.
+ */
 public class ${beanClass.name}Service implements IService<${beanClass.name}, ${keyType}> {
 
 	protected final Logger LOG = LoggerFactory.getLogger(${beanClass.name}Service.class);

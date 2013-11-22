@@ -12,11 +12,22 @@ import $import;
 
 import $entity.fullName ;
 
+#if ( $beanClass.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
+#end
+
 /**
  * Basic persistence operations for entity "${entity.name}"
  * 
 #if ( $entity.hasCompositePrimaryKey() )
-#set( $primaryKeyType = "${entity.name}Key" )
+#set( $primaryKeyType = "${entity.name}Id" )
  * This Bean has a composite Primary Key : $primaryKeyType
 #else 
 #set( $primaryKeyType = $entity.keyAttributes[0].type )
@@ -39,12 +50,10 @@ public interface ${entity.name}Persistence {
 	/**
 	 * Deletes the entity by its Primary Key <br>
 	 * Transactional operation ( begin transaction and commit )
-#foreach( $arg in $entity.keyAttributes  )
-	 * @param $arg.name
-#end	 
+	 * @param $keyName
 	 * @return true if found and deleted, false if not found
 	 */
-	public boolean delete($fn.argumentsListWithType( $entity.keyAttributes )) ;
+	public boolean delete($keyType $keyName) ;
 
 	/**
 	 * Inserts the given entity and commit <br>
@@ -55,12 +64,10 @@ public interface ${entity.name}Persistence {
 
 	/**
 	 * Loads the entity for the given Primary Key <br>
-#foreach( $arg in $entity.keyAttributes  )
-	 * @param $arg.name
-#end	 
+	 * @param $keyName
 	 * @return the entity loaded (or null if not found)
 	 */
-	public ${entity.name} load($fn.argumentsListWithType( $entity.keyAttributes )) ;
+	public ${entity.name} load($keyType $keyName) ;
 
 	/**
 	 * Loads ALL the entities (use with caution)

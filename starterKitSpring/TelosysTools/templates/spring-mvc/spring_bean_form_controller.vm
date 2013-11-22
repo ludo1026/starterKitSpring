@@ -5,7 +5,9 @@
 
 package ${target.javaPackageFromFolder(${SRC})};
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -19,19 +21,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ${ENTITY_PKG}.${beanClass.name};
-import ${SERVICE_PKG}.${beanClass.name}Service;
-
+## Clé primaire
 #if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
-#set( $keyType = "${beanClass.name}Key" )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
 #set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
 #else
 #foreach( $field in $entity.keyAttributes )
 #set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
 #end
 #end
+import ${SERVICE_PKG}.${beanClass.name}Service;
 
+/**
+ * ${beanClass.name}.
+ */
 @Controller
 @RequestMapping("/${beanClass.name.toLowerCase()}form")
 public class ${beanClass.name}FormController 
@@ -67,7 +77,9 @@ public class ${beanClass.name}FormController
 	public ModelAndView search(@ModelAttribute("${beanClass.name.toLowerCase()}form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
 		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView mav = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}List");
-		List<${beanClass.name}> list = ${beanClass.name.toLowerCase()}Service.search(${beanClass.name.toLowerCase()});
+		Map<String, Object> criteria = new HashMap<String, Object>();
+		// TODO Définir les critères
+		List<${beanClass.name}> list = ${beanClass.name.toLowerCase()}Service.search(criteria);
 		mav.addObject("list${beanClass.name.toLowerCase()}s", list);
 		return mav;
 	}

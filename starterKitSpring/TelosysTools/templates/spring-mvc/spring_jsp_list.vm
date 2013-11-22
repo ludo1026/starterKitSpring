@@ -1,14 +1,19 @@
 #set( $_ = "$" )
 <%-- List screen for ${beanClass.name} entity      --%>
 <%-- Created on $today.date ( Time $today.time )  --%>
+## Clé primaire
 #if ( $beanClass.hasCompositePrimaryKey() )
-import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
-#set( $keyType = "${beanClass.name}Key" )
+#set( $keyType = "${beanClass.name}Id" )
 #set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
 #else
 #foreach( $field in $entity.keyAttributes )
 #set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
 #end
 #end
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
@@ -90,9 +95,9 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 #foreach( $field in $beanClass.attributes )
 #set( $fieldName = "current.${field.name}" )
 #if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-#set( $fieldName = "current.key.${field.name}" )
+#set( $fieldName = "current.key.${field.formatedName(0)}" )
 #end
-						<th>${field.name.toLowerCase()}</th>
+						<th>${field.formatedName(0)}</th>
 #end
 						<th><a class="btn btn-info" href='<c:url value="create"/>'>new</a></th>
 					</tr>
@@ -101,15 +106,23 @@ import org.demo.${beanClass.name.toLowerCase()}.bean.${beanClass.name}Key;
 					<c:forEach items="${_}{list${beanClass.name}s}" var="${beanClass.name.toLowerCase()}">
 						<tr>
 #foreach( $field in $beanClass.attributes )
-#set( $fieldName = "current.${field.name}" )
 #if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-#set( $fieldName = "current.key.${field.name}" )
+							<td>${_}{${beanClass.name.toLowerCase()}.${keyName}.${field.formatedName(0)}}</td>
+#else
+							<td>${_}{${beanClass.name.toLowerCase()}.${field.formatedName(0)}}</td>
 #end
-							<td>${_}{${beanClass.name.toLowerCase()}.${field.name}}</td>
 #end
-							<c:url var="edit${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}/edit/${_}{${beanClass.name.toLowerCase()}.$keyName}"/>
+## Clé primaire URL
+#set( $keyURLPath = "")
+#foreach( $field in $entity.keyAttributes )
+#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
+#set( $keyURLPath = $keyURLPath+"/${"+${beanClass.name.toLowerCase()}+"."+$keyName+"."+${field.formatedName(0)}+"}" )
+#else
+#set( $keyURLPath = $keyURLPath+"/${"+${beanClass.name.toLowerCase()}+"."+${field.formatedName(0)}+"}" )
+#end
+#end
+							<c:url var="edit${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}/edit$keyURLPath"/>
 							<td><a class="btn btn-info" href="${_}{edit${beanClass.name}Url}">Edit</a></td>
-							
 						</tr>
 					</c:forEach>
 				</tbody>

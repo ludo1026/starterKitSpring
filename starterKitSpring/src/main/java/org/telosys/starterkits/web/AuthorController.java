@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 21 nov. 2013 ( Time 14:59:59 )
+ * Created on 22 nov. 2013 ( Time 16:27:31 )
  */
 
 package org.telosys.starterkits.web;
@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.telosys.starterkits.bean.Author;
+
 import org.telosys.starterkits.service.AuthorService;
 
-
+/**
+ * Author.
+ */
 @Controller
 @RequestMapping("/author*")
 public class AuthorController 
@@ -52,10 +55,10 @@ public class AuthorController
 	public ModelAndView edit(@ModelAttribute("author/edit") Author author, @PathVariable("id") Integer id) {
 		authorService = new AuthorService();
 		ModelAndView modelAndView = new ModelAndView("author/author");
-		if (id != null){
-			Author authorloaded = authorService.load(id);
-			modelAndView.addObject("current", authorloaded);
-		}
+
+		Author authorloaded = authorService.load(id);
+
+		modelAndView.addObject("current", authorloaded);
 		return modelAndView;
 	}
 }

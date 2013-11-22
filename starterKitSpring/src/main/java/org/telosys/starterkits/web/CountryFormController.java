@@ -1,12 +1,13 @@
 /*
  * Controller class 
- * Created on 21 nov. 2013 ( Time 14:59:59 )
+ * Created on 22 nov. 2013 ( Time 16:27:41 )
  */
 
 package org.telosys.starterkits.web;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.service.CountryService;
 
-
+/**
+ * Country.
+ */
 @Controller
 @RequestMapping("/countryform")
 public class CountryFormController 
@@ -57,8 +61,9 @@ public class CountryFormController
 	public ModelAndView search(@ModelAttribute("countryform") Country country, BindingResult result) {
 		countryService = new CountryService();
 		ModelAndView mav = new ModelAndView("country/countryList");
-		List<Country> list = new ArrayList<Country>();
-		//.search(country);
+		Map<String, Object> criteria = new HashMap<String, Object>();
+		// TODO Définir les critères
+		List<Country> list = countryService.search(criteria);
 		mav.addObject("listcountrys", list);
 		return mav;
 	}

@@ -1,12 +1,13 @@
 /*
  * Controller class 
- * Created on 21 nov. 2013 ( Time 14:59:59 )
+ * Created on 22 nov. 2013 ( Time 16:27:32 )
  */
 
 package org.telosys.starterkits.web;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import org.telosys.starterkits.bean.Author;
 import org.telosys.starterkits.service.AuthorService;
 
-
+/**
+ * Author.
+ */
 @Controller
 @RequestMapping("/authorform")
 public class AuthorFormController 
@@ -57,8 +61,9 @@ public class AuthorFormController
 	public ModelAndView search(@ModelAttribute("authorform") Author author, BindingResult result) {
 		authorService = new AuthorService();
 		ModelAndView mav = new ModelAndView("author/authorList");
-		List<Author> list = new ArrayList<Author>();
-//		authorService.search(author);
+		Map<String, Object> criteria = new HashMap<String, Object>();
+		// TODO Définir les critères
+		List<Author> list = authorService.search(criteria);
 		mav.addObject("listauthors", list);
 		return mav;
 	}

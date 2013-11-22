@@ -1,5 +1,5 @@
 <%-- Detail screen for Author entity      --%>
-<%-- Created on 21 nov. 2013 ( Time 14:59:59 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:35:26 )  --%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -81,15 +81,15 @@
 					<thead>
 					<tr>
 						<th align="left">id</th>
-												<td><input type="text" name="id" value="${current.id}"  /></td>
+						<td><form:input path="id"  /></td>
 					</tr>
 					<tr>
 						<th align="left">firstName</th>
-												<td><input type="text" name="firstName" value="${current.firstName}"  /></td>
+						<td><form:input path="firstName"  /></td>
 					</tr>
 					<tr>
 						<th align="left">lastName</th>
-												<td><input type="text" name="lastName" value="${current.lastName}"  /></td>
+						<td><form:input path="lastName"  /></td>
 					</tr>
 					<tr>
 						<td colspan="2">
