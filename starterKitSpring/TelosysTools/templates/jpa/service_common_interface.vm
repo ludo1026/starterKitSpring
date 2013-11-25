@@ -1,4 +1,4 @@
-package org.telosys.starterkits.service.base;
+package ${target.javaPackageFromFolder(${SRC})};
 
 import java.io.Serializable;
 import java.util.List;

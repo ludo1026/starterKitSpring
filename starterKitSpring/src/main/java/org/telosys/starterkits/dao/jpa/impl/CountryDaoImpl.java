@@ -1,10 +1,8 @@
 package org.telosys.starterkits.dao.jpa.impl;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.dao.jpa.CountryDao;
-import org.telosys.starterkits.dao.jpa.base.Dao;
 import org.telosys.starterkits.dao.jpa.impl.base.DaoImpl;
 
 /**

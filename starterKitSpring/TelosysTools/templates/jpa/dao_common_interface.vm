@@ -1,4 +1,4 @@
-package org.telosys.starterkits.dao.jpa.base;
+package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.List;
 import java.util.Map;

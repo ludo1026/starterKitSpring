@@ -1,4 +1,4 @@
-package org.telosys.starterkits.dao.jpa.impl.base;
+package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.telosys.starterkits.dao.jpa.base.Dao;
+import ${DAO_PKG}.jpa.base.Dao;
 
 public class DaoImpl<T, ID extends java.io.Serializable> implements Dao<T, ID> {
 
