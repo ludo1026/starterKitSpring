@@ -1,5 +1,5 @@
 <%-- Detail screen for EmployeeGroup entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 17:35:26 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:37 )  --%>
   				
 	  							
 	  
@@ -36,7 +36,7 @@
 	
 		<script type="text/javascript">
 			var urlBaseWelcome = '<s:url value="/" />';
-			var urlBase = '<s:url value="/employeegroupform" />';
+			var urlBase = '<s:url value="/employeegroupForm" />';
 			function changeActionAndsubmit(url) {
 				document.forms[0].action = urlBase + '/' + url;
 			    document.forms[0].submit();
@@ -97,7 +97,7 @@
 					<tr>
 						<td colspan="2">
 						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<s:url var="deleteEmployeeGroupUrl" value="/employeegroupform/delete/${current.id}"/>
+							<s:url var="deleteEmployeeGroupUrl" value="/employeegroupForm/delete/${current.id}"/>
 							<a class="btn btn-info" href="${deleteEmployeeGroupUrl}">Delete</a>
 							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
 							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />

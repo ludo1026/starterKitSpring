@@ -1,5 +1,5 @@
 <%-- List screen for Review entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 16:55:26 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:39 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 

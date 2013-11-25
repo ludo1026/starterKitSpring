@@ -1,5 +1,5 @@
 <%-- List screen for Badge entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 16:55:23 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:28 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 

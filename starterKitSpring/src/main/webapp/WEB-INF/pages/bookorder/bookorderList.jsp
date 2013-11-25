@@ -1,5 +1,5 @@
 <%-- List screen for BookOrder entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 16:55:23 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:31 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 

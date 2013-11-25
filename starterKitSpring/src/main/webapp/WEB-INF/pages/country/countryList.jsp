@@ -1,5 +1,5 @@
 <%-- List screen for Country entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 16:55:24 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:33 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 

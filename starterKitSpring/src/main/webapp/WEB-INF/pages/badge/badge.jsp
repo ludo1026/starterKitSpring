@@ -1,5 +1,5 @@
 <%-- Detail screen for Badge entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 17:35:26 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:28 )  --%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 	
 		<script type="text/javascript">
 			var urlBaseWelcome = '<s:url value="/" />';
-			var urlBase = '<s:url value="/badgeform" />';
+			var urlBase = '<s:url value="/badgeForm" />';
 			function changeActionAndsubmit(url) {
 				document.forms[0].action = urlBase + '/' + url;
 			    document.forms[0].submit();
@@ -99,7 +99,7 @@
 					<tr>
 						<td colspan="2">
 						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<s:url var="deleteBadgeUrl" value="/badgeform/delete/${current.badgeNumber}"/>
+							<s:url var="deleteBadgeUrl" value="/badgeForm/delete/${current.badgeNumber}"/>
 							<a class="btn btn-info" href="${deleteBadgeUrl}">Delete</a>
 							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
 							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />

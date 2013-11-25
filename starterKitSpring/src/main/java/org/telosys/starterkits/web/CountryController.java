@@ -1,11 +1,13 @@
 /*
  * Controller class 
- * Created on 22 nov. 2013 ( Time 16:27:40 )
+ * Created on 22 nov. 2013 ( Time 17:59:33 )
  */
 
 package org.telosys.starterkits.web;
 
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,9 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import org.telosys.starterkits.bean.Country;
-
 import org.telosys.starterkits.service.CountryService;
 
 /**
@@ -26,16 +26,17 @@ import org.telosys.starterkits.service.CountryService;
 @RequestMapping("/country*")
 public class CountryController 
 {
+	
+	@Resource
     private CountryService countryService;
 
 	@RequestMapping("/create")
 	public ModelAndView create() {
-		return new ModelAndView("country/country", "command", new  Country());
+		return new ModelAndView("country/country", "countryForm", new  Country());
 	}
 
 	@RequestMapping(value = "/list")
 	public ModelAndView showCountrys() {
-		countryService = new CountryService();
 		ModelAndView mav = new ModelAndView("country/countryList");
 		List<Country> list = countryService.loadAll();
 		mav.addObject("listCountrys", list);
@@ -44,7 +45,6 @@ public class CountryController
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(@ModelAttribute("countryForm") Country country, BindingResult result) {
-		countryService = new CountryService();
 		if (!result.hasErrors()) {
 			countryService.save(country);
 		}
@@ -53,12 +53,11 @@ public class CountryController
 
 	@RequestMapping(value = "/edit/{code}")
 	public ModelAndView edit(@ModelAttribute("country/edit") Country country, @PathVariable("code") String code) {
-		countryService = new CountryService();
 		ModelAndView modelAndView = new ModelAndView("country/country");
 
 		Country countryloaded = countryService.load(code);
 
-		modelAndView.addObject("current", countryloaded);
+		modelAndView.addObject("countryForm", countryloaded);
 		return modelAndView;
 	}
 }

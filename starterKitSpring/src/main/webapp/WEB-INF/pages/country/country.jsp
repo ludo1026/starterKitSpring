@@ -1,5 +1,5 @@
 <%-- Detail screen for Country entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 17:35:26 )  --%>
+<%-- Created on 22 nov. 2013 ( Time 17:59:33 )  --%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 	
 		<script type="text/javascript">
 			var urlBaseWelcome = '<s:url value="/" />';
-			var urlBase = '<s:url value="/countryform" />';
+			var urlBase = '<s:url value="/countryForm" />';
 			function changeActionAndsubmit(url) {
 				document.forms[0].action = urlBase + '/' + url;
 			    document.forms[0].submit();
@@ -95,7 +95,7 @@
 					<tr>
 						<td colspan="2">
 						 	<input type="submit" class="btn btn-info" value="Save"   onclick="changeActionAndsubmit('save')"   />
-							<s:url var="deleteCountryUrl" value="/countryform/delete/${current.code}"/>
+							<s:url var="deleteCountryUrl" value="/countryForm/delete/${current.code}"/>
 							<a class="btn btn-info" href="${deleteCountryUrl}">Delete</a>
 							<input type="button" class="btn btn-info" value="Clear"  onclick="directGet('clear')"  />
 							<input type="button" class="btn btn-info" value="Search" onclick="changeActionAndsubmit('search')" />

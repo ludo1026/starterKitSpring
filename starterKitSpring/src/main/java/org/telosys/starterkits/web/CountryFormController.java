@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 22 nov. 2013 ( Time 16:27:41 )
+ * Created on 22 nov. 2013 ( Time 17:59:33 )
  */
 
 package org.telosys.starterkits.web;
@@ -8,6 +8,8 @@ package org.telosys.starterkits.web;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.service.CountryService;
 
@@ -27,9 +28,10 @@ import org.telosys.starterkits.service.CountryService;
  * Country.
  */
 @Controller
-@RequestMapping("/countryform")
+@RequestMapping("/countryForm")
 public class CountryFormController 
 {
+	@Resource
     private CountryService countryService;
 
 	@InitBinder
@@ -38,8 +40,7 @@ public class CountryFormController
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("countryform") Country country, BindingResult result) {
-		countryService = new CountryService();
+	public String save(@ModelAttribute("countryForm") Country country, BindingResult result) {
 		if (!result.hasErrors()) {
 			countryService.save(country);
 		}else{
@@ -50,7 +51,6 @@ public class CountryFormController
 
 	@RequestMapping(value = "/delete/{code}")
 	public String delete(@ModelAttribute("country/delete") Country country, @PathVariable("code") String code) {
-		countryService = new CountryService();
 		if (code != null){
 			countryService.delete(code);
 		}
@@ -58,8 +58,7 @@ public class CountryFormController
 	}
 	
 	@RequestMapping(value = "/search")
-	public ModelAndView search(@ModelAttribute("countryform") Country country, BindingResult result) {
-		countryService = new CountryService();
+	public ModelAndView search(@ModelAttribute("countryForm") Country country, BindingResult result) {
 		ModelAndView mav = new ModelAndView("country/countryList");
 		Map<String, Object> criteria = new HashMap<String, Object>();
 		// TODO Définir les critères
@@ -70,6 +69,6 @@ public class CountryFormController
 	
 	@RequestMapping("/clear")
 	public ModelAndView clear() {
-		return new ModelAndView("country/country", "command", new Country());
+		return new ModelAndView("country/country", "countryForm", new Country());
 	}
 }

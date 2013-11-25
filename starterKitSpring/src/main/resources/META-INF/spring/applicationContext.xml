@@ -1,24 +1,32 @@
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-  xmlns:beans="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-           http://www.springframework.org/schema/security
-           http://www.springframework.org/schema/security/spring-security-3.0.xsd">
-<!-- 
-    <http>
-       <intercept-url pattern="/**" access="ROLE_USER" />
-       <form-login />
-       <logout />
-    </http>
- 
-    <authentication-manager>
-        <authentication-provider>
-          <user-service>
-            <user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
-            <user name="bob" password="bobspassword" authorities="ROLE_USER" />
-          </user-service>
-        </authentication-provider>
-    </authentication-manager>
- -->
-</beans:beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="org.telosys.starterkits" />
+
+	<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:META-INF/config/database.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="UTF-8"/>
+		<property name="ignoreResourceNotFound" value="false"/>
+	</bean>
+
+	<!-- Resolves localized messages*.properties and application.properties files in the application to allow for internationalization. -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames" value="WEB-INF/i18n/messages, WEB-INF/i18n/application" />
+		<property name="fallbackToSystemLocale" value="false" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<property name="cacheSeconds" value="5" />
+	</bean>
+
+</beans>
