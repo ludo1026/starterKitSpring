@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 22 nov. 2013 ( Time 17:59:33 )
+ * Created on 25 nov. 2013 ( Time 17:11:51 )
  */
 
 package org.telosys.starterkits.web;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import org.telosys.starterkits.bean.Country;
+
 import org.telosys.starterkits.service.CountryService;
 
 /**
@@ -26,7 +28,6 @@ import org.telosys.starterkits.service.CountryService;
 @RequestMapping("/country*")
 public class CountryController 
 {
-	
 	@Resource
     private CountryService countryService;
 

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -46,6 +48,7 @@ import ${SERVICE_PKG}.${beanClass.name}Service;
 @RequestMapping("/${beanClass.name.toLowerCase()}Form")
 public class ${beanClass.name}FormController 
 {
+	@Resource
     private ${beanClass.name}Service ${beanClass.name.toLowerCase()}Service;
 
 	@InitBinder
@@ -55,7 +58,6 @@ public class ${beanClass.name}FormController
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}Form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		if (!result.hasErrors()) {
 			${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
 		}else{
@@ -66,7 +68,6 @@ public class ${beanClass.name}FormController
 
 	@RequestMapping(value = "/delete/{$keyName}")
 	public String delete(@ModelAttribute("${beanClass.name.toLowerCase()}/delete") ${beanClass.name} ${beanClass.name.toLowerCase()}, @PathVariable("$keyName") $keyType $keyName) {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		if ($keyName != null){
 			${beanClass.name.toLowerCase()}Service.delete($keyName);
 		}
@@ -75,7 +76,6 @@ public class ${beanClass.name}FormController
 	
 	@RequestMapping(value = "/search")
 	public ModelAndView search(@ModelAttribute("${beanClass.name.toLowerCase()}Form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView mav = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}List");
 		Map<String, Object> criteria = new HashMap<String, Object>();
 		// TODO Définir les critères

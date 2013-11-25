@@ -7,6 +7,8 @@ package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,6 +44,7 @@ import ${SERVICE_PKG}.${beanClass.name}Service;
 @RequestMapping("/${beanClass.name.toLowerCase()}*")
 public class ${beanClass.name}Controller 
 {
+	@Resource
     private ${beanClass.name}Service ${beanClass.name.toLowerCase()}Service;
 
 	@RequestMapping("/create")
@@ -51,7 +54,6 @@ public class ${beanClass.name}Controller
 
 	@RequestMapping(value = "/list")
 	public ModelAndView show${beanClass.name}s() {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView mav = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}List");
 		List<${beanClass.name}> list = ${beanClass.name.toLowerCase()}Service.loadAll();
 		mav.addObject("list${beanClass.name}s", list);
@@ -60,7 +62,6 @@ public class ${beanClass.name}Controller
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}Form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result) {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		if (!result.hasErrors()) {
 			${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
 		}
@@ -75,7 +76,6 @@ public class ${beanClass.name}Controller
 #end
 	@RequestMapping(value = "/edit${keyURLPath}")
 	public ModelAndView edit(@ModelAttribute("${beanClass.name.toLowerCase()}/edit") ${beanClass.name} ${beanClass.name.toLowerCase()}$keyPathVariable) {
-		${beanClass.name.toLowerCase()}Service = new ${beanClass.name}Service();
 		ModelAndView modelAndView = new ModelAndView("${beanClass.name.toLowerCase()}/${beanClass.name.toLowerCase()}");
 
 #if ( $beanClass.hasCompositePrimaryKey() )
