@@ -1,0 +1,116 @@
+package ${target.javaPackageFromFolder(${TEST_SRC})};
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import ${ENTITY_PKG}.${beanClass.name};
+#if ( $beanClass.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
+#set( $keyName = "id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#end
+#end
+import ${ROOT_PKG}.dao.jpa.${beanClass.name}Dao;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ${beanClass.name}ServiceImplUnitTest {
+	
+	@InjectMocks
+	private ${beanClass.name}ServiceImpl ${beanClass.name.toLowerCase()}Service;
+	@Mock
+	private ${beanClass.name}Dao ${beanClass.name.toLowerCase()}Dao;
+	
+	@Test
+	public void load() {
+		// Given
+		String code = "test";
+
+		${beanClass.name} ${beanClass.name.toLowerCase()} = new ${beanClass.name}();
+		${beanClass.name.toLowerCase()}.setCode(code);
+		
+		when(${beanClass.name.toLowerCase()}Dao.load(code)).thenReturn(${beanClass.name.toLowerCase()});
+
+		// When
+		${beanClass.name} ${beanClass.name.toLowerCase()}Result = ${beanClass.name.toLowerCase()}Service.load(code);
+		
+		// Then
+		assertEquals(code, ${beanClass.name.toLowerCase()}Result.getCode());
+	}
+	
+	@Test
+	public void save() {
+		// Given
+		${beanClass.name} ${beanClass.name.toLowerCase()}ToSave = new ${beanClass.name}();
+		${beanClass.name} ${beanClass.name.toLowerCase()}Saved = new ${beanClass.name}();
+		
+		when(${beanClass.name.toLowerCase()}Dao.save(${beanClass.name.toLowerCase()}ToSave)).thenReturn(${beanClass.name.toLowerCase()}Saved);
+
+		// When
+		${beanClass.name} ${beanClass.name.toLowerCase()}Result = ${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()}ToSave);
+		
+		// Then
+		assertTrue(${beanClass.name.toLowerCase()}Result != ${beanClass.name.toLowerCase()}ToSave);
+		assertTrue(${beanClass.name.toLowerCase()}Result == ${beanClass.name.toLowerCase()}Saved);
+	}
+
+	@Test
+	public void delete() {
+		// Given
+		String code = "test";
+		
+		// When
+		${beanClass.name.toLowerCase()}Service.delete(code);
+		
+		// Then
+		verify(${beanClass.name.toLowerCase()}Dao).delete(code);
+	}
+
+	@Test
+	public void search() {
+		// Given
+		Map<String,Object> criteria = new HashMap<String,Object>();
+		
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}s = new ArrayList<${beanClass.name}>();
+		${beanClass.name.toLowerCase()}s.add(new ${beanClass.name}());
+		
+		when(${beanClass.name.toLowerCase()}Dao.search(criteria)).thenReturn(${beanClass.name.toLowerCase()}s);
+		
+		// When
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}sResult = ${beanClass.name.toLowerCase()}Service.search(criteria);
+		
+		// Then
+		assertTrue(${beanClass.name.toLowerCase()}sResult == ${beanClass.name.toLowerCase()}s);
+	}
+
+	@Test
+	public void loadAll() {
+		// Given
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}s = new ArrayList<${beanClass.name}>();
+		${beanClass.name.toLowerCase()}s.add(new ${beanClass.name}());
+		
+		when(${beanClass.name.toLowerCase()}Dao.loadAll()).thenReturn(${beanClass.name.toLowerCase()}s);
+		
+		// When
+		List<${beanClass.name}> ${beanClass.name.toLowerCase()}sResult = ${beanClass.name.toLowerCase()}Service.loadAll();
+		
+		// Then
+		assertTrue(${beanClass.name.toLowerCase()}sResult == ${beanClass.name.toLowerCase()}s);
+	}
+	
+}

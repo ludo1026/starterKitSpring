@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
 @Transactional
 @Configurable
-public class AppContextInitTest {
+public class ApplicationContextInitializationTest {
 
 	
     @Test
