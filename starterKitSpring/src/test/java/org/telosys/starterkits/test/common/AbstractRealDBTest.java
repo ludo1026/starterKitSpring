@@ -79,7 +79,7 @@ public abstract class AbstractRealDBTest {
 	 * 
 	 * @return Nom du fichier XML des données à insérer.
 	 */
-	protected abstract String getDataSetFile();
+	protected abstract String getDataFilename();
 
 	/**
 	 * Retourne le nom du fichier XML des données à supprimer pour le test.<br/>
@@ -126,16 +126,16 @@ public abstract class AbstractRealDBTest {
 	 */
 	@Before
 	public void setUpDatabase() throws Exception {
-		if (StringUtils.isBlank(this.getDataSetFile())) {
+		if (StringUtils.isBlank(this.getDataFilename())) {
 			return;
 		}
 
 		this.cleanUp();
 
-		File fileDataSet = new File(this.datasetPath + File.separator + this.getDataSetFile());
+		File fileDataSet = new File(this.datasetPath + File.separator + this.getDataFilename());
 		if (!fileDataSet.exists()) {
 			throw new IllegalStateException("Le fichier de test '" + this.datasetPath + File.separator
-					+ this.getDataSetFile() + "' n'existe pas.");
+					+ this.getDataFilename() + "' n'existe pas.");
 		}
 
 		this.existFileDataSet = true;
@@ -167,8 +167,8 @@ public abstract class AbstractRealDBTest {
 		String dataSetFile = null;
 		if (!StringUtils.isBlank(this.getDataSetFileCleanUp())) {
 			dataSetFile = this.getDataSetFileCleanUp();
-		} else if (!StringUtils.isBlank(this.getDataSetFile())) {
-			dataSetFile = this.getDataSetFile();
+		} else if (!StringUtils.isBlank(this.getDataFilename())) {
+			dataSetFile = this.getDataFilename();
 		}
 
 		if (dataSetFile == null) {

@@ -5,12 +5,13 @@ import javax.annotation.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.telosys.starterkits.bean.Country;
+
 import org.telosys.starterkits.test.common.AbstractRealDBTest;
 
 public class CountryServiceRealDBIntegTest extends AbstractRealDBTest {
 
 	@Override
-	protected String getDataSetFile() {
+	protected String getDataFilename() {
 		return null;
 	}
 
@@ -20,7 +21,7 @@ public class CountryServiceRealDBIntegTest extends AbstractRealDBTest {
 	@Test
 	public void cycle_vie_complet() {
 
-		String code = "8";
+		String code = "1";
 
 		Country country = new Country();
 		country.setCode(code);

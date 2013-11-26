@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.telosys.starterkits.bean.Country;
+
 import org.telosys.starterkits.test.common.AbstractMemoryDBTest;
 
 public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
@@ -25,7 +26,7 @@ public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 	@Test
 	public void cycle_vie_complet() {
 
-		String code = "8";
+		String code = "1";
 
 		Country country = new Country();
 		country.setCode(code);
