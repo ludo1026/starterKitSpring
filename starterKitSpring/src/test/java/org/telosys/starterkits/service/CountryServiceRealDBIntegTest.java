@@ -25,7 +25,7 @@ public class CountryServiceRealDBIntegTest extends AbstractRealDBTest {
 
 		Country country = new Country();
 		country.setCode(code);
-		country.setName("Test " + code);
+		//country.setName("Test " + code);
 
 		// Create
 		this.countryService.save(country);
@@ -35,12 +35,12 @@ public class CountryServiceRealDBIntegTest extends AbstractRealDBTest {
 		Assert.assertNotNull(country);
 
 		// Update
-		country.setName("Test 2 " + code);
+		//country.setName("Test 2 " + code);
 		country = this.countryService.save(country);
 
 		// Search
 		country = this.countryService.load(code);
-		Assert.assertEquals("Test 2 " + code, country.getName());
+		//Assert.assertEquals("Test 2 " + code, country.getName());
 
 		// Delete
 		this.countryService.delete(country.getCode());
