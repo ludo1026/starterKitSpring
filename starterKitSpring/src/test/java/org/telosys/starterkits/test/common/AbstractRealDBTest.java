@@ -112,8 +112,7 @@ public abstract class AbstractRealDBTest {
 	 * Méthode appelée avant d'effectuer l'initialisation de la base pour
 	 * effacer les données des tests restants.
 	 * 
-	 * @throws Exception
-	 *             Erreur.
+	 * @throws Exception Erreur.
 	 */
 	protected void cleanUp() throws Exception {
 		// méthode à surcharger si nécessaire pour effacer les données de tests
@@ -123,8 +122,7 @@ public abstract class AbstractRealDBTest {
 	/**
 	 * Avant l'exécution du test : insérer les données de test dans la base.
 	 * 
-	 * @throws Exception
-	 *             Erreur.
+	 * @throws Exception Erreur.
 	 */
 	@Before
 	public void setUpDatabase() throws Exception {
@@ -134,10 +132,10 @@ public abstract class AbstractRealDBTest {
 
 		this.cleanUp();
 
-		File fileDataSet = new File(this.datasetPath + this.getDataSetFile());
+		File fileDataSet = new File(this.datasetPath + File.separator + this.getDataSetFile());
 		if (!fileDataSet.exists()) {
-			throw new IllegalStateException("Le fichier de test '" + this.datasetPath + this.getDataSetFile()
-					+ "' n'existe pas.");
+			throw new IllegalStateException("Le fichier de test '" + this.datasetPath + File.separator
+					+ this.getDataSetFile() + "' n'existe pas.");
 		}
 
 		this.existFileDataSet = true;
@@ -162,8 +160,7 @@ public abstract class AbstractRealDBTest {
 	/**
 	 * Après l'exécution du test : nettoyage de la base des données de test.
 	 * 
-	 * @throws Exception
-	 *             Erreur.
+	 * @throws Exception Erreur.
 	 */
 	@After
 	public void tearDownDatabase() throws Exception {

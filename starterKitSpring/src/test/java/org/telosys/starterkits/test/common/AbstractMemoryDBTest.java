@@ -1,12 +1,14 @@
 package org.telosys.starterkits.test.common;
 
-import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
@@ -29,12 +31,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class, HibernateDbSetupTestListener.class })
 public abstract class AbstractMemoryDBTest {
-
-	/**
-	 * Données de référentiel : ce fichier est trop volumineux et n'est pas à
-	 * ouvrir dans eclipse.
-	 */
-	private static final String DATA_REF_FILE = "data-referentiel.xml";
 
 	/** Répertoire des données. */
 	@Value("${dataset.path}")
@@ -81,53 +77,67 @@ public abstract class AbstractMemoryDBTest {
 	 * 
 	 * @return Nom du fichier XML des données à insérer.
 	 */
-	protected abstract String getDataSetFile();
+	protected abstract String getReferentielDataFilename();
+
+	/**
+	 * Retourne le nom du fichier XML des données à insérer pour le
+	 * test.&lt;br/&gt; Ce fichier est situé dans le répertoire :
+	 * "src/test/resources/data".
+	 * 
+	 * @return Nom du fichier XML des données à insérer.
+	 */
+	protected abstract String getDataFilename();
 
 	/**
 	 * Avant l'exécution du test : insérer les données de test dans la base.
 	 * 
-	 * @throws Exception
-	 *             Erreur.
+	 * @throws Exception Erreur.
 	 */
 	@Before
 	public void setUpDatabase() throws Exception {
-		if (StringUtils.isBlank(this.getDataSetFile())) {
-			throw new IllegalStateException("Le nom du fichier de test n'est pas défini.");
+
+		this.jdbcConnection = DriverManager.getConnection(this.jdbcUrl, this.jdbcUsername, this.jdbcPassword);
+		this.connection = new DatabaseConnection(this.jdbcConnection);
+
+		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+		builder.setColumnSensing(true);
+
+		this.dataSetReferentiel = this.loadDataSet(builder, this.getReferentielDataFilename());
+		this.dataSet = this.loadDataSet(builder, this.getDataFilename());
+
+		// Créer le jeu de données de test
+		this.insertDataSet(this.dataSetReferentiel);
+		this.insertDataSet(this.dataSet);
+	}
+
+	/**
+	 * Load data.
+	 * 
+	 * @param builder Builder
+	 * @param dataFilename Data set filename
+	 * @throws MalformedURLException Error
+	 * @throws DataSetException Error
+	 */
+	private IDataSet loadDataSet(FlatXmlDataSetBuilder builder, String dataFilename) throws MalformedURLException,
+			DataSetException {
+		if (StringUtils.isBlank(dataFilename)) {
+			return null;
 		}
 
-		File fileDataSet = new File(this.datasetPath + this.getDataSetFile());
-		if (!fileDataSet.exists()) {
-			throw new IllegalStateException("Le fichier de test '" + this.datasetPath + this.getDataSetFile()
-					+ "' n'existe pas.");
-		}
-
-		File fileDataSetReferentiel = new File(this.datasetPath + DATA_REF_FILE);
-		if (!fileDataSetReferentiel.exists()) {
-			throw new IllegalStateException("Le fichier de test '" + this.datasetPath + DATA_REF_FILE
-					+ "' n'existe pas.");
-		}
-
-		this.existFileDataSet = true;
-		synchronized (fileDataSet) {
-			this.jdbcConnection = DriverManager.getConnection(this.jdbcUrl, this.jdbcUsername, this.jdbcPassword);
-			this.connection = new DatabaseConnection(this.jdbcConnection);
-
-			FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-			builder.setColumnSensing(true);
-			this.dataSet = builder.build(fileDataSet);
-			this.dataSetReferentiel = builder.build(fileDataSetReferentiel);
-
-			// Créer le jeu de données de test
-			this.insertDataSet(this.dataSetReferentiel);
-			this.insertDataSet(this.getDataSet());
+		String filename = this.datasetPath + "/" + dataFilename;
+		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
+		try {
+			return builder.build(inputStream);
+		} catch (Exception e) {
+			throw new IllegalStateException("Le fichier de test '" + filename + "' n'a pas été chargé correctement : "
+					+ e.getMessage(), e);
 		}
 	}
 
 	/**
 	 * Après l'exécution du test : nettoyage de la base des données de test.
 	 * 
-	 * @throws Exception
-	 *             Erreur.
+	 * @throws Exception Erreur.
 	 */
 	@After
 	public void tearDownDatabase() throws Exception {
@@ -149,14 +159,18 @@ public abstract class AbstractMemoryDBTest {
 	 * Supprimer les données de test.
 	 */
 	public synchronized void deleteDataSet(IDataSet dataSet) throws Exception {
-		new TransactionOperation(DatabaseOperation.DELETE).execute(this.getConnection(), dataSet);
+		if (dataSet != null) {
+			new TransactionOperation(DatabaseOperation.DELETE).execute(this.getConnection(), dataSet);
+		}
 	}
 
 	/**
 	 * Insérer les données de test.
 	 */
 	public synchronized void insertDataSet(IDataSet dataSet) throws Exception {
-		new TransactionOperation(DatabaseOperation.INSERT).execute(this.getConnection(), dataSet);
+		if (dataSet != null) {
+			new TransactionOperation(DatabaseOperation.INSERT).execute(this.getConnection(), dataSet);
+		}
 	}
 
 	/**

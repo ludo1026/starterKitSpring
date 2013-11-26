@@ -10,7 +10,12 @@ import org.telosys.starterkits.test.common.AbstractMemoryDBTest;
 public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 
 	@Override
-	protected String getDataSetFile() {
+	protected String getReferentielDataFilename() {
+		return null;
+	}
+
+	@Override
+	protected String getDataFilename() {
 		return null;
 	}
 
@@ -18,19 +23,35 @@ public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 	private CountryService countryService;
 
 	@Test
-	public void createCountry() {
-		String code = "7";
+	public void cycle_vie_complet() {
+
+		String code = "8";
 
 		Country country = new Country();
 		country.setCode(code);
 		country.setName("Test " + code);
 
-		// Test
+		// Create
 		this.countryService.save(country);
 
-		Country countryResult = this.countryService.load(code);
+		// Search
+		country = this.countryService.load(code);
+		Assert.assertNotNull(country);
 
-		Assert.assertNotNull(countryResult);
+		// Update
+		country.setName("Test 2 " + code);
+		country = this.countryService.save(country);
+
+		// Search
+		country = this.countryService.load(code);
+		Assert.assertEquals("Test 2 " + code, country.getName());
+
+		// Delete
+		this.countryService.delete(country.getCode());
+
+		// Search
+		country = this.countryService.load(code);
+		Assert.assertNull(country);
 	}
 
 }
