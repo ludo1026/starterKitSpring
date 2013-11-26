@@ -7,6 +7,9 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<import resource="classpath:/META-INF/spring/applicationContext-data.xml"/>
+	<import resource="classpath:/META-INF/spring/applicationContext-messages.xml"/>
+
 	<context:annotation-config />
 
 	<context:component-scan base-package="org.telosys.starterkits" />
@@ -14,7 +17,7 @@
 	<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:META-INF/config/database.properties</value>
+				<value>classpath:META-INF/config/database-real.properties</value>
 			</list>
 		</property>
 		<property name="fileEncoding" value="UTF-8"/>

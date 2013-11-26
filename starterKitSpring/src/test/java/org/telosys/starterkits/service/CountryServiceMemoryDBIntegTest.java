@@ -4,15 +4,10 @@ import javax.annotation.Resource;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.telosys.starterkits.bean.Country;
-import org.telosys.starterkits.service.CountryService;
+import org.telosys.starterkits.test.common.AbstractMemoryDBTest;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/spring/applicationContext*.xml")
-public class CountryServiceIntegTest {
+public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 
 	@Resource
 	private CountryService countryService;
@@ -31,6 +26,12 @@ public class CountryServiceIntegTest {
 		Country countryResult = this.countryService.load(code);
 
 		Assert.assertNotNull(countryResult);
+	}
+
+	@Override
+	protected String getDataSetFile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
