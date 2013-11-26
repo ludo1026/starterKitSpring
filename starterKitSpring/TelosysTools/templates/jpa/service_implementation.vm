@@ -16,8 +16,8 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyName = "$field.formatedName(0)" )
 #end
 #end
-import ${DAO_PKG}.jpa.${beanClass.name}Dao;
-import ${SERVICE_PKG}.${beanClass.name}Service;
+import ${ROOT_PKG}.dao.jpa.${beanClass.name}Dao;
+import ${ROOT_PKG}.service.${beanClass.name}Service;
 
 /**
  * Service : ${beanClass.name}.

@@ -35,7 +35,7 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyGetter = $field.getter )
 #end
 #end
-import ${SERVICE_PKG}.${beanClass.name}Service;
+import ${ROOT_PKG}.service.${beanClass.name}Service;
 
 /**
  * ${beanClass.name}.

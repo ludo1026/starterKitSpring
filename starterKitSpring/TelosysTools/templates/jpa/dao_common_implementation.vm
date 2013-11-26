@@ -14,7 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import ${DAO_PKG}.jpa.base.Dao;
+import ${ROOT_PKG}.dao.jpa.base.Dao;
 
 public class DaoImpl<T, ID extends java.io.Serializable> implements Dao<T, ID> {
 
