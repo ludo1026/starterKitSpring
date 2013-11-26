@@ -20,10 +20,22 @@ import ${ENTITY_PKG}.${beanClass.name};
 import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyType = "${beanClass.name}Id" )
 #set( $keyName = "id" )
+#set( $keyGetter = "getId" )
+#set( $keySetter = "setId" )
+#set( $keyInit = ${keyType}+" "+${keyName}+" = new "+${keyType}+"();" )
 #else
 #foreach( $field in $entity.keyAttributes )
 #set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
+#set( $keyGetter = "$field.getter" )
+#set( $keySetter = "$field.setter" )
+#if( $keyType == "String" )
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = ""test"";" )
+#elseif( $keyType == "Integer" || $keyType == "Long" || $keyType == "Double" || $keyType == "Short" || $keyType == "BigDecimal" || $keyType == "BigInteger" )
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = "+${keyType}+".valueOf(""1"");" )
+#else
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = new "+${keyType}+"();" )
+#end
 #end
 #end
 import ${ROOT_PKG}.dao.jpa.${beanClass.name}Dao;
@@ -39,18 +51,18 @@ public class ${beanClass.name}ServiceImplUnitTest {
 	@Test
 	public void load() {
 		// Given
-		String code = "test";
+		${keyInit}
 
 		${beanClass.name} ${beanClass.name.toLowerCase()} = new ${beanClass.name}();
-		${beanClass.name.toLowerCase()}.setCode(code);
+		${beanClass.name.toLowerCase()}.${keySetter}(${keyName});
 		
-		when(${beanClass.name.toLowerCase()}Dao.load(code)).thenReturn(${beanClass.name.toLowerCase()});
+		when(${beanClass.name.toLowerCase()}Dao.load(${keyName})).thenReturn(${beanClass.name.toLowerCase()});
 
 		// When
-		${beanClass.name} ${beanClass.name.toLowerCase()}Result = ${beanClass.name.toLowerCase()}Service.load(code);
+		${beanClass.name} ${beanClass.name.toLowerCase()}Result = ${beanClass.name.toLowerCase()}Service.load(${keyName});
 		
 		// Then
-		assertEquals(code, ${beanClass.name.toLowerCase()}Result.getCode());
+		assertEquals(${keyName}, ${beanClass.name.toLowerCase()}Result.${keyGetter}());
 	}
 	
 	@Test
@@ -72,13 +84,13 @@ public class ${beanClass.name}ServiceImplUnitTest {
 	@Test
 	public void delete() {
 		// Given
-		String code = "test";
+		${keyInit}
 		
 		// When
-		${beanClass.name.toLowerCase()}Service.delete(code);
+		${beanClass.name.toLowerCase()}Service.delete(${keyName});
 		
 		// Then
-		verify(${beanClass.name.toLowerCase()}Dao).delete(code);
+		verify(${beanClass.name.toLowerCase()}Dao).delete(${keyName});
 	}
 
 	@Test

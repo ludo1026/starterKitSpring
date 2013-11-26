@@ -24,12 +24,20 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyName = "id" )
 #set( $keySetter = "setId" )
 #set( $keyGetter = "getId" )
+#set( $keyInit = ${keyType}+" "+${keyName}+" = new "+${keyType}+"();" )
 #else
 #foreach( $field in $entity.keyAttributes )
 #set( $keyType = "$field.wrapperType" )
 #set( $keyName = "$field.formatedName(0)" )
 #set( $keySetter = "$field.setter" )
 #set( $keyGetter = "$field.getter" )
+#if( $keyType == "String" )
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = ""test"";" )
+#elseif( $keyType == "Integer" || $keyType == "Long" || $keyType == "Double" || $keyType == "Short" || $keyType == "BigDecimal" || $keyType == "BigInteger" )
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = "+${keyType}+".valueOf(""1"");" )
+#else
+	#set( $keyInit = ${keyType}+" "+${keyName}+" = new "+${keyType}+"();" )
+#end
 #end
 #end
 
@@ -44,7 +52,7 @@ public class ${beanClass.name}DaoUnitTest {
 	@Test
 	public void load() {
 		// Given
-		${keyType} ${keyName} = new ${keyType}();
+		${keyInit}
 
 		${beanClass.name} ${beanClass.name.toLowerCase()} = new ${beanClass.name}();
 		${beanClass.name.toLowerCase()}.${keySetter}(${keyName});
@@ -77,7 +85,7 @@ public class ${beanClass.name}DaoUnitTest {
 	@Test
 	public void delete() {
 		// Given
-		${keyType} ${keyName} = new ${keyType}();
+		${keyInit}
 
 		${beanClass.name} ${beanClass.name.toLowerCase()} = new ${beanClass.name}();
 		when(entityManager.find(${beanClass.name}.class, ${keyName})).thenReturn(${beanClass.name.toLowerCase()});

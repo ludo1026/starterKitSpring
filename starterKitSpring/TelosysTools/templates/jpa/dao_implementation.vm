@@ -4,6 +4,11 @@ import org.springframework.stereotype.Component;
 import ${ENTITY_PKG}.${beanClass.name};
 #if ( $beanClass.hasCompositePrimaryKey() )
 import ${ENTITY_PKG}.${beanClass.name}Id;
+#set( $keyType = "${beanClass.name}Id" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#end
 #end
 import ${ROOT_PKG}.dao.jpa.${beanClass.name}Dao;
 import ${ROOT_PKG}.dao.jpa.impl.base.DaoImpl;
@@ -12,7 +17,7 @@ import ${ROOT_PKG}.dao.jpa.impl.base.DaoImpl;
  * DAO : ${beanClass.name}.
  */
 @Component
-public class ${beanClass.name}DaoImpl extends DaoImpl<${beanClass.name}, String> implements ${beanClass.name}Dao {
+public class ${beanClass.name}DaoImpl extends DaoImpl<${beanClass.name}, ${keyType}> implements ${beanClass.name}Dao {
 
 	/**
 	 * Constructor.
