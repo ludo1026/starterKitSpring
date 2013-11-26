@@ -14,7 +14,7 @@ public class CountryServiceRealDBIntegTest extends AbstractRealDBTest {
 
 	@Test
 	public void createCountry() {
-		String code = "7";
+		String code = "8";
 
 		Country country = new Country();
 		country.setCode(code);

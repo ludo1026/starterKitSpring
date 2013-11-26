@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Component;
 import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.dao.jpa.CountryDao;
 import org.telosys.starterkits.service.CountryService;
@@ -12,6 +13,7 @@ import org.telosys.starterkits.service.CountryService;
 /**
  * Service : Country.
  */
+@Component
 public class CountryServiceImpl implements CountryService {
 		
 	@Resource

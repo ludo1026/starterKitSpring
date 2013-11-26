@@ -9,6 +9,11 @@ import org.telosys.starterkits.test.common.AbstractMemoryDBTest;
 
 public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 
+	@Override
+	protected String getDataSetFile() {
+		return null;
+	}
+
 	@Resource
 	private CountryService countryService;
 
@@ -26,12 +31,6 @@ public class CountryServiceMemoryDBIntegTest extends AbstractMemoryDBTest {
 		Country countryResult = this.countryService.load(code);
 
 		Assert.assertNotNull(countryResult);
-	}
-
-	@Override
-	protected String getDataSetFile() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

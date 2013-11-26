@@ -1,5 +1,5 @@
 <%-- Detail screen for BookOrderItem entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 17:59:32 )  --%>
+<%-- Created on 26 nov. 2013 ( Time 16:06:44 )  --%>
   				
 	  							
 	  

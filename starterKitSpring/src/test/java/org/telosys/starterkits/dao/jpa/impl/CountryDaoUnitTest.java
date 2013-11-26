@@ -30,7 +30,7 @@ public class CountryDaoUnitTest {
 	@Test
 	public void load() {
 		// Given
-		String code = new String();
+		String code = "test";
 
 		Country country = new Country();
 		country.setCode(code);
@@ -63,7 +63,7 @@ public class CountryDaoUnitTest {
 	@Test
 	public void delete() {
 		// Given
-		String code = new String();
+		String code = "test";
 
 		Country country = new Country();
 		when(entityManager.find(Country.class, code)).thenReturn(country);

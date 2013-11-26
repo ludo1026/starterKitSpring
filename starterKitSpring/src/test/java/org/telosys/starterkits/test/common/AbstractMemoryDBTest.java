@@ -34,19 +34,19 @@ public abstract class AbstractMemoryDBTest {
 	 * Données de référentiel : ce fichier est trop volumineux et n'est pas à
 	 * ouvrir dans eclipse.
 	 */
-	private static final String DATA_REF_FILE = "data-ref-do-not-open-in-eclipse.xml";
+	private static final String DATA_REF_FILE = "data-referentiel.xml";
 
 	/** Répertoire des données. */
 	@Value("${dataset.path}")
 	private String datasetPath;
 
-	@Value("${database.jdbc.url}")
+	@Value("${database.url}")
 	private String jdbcUrl;
 
-	@Value("${database.jdbc.username}")
+	@Value("${database.username}")
 	private String jdbcUsername;
 
-	@Value("${database.jdbc.password}")
+	@Value("${database.password}")
 	private String jdbcPassword;
 
 	/**
@@ -118,8 +118,8 @@ public abstract class AbstractMemoryDBTest {
 			this.dataSetReferentiel = builder.build(fileDataSetReferentiel);
 
 			// Créer le jeu de données de test
-			// insertDataSetReferentiel();
-			this.insertDataSet();
+			this.insertDataSet(this.dataSetReferentiel);
+			this.insertDataSet(this.getDataSet());
 		}
 	}
 
@@ -134,8 +134,8 @@ public abstract class AbstractMemoryDBTest {
 		if (this.existFileDataSet) {
 			synchronized (this.jdbcConnection) {
 				// Supprimer le jeu de données de test
-				this.deleteDataSet();
-				// deleteDataSetReferentiel();
+				this.deleteDataSet(this.dataSet);
+				this.deleteDataSet(this.dataSetReferentiel);
 
 				this.jdbcConnection.close();
 				this.connection.close();
@@ -148,15 +148,15 @@ public abstract class AbstractMemoryDBTest {
 	/**
 	 * Supprimer les données de test.
 	 */
-	public synchronized void deleteDataSet() throws Exception {
-		new TransactionOperation(DatabaseOperation.DELETE).execute(this.getConnection(), this.getDataSet());
+	public synchronized void deleteDataSet(IDataSet dataSet) throws Exception {
+		new TransactionOperation(DatabaseOperation.DELETE).execute(this.getConnection(), dataSet);
 	}
 
 	/**
 	 * Insérer les données de test.
 	 */
-	public synchronized void insertDataSet() throws Exception {
-		new TransactionOperation(DatabaseOperation.INSERT).execute(this.getConnection(), this.getDataSet());
+	public synchronized void insertDataSet(IDataSet dataSet) throws Exception {
+		new TransactionOperation(DatabaseOperation.INSERT).execute(this.getConnection(), dataSet);
 	}
 
 	/**

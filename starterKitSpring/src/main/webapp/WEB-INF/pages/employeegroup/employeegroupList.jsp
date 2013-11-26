@@ -1,5 +1,5 @@
 <%-- List screen for EmployeeGroup entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 17:59:37 )  --%>
+<%-- Created on 26 nov. 2013 ( Time 16:07:21 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 

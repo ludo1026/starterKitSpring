@@ -2,7 +2,11 @@ package org.telosys.starterkits.test.common;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.DatabaseUnitException;
@@ -16,9 +20,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,14 +41,17 @@ public abstract class AbstractRealDBTest {
 	@Value("${dataset.path}")
 	private String datasetPath;
 
-	@Value("${database.jdbc.url}")
+	@Value("${database.url}")
 	private String jdbcUrl;
 
-	@Value("${database.jdbc.username}")
+	@Value("${database.username}")
 	private String jdbcUsername;
 
-	@Value("${database.jdbc.password}")
+	@Value("${database.password}")
 	private String jdbcPassword;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	/**
 	 * Connexion JDBC.
@@ -68,9 +73,6 @@ public abstract class AbstractRealDBTest {
 	 */
 	private boolean existFileDataSet;
 
-	@Autowired
-	private HibernateTransactionManager transactionManager;
-
 	/**
 	 * Retourne le nom du fichier XML des données à insérer pour le test.<br/>
 	 * Ce fichier est situé dans le répertoire : "src/test/resources/data".
@@ -90,7 +92,9 @@ public abstract class AbstractRealDBTest {
 	}
 
 	private void openConnection() throws SQLException, ClassNotFoundException, DatabaseUnitException {
-		this.jdbcConnection = this.transactionManager.getDataSource().getConnection();
+		// Pour Oracle : Décommenter la ligne suivante
+		// Class.forName(OracleDriver.class.getName());
+		this.jdbcConnection = DriverManager.getConnection(this.jdbcUrl, this.jdbcUsername, this.jdbcPassword);
 		this.connection = new DatabaseConnection(this.jdbcConnection);
 		DatabaseConfig config = this.connection.getConfig();
 		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());

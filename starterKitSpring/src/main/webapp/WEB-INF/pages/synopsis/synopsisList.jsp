@@ -1,5 +1,5 @@
 <%-- List screen for Synopsis entity      --%>
-<%-- Created on 22 nov. 2013 ( Time 18:00:02 )  --%>
+<%-- Created on 26 nov. 2013 ( Time 16:07:51 )  --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 
