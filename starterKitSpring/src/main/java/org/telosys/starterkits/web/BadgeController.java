@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 26 nov. 2013 ( Time 16:06:01 )
+ * Created on 27 nov. 2013 ( Time 18:10:05 )
  */
 
 package org.telosys.starterkits.web;
@@ -9,8 +9,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,40 +29,55 @@ import org.telosys.starterkits.service.BadgeService;
  * Badge.
  */
 @Controller
-@RequestMapping("/badge*")
+@RequestMapping("/badge")
 public class BadgeController 
 {
 	@Resource
     private BadgeService badgeService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, Badge badge) {
+		uiModel.addAttribute("badge", badge);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
+
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("badge/badge", "badgeForm", new  Badge());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new Badge());
+		return "badge/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showBadges() {
-		ModelAndView mav = new ModelAndView("badge/badgeList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<Badge> list = badgeService.loadAll();
-		mav.addObject("listBadges", list);
-		return mav;
+		uiModel.addAttribute("listBadges", list);
+		return "badge/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@ModelAttribute("badgeForm") Badge badge, BindingResult result) {
 		if (!result.hasErrors()) {
 			badgeService.save(badge);
 		}
-		return "redirect:/badge/search";
+		return "redirect:/badge";
 	}
 
-	@RequestMapping(value = "/edit/{badgeNumber}")
-	public ModelAndView edit(@ModelAttribute("badge/edit") Badge badge, @PathVariable("badgeNumber") Integer badgeNumber) {
-		ModelAndView modelAndView = new ModelAndView("badge/badge");
-
-		Badge badgeloaded = badgeService.load(badgeNumber);
-
-		modelAndView.addObject("badgeForm", badgeloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{badgeNumber}")
+	public String edit(Model uiModel, @PathVariable("badgeNumber") Integer badgeNumber) {
+		Badge badge = badgeService.load(badgeNumber);
+		this.populateEditForm(uiModel, badge);
+		return "badge/edit";
 	}
+
+	@RequestMapping(value = "/delete/{badgeNumber}")
+	public String delete(Model uiModel, @PathVariable("badgeNumber") Integer badgeNumber) {
+		badgeService.delete(badgeNumber);
+		return "redirect:/badge";
+	}
+	
 }

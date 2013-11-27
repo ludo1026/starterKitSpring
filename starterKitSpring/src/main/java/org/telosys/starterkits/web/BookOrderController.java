@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 26 nov. 2013 ( Time 16:06:23 )
+ * Created on 27 nov. 2013 ( Time 18:10:06 )
  */
 
 package org.telosys.starterkits.web;
@@ -9,8 +9,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,40 +29,55 @@ import org.telosys.starterkits.service.BookOrderService;
  * BookOrder.
  */
 @Controller
-@RequestMapping("/bookorder*")
+@RequestMapping("/bookorder")
 public class BookOrderController 
 {
 	@Resource
     private BookOrderService bookorderService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, BookOrder bookorder) {
+		uiModel.addAttribute("bookorder", bookorder);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
+
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("bookorder/bookorder", "bookorderForm", new  BookOrder());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new BookOrder());
+		return "bookorder/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showBookOrders() {
-		ModelAndView mav = new ModelAndView("bookorder/bookorderList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<BookOrder> list = bookorderService.loadAll();
-		mav.addObject("listBookOrders", list);
-		return mav;
+		uiModel.addAttribute("listBookOrders", list);
+		return "bookorder/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@ModelAttribute("bookorderForm") BookOrder bookorder, BindingResult result) {
 		if (!result.hasErrors()) {
 			bookorderService.save(bookorder);
 		}
-		return "redirect:/bookorder/search";
+		return "redirect:/bookorder";
 	}
 
-	@RequestMapping(value = "/edit/{id}")
-	public ModelAndView edit(@ModelAttribute("bookorder/edit") BookOrder bookorder, @PathVariable("id") Integer id) {
-		ModelAndView modelAndView = new ModelAndView("bookorder/bookorder");
-
-		BookOrder bookorderloaded = bookorderService.load(id);
-
-		modelAndView.addObject("bookorderForm", bookorderloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{id}")
+	public String edit(Model uiModel, @PathVariable("id") Integer id) {
+		BookOrder bookorder = bookorderService.load(id);
+		this.populateEditForm(uiModel, bookorder);
+		return "bookorder/edit";
 	}
+
+	@RequestMapping(value = "/delete/{id}")
+	public String delete(Model uiModel, @PathVariable("id") Integer id) {
+		bookorderService.delete(id);
+		return "redirect:/bookorder";
+	}
+	
 }

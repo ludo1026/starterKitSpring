@@ -1,16 +1,16 @@
-/*
- * Controller class 
- * Created on 26 nov. 2013 ( Time 16:06:49 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,45 +20,65 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Country;
 
 import org.telosys.starterkits.service.CountryService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Country.
  */
 @Controller
-@RequestMapping("/country*")
+@RequestMapping("/country")
 public class CountryController 
 {
 	@Resource
     private CountryService countryService;
+	@Resource
+	private ControllerHelper controllerHelper;
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, Country country) {
+		uiModel.addAttribute("country", country);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
 
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("country/country", "countryForm", new  Country());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new Country());
+		return "country/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showCountrys() {
-		ModelAndView mav = new ModelAndView("country/countryList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<Country> list = countryService.loadAll();
-		mav.addObject("listCountrys", list);
-		return mav;
+		uiModel.addAttribute("listCountrys", list);
+		return "country/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("countryForm") Country country, BindingResult result) {
+	@RequestMapping(method = RequestMethod.PUT)
+	public String save(@ModelAttribute("countryForm") Country country, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			countryService.save(country);
+			country = countryService.save(country);
+			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
+		} else {
+			return null;
 		}
-		return "redirect:/country/search";
 	}
 
-	@RequestMapping(value = "/edit/{code}")
-	public ModelAndView edit(@ModelAttribute("country/edit") Country country, @PathVariable("code") String code) {
-		ModelAndView modelAndView = new ModelAndView("country/country");
-
-		Country countryloaded = countryService.load(code);
-
-		modelAndView.addObject("countryForm", countryloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{code}")
+	public String edit(Model uiModel, @PathVariable("code") String code) {
+		Country country = countryService.load(code);
+		this.populateEditForm(uiModel, country);
+		return "country/edit";
 	}
+
+	@RequestMapping(value = "/delete/{code}")
+	public String delete(Model uiModel, @PathVariable("code") String code) {
+		countryService.delete(code);
+		return "redirect:/country";
+	}
+	
 }

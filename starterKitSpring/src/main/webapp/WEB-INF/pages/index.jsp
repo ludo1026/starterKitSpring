@@ -44,20 +44,7 @@ body {
     <div class="container">
       
 		<ul>
-            <li><a href="author/list">Author</a></li>
-            <li><a href="badge/list">Badge</a></li>
-            <li><a href="book/list">Book</a></li>
-            <li><a href="bookorder/list">BookOrder</a></li>
-            <li><a href="bookorderitem/list">BookOrderItem</a></li>
-            <li><a href="country/list">Country</a></li>
-            <li><a href="customer/list">Customer</a></li>
-            <li><a href="employee/list">Employee</a></li>
-            <li><a href="employeegroup/list">EmployeeGroup</a></li>
-            <li><a href="publisher/list">Publisher</a></li>
-            <li><a href="review/list">Review</a></li>
-            <li><a href="shop/list">Shop</a></li>
-            <li><a href="synopsis/list">Synopsis</a></li>
-            <li><a href="workgroup/list">Workgroup</a></li>
+            <li><a href="country">Country</a></li>
 	    </ul>
 
     </div> <!-- /container -->

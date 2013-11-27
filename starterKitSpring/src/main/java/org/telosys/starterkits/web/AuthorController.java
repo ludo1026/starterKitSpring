@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 26 nov. 2013 ( Time 16:05:46 )
+ * Created on 27 nov. 2013 ( Time 18:10:05 )
  */
 
 package org.telosys.starterkits.web;
@@ -9,8 +9,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,40 +29,55 @@ import org.telosys.starterkits.service.AuthorService;
  * Author.
  */
 @Controller
-@RequestMapping("/author*")
+@RequestMapping("/author")
 public class AuthorController 
 {
 	@Resource
     private AuthorService authorService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, Author author) {
+		uiModel.addAttribute("author", author);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
+
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("author/author", "authorForm", new  Author());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new Author());
+		return "author/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showAuthors() {
-		ModelAndView mav = new ModelAndView("author/authorList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<Author> list = authorService.loadAll();
-		mav.addObject("listAuthors", list);
-		return mav;
+		uiModel.addAttribute("listAuthors", list);
+		return "author/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@ModelAttribute("authorForm") Author author, BindingResult result) {
 		if (!result.hasErrors()) {
 			authorService.save(author);
 		}
-		return "redirect:/author/search";
+		return "redirect:/author";
 	}
 
-	@RequestMapping(value = "/edit/{id}")
-	public ModelAndView edit(@ModelAttribute("author/edit") Author author, @PathVariable("id") Integer id) {
-		ModelAndView modelAndView = new ModelAndView("author/author");
-
-		Author authorloaded = authorService.load(id);
-
-		modelAndView.addObject("authorForm", authorloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{id}")
+	public String edit(Model uiModel, @PathVariable("id") Integer id) {
+		Author author = authorService.load(id);
+		this.populateEditForm(uiModel, author);
+		return "author/edit";
 	}
+
+	@RequestMapping(value = "/delete/{id}")
+	public String delete(Model uiModel, @PathVariable("id") Integer id) {
+		authorService.delete(id);
+		return "redirect:/author";
+	}
+	
 }

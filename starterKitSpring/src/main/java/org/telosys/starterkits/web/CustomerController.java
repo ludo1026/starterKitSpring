@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 26 nov. 2013 ( Time 16:06:53 )
+ * Created on 27 nov. 2013 ( Time 18:10:07 )
  */
 
 package org.telosys.starterkits.web;
@@ -9,8 +9,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,40 +29,55 @@ import org.telosys.starterkits.service.CustomerService;
  * Customer.
  */
 @Controller
-@RequestMapping("/customer*")
+@RequestMapping("/customer")
 public class CustomerController 
 {
 	@Resource
     private CustomerService customerService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, Customer customer) {
+		uiModel.addAttribute("customer", customer);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
+
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("customer/customer", "customerForm", new  Customer());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new Customer());
+		return "customer/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showCustomers() {
-		ModelAndView mav = new ModelAndView("customer/customerList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<Customer> list = customerService.loadAll();
-		mav.addObject("listCustomers", list);
-		return mav;
+		uiModel.addAttribute("listCustomers", list);
+		return "customer/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@ModelAttribute("customerForm") Customer customer, BindingResult result) {
 		if (!result.hasErrors()) {
 			customerService.save(customer);
 		}
-		return "redirect:/customer/search";
+		return "redirect:/customer";
 	}
 
-	@RequestMapping(value = "/edit/{code}")
-	public ModelAndView edit(@ModelAttribute("customer/edit") Customer customer, @PathVariable("code") String code) {
-		ModelAndView modelAndView = new ModelAndView("customer/customer");
-
-		Customer customerloaded = customerService.load(code);
-
-		modelAndView.addObject("customerForm", customerloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{code}")
+	public String edit(Model uiModel, @PathVariable("code") String code) {
+		Customer customer = customerService.load(code);
+		this.populateEditForm(uiModel, customer);
+		return "customer/edit";
 	}
+
+	@RequestMapping(value = "/delete/{code}")
+	public String delete(Model uiModel, @PathVariable("code") String code) {
+		customerService.delete(code);
+		return "redirect:/customer";
+	}
+	
 }

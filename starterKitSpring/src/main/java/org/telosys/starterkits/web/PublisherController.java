@@ -1,6 +1,6 @@
 /*
  * Controller class 
- * Created on 26 nov. 2013 ( Time 16:07:26 )
+ * Created on 27 nov. 2013 ( Time 18:10:07 )
  */
 
 package org.telosys.starterkits.web;
@@ -9,8 +9,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,40 +29,55 @@ import org.telosys.starterkits.service.PublisherService;
  * Publisher.
  */
 @Controller
-@RequestMapping("/publisher*")
+@RequestMapping("/publisher")
 public class PublisherController 
 {
 	@Resource
     private PublisherService publisherService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+	}
+
+	void populateEditForm(Model uiModel, Publisher publisher) {
+		uiModel.addAttribute("publisher", publisher);
+		// Listes déroulantes des objets liés
+		// uiModel.addAttribute("bases", Base.findAllBases());
+	}
+
 	@RequestMapping("/create")
-	public ModelAndView create() {
-		return new ModelAndView("publisher/publisher", "publisherForm", new  Publisher());
+	public String create(Model uiModel) {
+		this.populateEditForm(uiModel, new Publisher());
+		return "publisher/edit";
 	}
 
-	@RequestMapping(value = "/list")
-	public ModelAndView showPublishers() {
-		ModelAndView mav = new ModelAndView("publisher/publisherList");
+	@RequestMapping()
+	public String list(Model uiModel) {
 		List<Publisher> list = publisherService.loadAll();
-		mav.addObject("listPublishers", list);
-		return mav;
+		uiModel.addAttribute("listPublishers", list);
+		return "publisher/list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@ModelAttribute("publisherForm") Publisher publisher, BindingResult result) {
 		if (!result.hasErrors()) {
 			publisherService.save(publisher);
 		}
-		return "redirect:/publisher/search";
+		return "redirect:/publisher";
 	}
 
-	@RequestMapping(value = "/edit/{code}")
-	public ModelAndView edit(@ModelAttribute("publisher/edit") Publisher publisher, @PathVariable("code") Integer code) {
-		ModelAndView modelAndView = new ModelAndView("publisher/publisher");
-
-		Publisher publisherloaded = publisherService.load(code);
-
-		modelAndView.addObject("publisherForm", publisherloaded);
-		return modelAndView;
+	@RequestMapping(value = "/{code}")
+	public String edit(Model uiModel, @PathVariable("code") Integer code) {
+		Publisher publisher = publisherService.load(code);
+		this.populateEditForm(uiModel, publisher);
+		return "publisher/edit";
 	}
+
+	@RequestMapping(value = "/delete/{code}")
+	public String delete(Model uiModel, @PathVariable("code") Integer code) {
+		publisherService.delete(code);
+		return "redirect:/publisher";
+	}
+	
 }
