@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 
 import ${ROOT_PKG}.dao.jpa.base.Dao;
 
+@Transactional
 public class DaoImpl<T, ID extends java.io.Serializable> implements Dao<T, ID> {
 
 	private static final Predicate[] VOID_PREDICATE_ARRAY = {};

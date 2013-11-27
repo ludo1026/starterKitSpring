@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T> Entity
  * @param <ID> Identifier
  */
-@Transactional
 public interface Service<T extends Serializable, ID extends Serializable> {
 
 	/**

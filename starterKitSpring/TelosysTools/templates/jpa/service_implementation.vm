@@ -24,6 +24,7 @@ import ${ROOT_PKG}.service.${beanClass.name}Service;
  * Service : ${beanClass.name}.
  */
 @Component
+@Transactional
 public class ${beanClass.name}ServiceImpl implements ${beanClass.name}Service {
 		
 	@Resource
