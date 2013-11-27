@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Publisher;
 
 import org.telosys.starterkits.service.PublisherService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Publisher.
@@ -34,6 +31,8 @@ public class PublisherController
 {
 	@Resource
     private PublisherService publisherService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class PublisherController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("publisherForm") Publisher publisher, BindingResult result) {
+	public String save(@ModelAttribute("publisherForm") Publisher publisher, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			publisherService.save(publisher);
+			publisher = publisherService.save(publisher);
+			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
+		} else {
+			return null;
 		}
-		return "redirect:/publisher";
 	}
 
 	@RequestMapping(value = "/{code}")

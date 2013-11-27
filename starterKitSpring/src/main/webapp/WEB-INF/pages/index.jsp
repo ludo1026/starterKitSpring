@@ -44,7 +44,20 @@ body {
     <div class="container">
       
 		<ul>
+            <li><a href="author">Author</a></li>
+            <li><a href="badge">Badge</a></li>
+            <li><a href="book">Book</a></li>
+            <li><a href="bookorder">BookOrder</a></li>
+            <li><a href="bookorderitem">BookOrderItem</a></li>
             <li><a href="country">Country</a></li>
+            <li><a href="customer">Customer</a></li>
+            <li><a href="employee">Employee</a></li>
+            <li><a href="employeegroup">EmployeeGroup</a></li>
+            <li><a href="publisher">Publisher</a></li>
+            <li><a href="review">Review</a></li>
+            <li><a href="shop">Shop</a></li>
+            <li><a href="synopsis">Synopsis</a></li>
+            <li><a href="workgroup">Workgroup</a></li>
 	    </ul>
 
     </div> <!-- /container -->

@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:06 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Book;
 
 import org.telosys.starterkits.service.BookService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Book.
@@ -34,6 +31,8 @@ public class BookController
 {
 	@Resource
     private BookService bookService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class BookController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("bookForm") Book book, BindingResult result) {
+	public String save(@ModelAttribute("bookForm") Book book, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			bookService.save(book);
+			book = bookService.save(book);
+			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
+		} else {
+			return null;
 		}
-		return "redirect:/book";
 	}
 
 	@RequestMapping(value = "/{id}")

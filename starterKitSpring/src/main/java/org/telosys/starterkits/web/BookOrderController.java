@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:06 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.BookOrder;
 
 import org.telosys.starterkits.service.BookOrderService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * BookOrder.
@@ -34,6 +31,8 @@ public class BookOrderController
 {
 	@Resource
     private BookOrderService bookorderService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class BookOrderController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("bookorderForm") BookOrder bookorder, BindingResult result) {
+	public String save(@ModelAttribute("bookorderForm") BookOrder bookorder, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			bookorderService.save(bookorder);
+			bookorder = bookorderService.save(bookorder);
+			return "redirect:/bookorder/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorder.getId());
+		} else {
+			return null;
 		}
-		return "redirect:/bookorder";
 	}
 
 	@RequestMapping(value = "/{id}")

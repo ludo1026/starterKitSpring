@@ -35,16 +35,28 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyGetter = $field.getter )
 #end
 #end
+## keyURLPath
 #set( $keyURLPath = "")
-#set( $keyPathVariable = "")
-#set( $keyGetterToArg = "")
 #foreach( $field in $entity.keyAttributes )
 #if( $keyURLPath != "" ) #set( $keyURLPath = $keyURLPath + "/" ) #end
 #set( $keyURLPath = $keyURLPath+"{"+${field.formatedName(0)}+"}" )
+#end
+## keyPathVariable
+#set( $keyPathVariable = "")
+#foreach( $field in $entity.keyAttributes )
 #if( $keyPathVariable != "" ) #set( $keyPathVariable = $keyPathVariable + ", " ) #end
 #set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${field.formatedName(0)}+""") "+${field.wrapperType}+" "+${field.formatedName(0)} )
+#end
+## keyGetterToArg
+#set( $keyGetterToArg = "")
+#foreach( $field in $entity.keyAttributes )
 #if( $keyGetterToArg != "" ) #set( $keyGetterToArg = $keyGetterToArg + ", " ) #end
-#set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${field.getter}+"()" )
+#if ( $beanClass.hasCompositePrimaryKey() )
+#set( $entityNameForKeyGetter = ${entity.name.toLowerCase()}+".getId()" )
+#else
+#set( $entityNameForKeyGetter = ${entity.name.toLowerCase()} )
+#end
+#set( $keyGetterToArg = $keyGetterToArg+$entityNameForKeyGetter+"."+${field.getter}+"()" )
 #end
 import ${ROOT_PKG}.service.${beanClass.name}Service;
 import ${ROOT_PKG}.web.helper.ControllerHelper;

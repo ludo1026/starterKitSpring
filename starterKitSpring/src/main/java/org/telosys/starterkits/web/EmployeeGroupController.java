@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.EmployeeGroup;
 
 import org.telosys.starterkits.bean.EmployeeGroupId;
-  import org.telosys.starterkits.service.EmployeeGroupService;
+   import org.telosys.starterkits.service.EmployeeGroupService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * EmployeeGroup.
@@ -35,6 +32,8 @@ public class EmployeeGroupController
 {
 	@Resource
     private EmployeeGroupService employeegroupService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -61,11 +60,13 @@ public class EmployeeGroupController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("employeegroupForm") EmployeeGroup employeegroup, BindingResult result) {
+	public String save(@ModelAttribute("employeegroupForm") EmployeeGroup employeegroup, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			employeegroupService.save(employeegroup);
+			employeegroup = employeegroupService.save(employeegroup);
+			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getId().getEmployeeCode(), employeegroup.getId().getGroupId());
+		} else {
+			return null;
 		}
-		return "redirect:/employeegroup";
 	}
 
 	@RequestMapping(value = "/{employeeCode}/{groupId}")

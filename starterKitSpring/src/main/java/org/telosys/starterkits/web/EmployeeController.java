@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Employee;
 
 import org.telosys.starterkits.service.EmployeeService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Employee.
@@ -34,6 +31,8 @@ public class EmployeeController
 {
 	@Resource
     private EmployeeService employeeService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class EmployeeController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("employeeForm") Employee employee, BindingResult result) {
+	public String save(@ModelAttribute("employeeForm") Employee employee, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			employeeService.save(employee);
+			employee = employeeService.save(employee);
+			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
+		} else {
+			return null;
 		}
-		return "redirect:/employee";
 	}
 
 	@RequestMapping(value = "/{code}")

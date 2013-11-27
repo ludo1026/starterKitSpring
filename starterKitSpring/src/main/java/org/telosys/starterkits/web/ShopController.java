@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Shop;
 
 import org.telosys.starterkits.service.ShopService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Shop.
@@ -34,6 +31,8 @@ public class ShopController
 {
 	@Resource
     private ShopService shopService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class ShopController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("shopForm") Shop shop, BindingResult result) {
+	public String save(@ModelAttribute("shopForm") Shop shop, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			shopService.save(shop);
+			shop = shopService.save(shop);
+			return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
+		} else {
+			return null;
 		}
-		return "redirect:/shop";
 	}
 
 	@RequestMapping(value = "/{code}")

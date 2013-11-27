@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Customer;
 
 import org.telosys.starterkits.service.CustomerService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Customer.
@@ -34,6 +31,8 @@ public class CustomerController
 {
 	@Resource
     private CustomerService customerService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class CustomerController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("customerForm") Customer customer, BindingResult result) {
+	public String save(@ModelAttribute("customerForm") Customer customer, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			customerService.save(customer);
+			customer = customerService.save(customer);
+			return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
+		} else {
+			return null;
 		}
-		return "redirect:/customer";
 	}
 
 	@RequestMapping(value = "/{code}")

@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:08 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Synopsis;
 
 import org.telosys.starterkits.service.SynopsisService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Synopsis.
@@ -34,6 +31,8 @@ public class SynopsisController
 {
 	@Resource
     private SynopsisService synopsisService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class SynopsisController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("synopsisForm") Synopsis synopsis, BindingResult result) {
+	public String save(@ModelAttribute("synopsisForm") Synopsis synopsis, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			synopsisService.save(synopsis);
+			synopsis = synopsisService.save(synopsis);
+			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
+		} else {
+			return null;
 		}
-		return "redirect:/synopsis";
 	}
 
 	@RequestMapping(value = "/{bookId}")

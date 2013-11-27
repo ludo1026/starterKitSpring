@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:05 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Author;
 
 import org.telosys.starterkits.service.AuthorService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Author.
@@ -34,6 +31,8 @@ public class AuthorController
 {
 	@Resource
     private AuthorService authorService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class AuthorController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("authorForm") Author author, BindingResult result) {
+	public String save(@ModelAttribute("authorForm") Author author, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			authorService.save(author);
+			author = authorService.save(author);
+			return "redirect:/author/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, author.getId());
+		} else {
+			return null;
 		}
-		return "redirect:/author";
 	}
 
 	@RequestMapping(value = "/{id}")

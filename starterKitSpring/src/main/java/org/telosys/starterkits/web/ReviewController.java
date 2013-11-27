@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:07 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Review;
 
 import org.telosys.starterkits.bean.ReviewId;
-  import org.telosys.starterkits.service.ReviewService;
+   import org.telosys.starterkits.service.ReviewService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Review.
@@ -35,6 +32,8 @@ public class ReviewController
 {
 	@Resource
     private ReviewService reviewService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -61,11 +60,13 @@ public class ReviewController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("reviewForm") Review review, BindingResult result) {
+	public String save(@ModelAttribute("reviewForm") Review review, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			reviewService.save(review);
+			review = reviewService.save(review);
+			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getId().getCustomerCode(), review.getId().getBookId());
+		} else {
+			return null;
 		}
-		return "redirect:/review";
 	}
 
 	@RequestMapping(value = "/{customerCode}/{bookId}")

@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:06 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.BookOrderItem;
 
 import org.telosys.starterkits.bean.BookOrderItemId;
-  import org.telosys.starterkits.service.BookOrderItemService;
+   import org.telosys.starterkits.service.BookOrderItemService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * BookOrderItem.
@@ -35,6 +32,8 @@ public class BookOrderItemController
 {
 	@Resource
     private BookOrderItemService bookorderitemService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -61,11 +60,13 @@ public class BookOrderItemController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("bookorderitemForm") BookOrderItem bookorderitem, BindingResult result) {
+	public String save(@ModelAttribute("bookorderitemForm") BookOrderItem bookorderitem, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			bookorderitemService.save(bookorderitem);
+			bookorderitem = bookorderitemService.save(bookorderitem);
+			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getId().getBookOrderId(), bookorderitem.getId().getBookId());
+		} else {
+			return null;
 		}
-		return "redirect:/bookorderitem";
 	}
 
 	@RequestMapping(value = "/{bookOrderId}/{bookId}")

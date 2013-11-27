@@ -1,13 +1,9 @@
-/*
- * Controller class 
- * Created on 27 nov. 2013 ( Time 18:10:08 )
- */
-
 package org.telosys.starterkits.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.telosys.starterkits.bean.Workgroup;
 
 import org.telosys.starterkits.service.WorkgroupService;
+import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
  * Workgroup.
@@ -34,6 +31,8 @@ public class WorkgroupController
 {
 	@Resource
     private WorkgroupService workgroupService;
+	@Resource
+	private ControllerHelper controllerHelper;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -60,11 +59,13 @@ public class WorkgroupController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("workgroupForm") Workgroup workgroup, BindingResult result) {
+	public String save(@ModelAttribute("workgroupForm") Workgroup workgroup, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			workgroupService.save(workgroup);
+			workgroup = workgroupService.save(workgroup);
+			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
+		} else {
+			return null;
 		}
-		return "redirect:/workgroup";
 	}
 
 	@RequestMapping(value = "/{id}")
