@@ -14,8 +14,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import org.telosys.starterkits.dao.jpa.base.Dao;
 
+@Transactional
 public class DaoImpl<T, ID extends java.io.Serializable> implements Dao<T, ID> {
 
 	private static final Predicate[] VOID_PREDICATE_ARRAY = {};

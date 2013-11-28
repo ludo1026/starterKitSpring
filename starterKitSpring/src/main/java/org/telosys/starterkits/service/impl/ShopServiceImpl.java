@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Shop;
 import org.telosys.starterkits.dao.jpa.ShopDao;
+import org.telosys.starterkits.dao.repository.ShopRepository;
 import org.telosys.starterkits.service.ShopService;
 
 /**
  * Service : Shop.
  */
 @Component
+@Transactional
 public class ShopServiceImpl implements ShopService {
 		
 	@Resource
 	private ShopDao shopDao;
+	@Resource
+	private ShopRepository shopRepository;
 	
 	public Shop load(final String code) {
 		return shopDao.load(code);

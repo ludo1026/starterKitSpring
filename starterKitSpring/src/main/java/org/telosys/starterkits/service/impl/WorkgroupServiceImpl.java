@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Workgroup;
 import org.telosys.starterkits.dao.jpa.WorkgroupDao;
+import org.telosys.starterkits.dao.repository.WorkgroupRepository;
 import org.telosys.starterkits.service.WorkgroupService;
 
 /**
  * Service : Workgroup.
  */
 @Component
+@Transactional
 public class WorkgroupServiceImpl implements WorkgroupService {
 		
 	@Resource
 	private WorkgroupDao workgroupDao;
+	@Resource
+	private WorkgroupRepository workgroupRepository;
 	
 	public Workgroup load(final Short id) {
 		return workgroupDao.load(id);

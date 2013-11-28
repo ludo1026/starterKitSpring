@@ -3,9 +3,6 @@ package org.telosys.starterkits.dao.jpa.base;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional
 public interface Dao<T, ID extends java.io.Serializable> {
 
 	/**

@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Book;
 import org.telosys.starterkits.dao.jpa.BookDao;
+import org.telosys.starterkits.dao.repository.BookRepository;
 import org.telosys.starterkits.service.BookService;
 
 /**
  * Service : Book.
  */
 @Component
+@Transactional
 public class BookServiceImpl implements BookService {
 		
 	@Resource
 	private BookDao bookDao;
+	@Resource
+	private BookRepository bookRepository;
 	
 	public Book load(final Integer id) {
 		return bookDao.load(id);

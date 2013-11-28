@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Publisher;
 import org.telosys.starterkits.dao.jpa.PublisherDao;
+import org.telosys.starterkits.dao.repository.PublisherRepository;
 import org.telosys.starterkits.service.PublisherService;
 
 /**
  * Service : Publisher.
  */
 @Component
+@Transactional
 public class PublisherServiceImpl implements PublisherService {
 		
 	@Resource
 	private PublisherDao publisherDao;
+	@Resource
+	private PublisherRepository publisherRepository;
 	
 	public Publisher load(final Integer code) {
 		return publisherDao.load(code);

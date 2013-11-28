@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Employee;
 import org.telosys.starterkits.dao.jpa.EmployeeDao;
+import org.telosys.starterkits.dao.repository.EmployeeRepository;
 import org.telosys.starterkits.service.EmployeeService;
 
 /**
  * Service : Employee.
  */
 @Component
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 		
 	@Resource
 	private EmployeeDao employeeDao;
+	@Resource
+	private EmployeeRepository employeeRepository;
 	
 	public Employee load(final String code) {
 		return employeeDao.load(code);

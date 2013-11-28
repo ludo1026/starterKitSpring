@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:beans="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/beans
@@ -13,24 +12,51 @@
 	<context:component-scan base-package="org.telosys.starterkits.web" />
 
 	<!-- <annotation-driven /> enables the support of annotation configuration for Spring MVC controllers, -->
-	<!-- as well as enabling Spring	3 type conversion and formatting support. -->
+	<!-- as well as enabling Spring 3 type conversion and formatting support. -->
 	<!-- Also, support for JSR-303 Bean Validation is enabled by this tag. -->
-	<annotation-driven />
+	<mvc:annotation-driven />
 
 	<!-- static resources -->
-	<resources mapping="/css/**" location="/css/" />
-	<resources mapping="/img/**" location="/img/" />
-	<resources mapping="/script/**" location="/script/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/img/**" location="/img/" />
+	<mvc:resources mapping="/script/**" location="/script/" />
 
-	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jspx" />
-	</beans:bean>
-
+	<!-- uncomment these lines in order to disable tiles -->
+<!-- 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+<!-- 		<property name="prefix" value="/WEB-INF/views/" /> -->
+<!-- 		<property name="suffix" value=".jspx" /> -->
+<!-- 	</bean> -->
+	
+	<!-- Tiles -->
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
+	</bean>
+	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/layouts/layouts.xml</value>
+				<value>/WEB-INF/views/**/views.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<mvc:default-servlet-handler/>
+	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"/>
+		</bean>
+	</mvc:interceptors>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="locale"/>
+	</bean>
+	
 	<!-- Application Message Bundle -->
-	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<beans:property name="basename" value="/WEB-INF/messages" />
-		<beans:property name="cacheSeconds" value="3000" />
-	</beans:bean>
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="WEB-INF/i18n/messages,WEB-INF/i18n/application"/>
+		<property name="fallbackToSystemLocale" value="false"/>
+		<property name="cacheSeconds" value="3000"/>
+	</bean>
 
-</beans:beans>
+</beans>

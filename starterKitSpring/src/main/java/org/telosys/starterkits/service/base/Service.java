@@ -4,15 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * Service.
  *
  * @param <T> Entity
  * @param <ID> Identifier
  */
-@Transactional
 public interface Service<T extends Serializable, ID extends Serializable> {
 
 	/**

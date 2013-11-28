@@ -5,10 +5,6 @@
 
 	<display-name>starterKitSpring</display-name>
 	
-	<welcome-file-list>
-		<welcome-file>/WEB-INF/pages/index.jsp</welcome-file>
-	</welcome-file-list>
-
 	<!-- Spring IOC context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -70,5 +66,19 @@
 <!-- 		<filter-name>Spring OpenEntityManagerInViewFilter</filter-name> -->
 <!-- 		<url-pattern>/*</url-pattern> -->
 <!-- 	</filter-mapping> -->
-
+    
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+    
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/uncaughtException</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/resourceNotFound</location>
+    </error-page>
+    
 </web-app>

@@ -1,0 +1,20 @@
+welcome_h3=Bienvenue
+welcome.entite.list=Entit\u00e9s
+back.welcome=Retour \u00ea la page d'accueil
+
+# actions
+create=Cr\u00e9er
+edit=Modifier
+delete=Supprimer
+save=Enregistrer
+list=Liste
+reset=R\u00e9initialiser
+
+#foreach( $entity in $selectedEntities )
+# ${entity.name.toLowerCase()}
+${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
+#foreach( $field in ${entity.attributes} )
+${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.name}
+#end
+
+#end

@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Synopsis;
 import org.telosys.starterkits.dao.jpa.SynopsisDao;
+import org.telosys.starterkits.dao.repository.SynopsisRepository;
 import org.telosys.starterkits.service.SynopsisService;
 
 /**
  * Service : Synopsis.
  */
 @Component
+@Transactional
 public class SynopsisServiceImpl implements SynopsisService {
 		
 	@Resource
 	private SynopsisDao synopsisDao;
+	@Resource
+	private SynopsisRepository synopsisRepository;
 	
 	public Synopsis load(final Integer bookId) {
 		return synopsisDao.load(bookId);

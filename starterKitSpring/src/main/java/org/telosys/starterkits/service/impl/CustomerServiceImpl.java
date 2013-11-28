@@ -6,18 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Customer;
 import org.telosys.starterkits.dao.jpa.CustomerDao;
+import org.telosys.starterkits.dao.repository.CustomerRepository;
 import org.telosys.starterkits.service.CustomerService;
 
 /**
  * Service : Customer.
  */
 @Component
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 		
 	@Resource
 	private CustomerDao customerDao;
+	@Resource
+	private CustomerRepository customerRepository;
 	
 	public Customer load(final String code) {
 		return customerDao.load(code);

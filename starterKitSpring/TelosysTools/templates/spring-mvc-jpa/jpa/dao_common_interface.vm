@@ -3,8 +3,6 @@ package ${target.javaPackageFromFolder(${SRC})};
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
 public interface Dao<T, ID extends java.io.Serializable> {
 
 	/**
