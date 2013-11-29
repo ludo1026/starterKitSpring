@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class SynopsisServiceImpl implements SynopsisService {
 	private SynopsisRepository synopsisRepository;
 	
 	public Synopsis load(final Integer bookId) {
-		return synopsisDao.load(bookId);
+		return synopsisRepository.findOne(bookId);
 	}
 	
 	public Synopsis save(final Synopsis synopsis) {
-		return synopsisDao.save(synopsis);
+		return synopsisRepository.save(synopsis);
 	}
 
 	public void delete(final Integer bookId) {
-		synopsisDao.delete(bookId);
+		synopsisRepository.delete(bookId);
 	}
 
 	public List<Synopsis> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class SynopsisServiceImpl implements SynopsisService {
 	}
 
 	public List<Synopsis> loadAll() {
-		return synopsisDao.loadAll();
+		List<Synopsis> synopsiss = new ArrayList<Synopsis>();
+		for (Synopsis synopsis : synopsisRepository.findAll()) {
+			synopsiss.add(synopsis);
+		}
+		return synopsiss;
 	}
 	
 }

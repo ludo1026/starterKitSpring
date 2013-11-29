@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class ShopServiceImpl implements ShopService {
 	private ShopRepository shopRepository;
 	
 	public Shop load(final String code) {
-		return shopDao.load(code);
+		return shopRepository.findOne(code);
 	}
 	
 	public Shop save(final Shop shop) {
-		return shopDao.save(shop);
+		return shopRepository.save(shop);
 	}
 
 	public void delete(final String code) {
-		shopDao.delete(code);
+		shopRepository.delete(code);
 	}
 
 	public List<Shop> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	public List<Shop> loadAll() {
-		return shopDao.loadAll();
+		List<Shop> shops = new ArrayList<Shop>();
+		for (Shop shop : shopRepository.findAll()) {
+			shops.add(shop);
+		}
+		return shops;
 	}
 	
 }

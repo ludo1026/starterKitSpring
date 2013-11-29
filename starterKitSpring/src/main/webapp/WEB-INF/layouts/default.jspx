@@ -18,44 +18,36 @@
 	<title><spring:message code="welcome_h3" arguments="${app_name}" /></title>
 
 	<!-- style -->
-	<spring:url value="/css/bootstrap-responsive.min.css" var="css_url_bootstrap_responsive" />
 	<spring:url value="/css/bootstrap.min.css" var="css_url_bootstrap" />
+	<spring:url value="/css/bootstrap-theme.min.css" var="css_url_bootstrap_theme" />
 	<spring:url value="/css/styles.css" var="css_url_styles" />
-	<link href="${css_url_bootstrap_responsive}" rel="stylesheet"  type="text/css" />
 	<link href="${css_url_bootstrap}" rel="stylesheet"  type="text/css" />
+	<link href="${css_url_bootstrap_theme}" rel="stylesheet"  type="text/css" />
 	<link href="${css_url_styles}" rel="stylesheet"  type="text/css" />
-	<style>
-		body {
-			padding-top: 60px;
-			/* 60px to make the container go all the way to the bottom of the topbar */
-		}
-	</style>
 	
 	<!-- javascript -->
 	<spring:url value="/js/validation.js" var="js_url_validation" />
-	<spring:url value="/js/jquery.js" var="js_url_jquery" />
 	<spring:url value="/js/bootstrap.js" var="js_url_bootstrap" />
 	<script type="text/javascript" src="${js_url_validation}"></script>
-	<script type="text/javascript" src="${js_url_jquery}"></script>
 	<script type="text/javascript" src="${js_url_bootstrap}"></script>
 	<script language="JavaScript" type="text/javascript">//</script>
 
 </head>
 <body>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-inner">
           	<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             	<span class="icon-bar"></span>
             	<span class="icon-bar"></span>
         		<span class="icon-bar"></span>
         	</a>
 			<spring:url value="/" var="url_home"/>
-        	<a href="${url_home}" type="button" class="btn btn-info"><spring:message code="back.welcome"/></a>
+			<a class="navbar-brand" href="${url_home}"><spring:message code="back.welcome"/></a>
         </div>
       </div>
-    </div>
+    </nav>
 
 	<tiles:insertAttribute name="body" />
 

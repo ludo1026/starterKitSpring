@@ -19,38 +19,34 @@ import org.telosys.starterkits.service.CountryService;
 @Component
 @Transactional
 public class CountryServiceImpl implements CountryService {
-
+		
 	@Resource
 	private CountryDao countryDao;
 	@Resource
 	private CountryRepository countryRepository;
-
-	@Override
+	
 	public Country load(final String code) {
-		return this.countryRepository.findOne(code);
+		return countryRepository.findOne(code);
 	}
-
-	@Override
+	
 	public Country save(final Country country) {
-		return this.countryRepository.save(country);
+		return countryRepository.save(country);
 	}
 
-	@Override
 	public void delete(final String code) {
-		this.countryRepository.delete(code);
+		countryRepository.delete(code);
 	}
 
-	@Override
-	public List<Country> search(final Map<String, Object> criteria) {
-		return this.countryDao.search(criteria);
+	public List<Country> search(final Map<String,Object> criteria) {
+		return countryDao.search(criteria);
 	}
 
-	@Override
 	public List<Country> loadAll() {
 		List<Country> countrys = new ArrayList<Country>();
-		for (Country country : this.countryRepository.findAll()) {
+		for (Country country : countryRepository.findAll()) {
 			countrys.add(country);
 		}
 		return countrys;
 	}
+	
 }

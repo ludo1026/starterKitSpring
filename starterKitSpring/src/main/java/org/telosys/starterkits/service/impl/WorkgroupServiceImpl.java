@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class WorkgroupServiceImpl implements WorkgroupService {
 	private WorkgroupRepository workgroupRepository;
 	
 	public Workgroup load(final Short id) {
-		return workgroupDao.load(id);
+		return workgroupRepository.findOne(id);
 	}
 	
 	public Workgroup save(final Workgroup workgroup) {
-		return workgroupDao.save(workgroup);
+		return workgroupRepository.save(workgroup);
 	}
 
 	public void delete(final Short id) {
-		workgroupDao.delete(id);
+		workgroupRepository.delete(id);
 	}
 
 	public List<Workgroup> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class WorkgroupServiceImpl implements WorkgroupService {
 	}
 
 	public List<Workgroup> loadAll() {
-		return workgroupDao.loadAll();
+		List<Workgroup> workgroups = new ArrayList<Workgroup>();
+		for (Workgroup workgroup : workgroupRepository.findAll()) {
+			workgroups.add(workgroup);
+		}
+		return workgroups;
 	}
 	
 }

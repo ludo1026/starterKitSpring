@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class BadgeServiceImpl implements BadgeService {
 	private BadgeRepository badgeRepository;
 	
 	public Badge load(final Integer badgeNumber) {
-		return badgeDao.load(badgeNumber);
+		return badgeRepository.findOne(badgeNumber);
 	}
 	
 	public Badge save(final Badge badge) {
-		return badgeDao.save(badge);
+		return badgeRepository.save(badge);
 	}
 
 	public void delete(final Integer badgeNumber) {
-		badgeDao.delete(badgeNumber);
+		badgeRepository.delete(badgeNumber);
 	}
 
 	public List<Badge> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class BadgeServiceImpl implements BadgeService {
 	}
 
 	public List<Badge> loadAll() {
-		return badgeDao.loadAll();
+		List<Badge> badges = new ArrayList<Badge>();
+		for (Badge badge : badgeRepository.findAll()) {
+			badges.add(badge);
+		}
+		return badges;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class PublisherServiceImpl implements PublisherService {
 	private PublisherRepository publisherRepository;
 	
 	public Publisher load(final Integer code) {
-		return publisherDao.load(code);
+		return publisherRepository.findOne(code);
 	}
 	
 	public Publisher save(final Publisher publisher) {
-		return publisherDao.save(publisher);
+		return publisherRepository.save(publisher);
 	}
 
 	public void delete(final Integer code) {
-		publisherDao.delete(code);
+		publisherRepository.delete(code);
 	}
 
 	public List<Publisher> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class PublisherServiceImpl implements PublisherService {
 	}
 
 	public List<Publisher> loadAll() {
-		return publisherDao.loadAll();
+		List<Publisher> publishers = new ArrayList<Publisher>();
+		for (Publisher publisher : publisherRepository.findAll()) {
+			publishers.add(publisher);
+		}
+		return publishers;
 	}
 	
 }

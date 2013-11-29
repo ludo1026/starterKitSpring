@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerRepository customerRepository;
 	
 	public Customer load(final String code) {
-		return customerDao.load(code);
+		return customerRepository.findOne(code);
 	}
 	
 	public Customer save(final Customer customer) {
-		return customerDao.save(customer);
+		return customerRepository.save(customer);
 	}
 
 	public void delete(final String code) {
-		customerDao.delete(code);
+		customerRepository.delete(code);
 	}
 
 	public List<Customer> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	public List<Customer> loadAll() {
-		return customerDao.loadAll();
+		List<Customer> customers = new ArrayList<Customer>();
+		for (Customer customer : customerRepository.findAll()) {
+			customers.add(customer);
+		}
+		return customers;
 	}
 	
 }

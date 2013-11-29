@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,15 +27,15 @@ public class ReviewServiceImpl implements ReviewService {
 	private ReviewRepository reviewRepository;
 	
 	public Review load(final ReviewId id) {
-		return reviewDao.load(id);
+		return reviewRepository.findOne(id);
 	}
 	
 	public Review save(final Review review) {
-		return reviewDao.save(review);
+		return reviewRepository.save(review);
 	}
 
 	public void delete(final ReviewId id) {
-		reviewDao.delete(id);
+		reviewRepository.delete(id);
 	}
 
 	public List<Review> search(final Map<String,Object> criteria) {
@@ -42,7 +43,11 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	public List<Review> loadAll() {
-		return reviewDao.loadAll();
+		List<Review> reviews = new ArrayList<Review>();
+		for (Review review : reviewRepository.findAll()) {
+			reviews.add(review);
+		}
+		return reviews;
 	}
 	
 }

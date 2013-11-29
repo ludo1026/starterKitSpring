@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class AuthorServiceImpl implements AuthorService {
 	private AuthorRepository authorRepository;
 	
 	public Author load(final Integer id) {
-		return authorDao.load(id);
+		return authorRepository.findOne(id);
 	}
 	
 	public Author save(final Author author) {
-		return authorDao.save(author);
+		return authorRepository.save(author);
 	}
 
 	public void delete(final Integer id) {
-		authorDao.delete(id);
+		authorRepository.delete(id);
 	}
 
 	public List<Author> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	public List<Author> loadAll() {
-		return authorDao.loadAll();
+		List<Author> authors = new ArrayList<Author>();
+		for (Author author : authorRepository.findAll()) {
+			authors.add(author);
+		}
+		return authors;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class BookOrderServiceImpl implements BookOrderService {
 	private BookOrderRepository bookorderRepository;
 	
 	public BookOrder load(final Integer id) {
-		return bookorderDao.load(id);
+		return bookorderRepository.findOne(id);
 	}
 	
 	public BookOrder save(final BookOrder bookorder) {
-		return bookorderDao.save(bookorder);
+		return bookorderRepository.save(bookorder);
 	}
 
 	public void delete(final Integer id) {
-		bookorderDao.delete(id);
+		bookorderRepository.delete(id);
 	}
 
 	public List<BookOrder> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class BookOrderServiceImpl implements BookOrderService {
 	}
 
 	public List<BookOrder> loadAll() {
-		return bookorderDao.loadAll();
+		List<BookOrder> bookorders = new ArrayList<BookOrder>();
+		for (BookOrder bookorder : bookorderRepository.findAll()) {
+			bookorders.add(bookorder);
+		}
+		return bookorders;
 	}
 	
 }

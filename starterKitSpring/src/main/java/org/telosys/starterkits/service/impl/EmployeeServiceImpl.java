@@ -1,5 +1,6 @@
 package org.telosys.starterkits.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +26,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeRepository employeeRepository;
 	
 	public Employee load(final String code) {
-		return employeeDao.load(code);
+		return employeeRepository.findOne(code);
 	}
 	
 	public Employee save(final Employee employee) {
-		return employeeDao.save(employee);
+		return employeeRepository.save(employee);
 	}
 
 	public void delete(final String code) {
-		employeeDao.delete(code);
+		employeeRepository.delete(code);
 	}
 
 	public List<Employee> search(final Map<String,Object> criteria) {
@@ -41,7 +42,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	public List<Employee> loadAll() {
-		return employeeDao.loadAll();
+		List<Employee> employees = new ArrayList<Employee>();
+		for (Employee employee : employeeRepository.findAll()) {
+			employees.add(employee);
+		}
+		return employees;
 	}
 	
 }
