@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Synopsis;
@@ -47,6 +49,11 @@ public class SynopsisServiceImpl implements SynopsisService {
 			synopsiss.add(synopsis);
 		}
 		return synopsiss;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Synopsis> findAllByPage(Pageable pageable) {
+		return synopsisRepository.findAll(pageable);
 	}
 	
 }

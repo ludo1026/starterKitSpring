@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Employee;
@@ -47,6 +49,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employees.add(employee);
 		}
 		return employees;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Employee> findAllByPage(Pageable pageable) {
+		return employeeRepository.findAll(pageable);
 	}
 	
 }

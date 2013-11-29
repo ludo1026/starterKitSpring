@@ -42,9 +42,12 @@
 #end
 #end
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
+
+	<fieldset class="col-sm-12 bordure">
+		<legend class="legende"><s:message code="${beanClass.name.toLowerCase()}"/></legend>
 
 	    <div class="container">
 	    	<s:url value="/${beanClass.name.toLowerCase()}" var="url_form_submit" />
@@ -54,10 +57,23 @@
 					<tr>
 						<th align="left"><s:message code="${beanClass.name.toLowerCase()}.${field.formatedName(0)}"/></th>
 #if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-						<td><form:input path="${keyName}.${field.formatedName(0)}"/></td>
+#set( $fieldName = ${keyName}+"."+${field.formatedName(0)} )
 #else
-						<td><form:input path="${field.formatedName(0)}"/></td>
+#set( $fieldName = ${field.formatedName(0)} )
 #end
+						<td>
+#if( $field.wrapperType == "Boolean" )
+							<form:checkbox path="$fieldName" class="form-control"/>
+## #elseif( $field.wrapperType == "Date" )
+##							<form:input path="$fieldName" id="${beanClass.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
+##							<script type="text/javascript">
+##								$('#${beanClass.name.toLowerCase()}_${fieldName}_input').datepicker({
+##								});
+##							</script>
+#else
+							<form:input path="$fieldName" class="form-control"/>
+#end
+						</td>
 					</tr>
 #end
 					<tr>
@@ -67,19 +83,16 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-						<s:message var="msg_save" code="save"/>
-					 	<input type="submit" class="btn btn-info" value="${_}{msg_save}" />
-						<s:message var="msg_reset" code="reset"/>
-						<input type="reset" class="btn btn-info" value="${_}{msg_reset}" />
-						<s:message var="msg_delete" code="delete"/>
-						<s:url var="delete${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}/delete${keyURLPath}"/>
-						<a class="btn btn-info" href="${_}{delete${beanClass.name}Url}">${_}{msg_delete}</a>
-						<s:message var="msg_list" code="list"/>
-						<s:url var="all${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}"/>
-						<a class="btn btn-info" href="${_}{all${beanClass.name}Url}">${_}{msg_list}</a>
+					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
+							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
+							<s:url var="delete${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}/delete${keyURLPath}"/>
+							<a class="btn btn-info" href="${_}{delete${beanClass.name}Url}"><s:message code="delete"/></a>
+							<s:url var="all${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}"/>
+							<a class="btn btn-info" href="${_}{all${beanClass.name}Url}"><s:message code="list"/></a>
 						</td>
 					</tr>
 				</table>
-			</form:form>	
-    </div>
+			</form:form>
+		</div>	
+    </fieldset>
 </div>

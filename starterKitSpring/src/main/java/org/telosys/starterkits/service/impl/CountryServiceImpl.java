@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Country;
@@ -47,6 +49,11 @@ public class CountryServiceImpl implements CountryService {
 			countrys.add(country);
 		}
 		return countrys;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Country> findAllByPage(Pageable pageable) {
+		return countryRepository.findAll(pageable);
 	}
 	
 }

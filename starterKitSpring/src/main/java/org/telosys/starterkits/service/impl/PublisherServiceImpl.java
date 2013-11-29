@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Publisher;
@@ -47,6 +49,11 @@ public class PublisherServiceImpl implements PublisherService {
 			publishers.add(publisher);
 		}
 		return publishers;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Publisher> findAllByPage(Pageable pageable) {
+		return publisherRepository.findAll(pageable);
 	}
 	
 }

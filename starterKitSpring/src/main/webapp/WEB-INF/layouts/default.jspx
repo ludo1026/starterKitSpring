@@ -8,7 +8,7 @@
 <jsp:directive.page pageEncoding="UTF-8" />
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 	<!-- Get the user locale from the page context (it was set by Spring MVC's locale resolver) -->
 	<c:set var="userLocale">
 		<c:set var="plocale">${pageContext.response.locale}</c:set>
@@ -20,17 +20,22 @@
 	<!-- style -->
 	<spring:url value="/css/bootstrap.min.css" var="css_url_bootstrap" />
 	<spring:url value="/css/bootstrap-theme.min.css" var="css_url_bootstrap_theme" />
+	<spring:url value="/css/datepicker3.css" var="css_url_datepicker" />
 	<spring:url value="/css/styles.css" var="css_url_styles" />
 	<link href="${css_url_bootstrap}" rel="stylesheet"  type="text/css" />
 	<link href="${css_url_bootstrap_theme}" rel="stylesheet"  type="text/css" />
+	<link href="${css_url_datepicker}" rel="stylesheet"  type="text/css" />
 	<link href="${css_url_styles}" rel="stylesheet"  type="text/css" />
 	
 	<!-- javascript -->
 	<spring:url value="/js/validation.js" var="js_url_validation" />
+	<spring:url value="/js/jquery-1.10.2.min.js" var="js_url_jquery" />
 	<spring:url value="/js/bootstrap.js" var="js_url_bootstrap" />
-	<script type="text/javascript" src="${js_url_validation}"></script>
-	<script type="text/javascript" src="${js_url_bootstrap}"></script>
-	<script language="JavaScript" type="text/javascript">//</script>
+	<spring:url value="/js/bootstrap-datepicker.js" var="js_url_bootstrap_datepicker" />
+	<script type="text/javascript" src="${js_url_validation}"><jsp:text/></script>
+	<script type="text/javascript" src="${js_url_jquery}"><jsp:text/></script>
+	<script type="text/javascript" src="${js_url_bootstrap}"><jsp:text/></script>
+	<script type="text/javascript" src="${js_url_bootstrap_datepicker}"><jsp:text/></script>
 
 </head>
 <body>

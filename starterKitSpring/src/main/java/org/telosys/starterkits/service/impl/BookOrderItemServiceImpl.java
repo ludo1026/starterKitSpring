@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.BookOrderItem;
@@ -48,6 +50,11 @@ public class BookOrderItemServiceImpl implements BookOrderItemService {
 			bookorderitems.add(bookorderitem);
 		}
 		return bookorderitems;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<BookOrderItem> findAllByPage(Pageable pageable) {
+		return bookorderitemRepository.findAll(pageable);
 	}
 	
 }

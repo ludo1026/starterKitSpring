@@ -53,6 +53,7 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #foreach( $import in $entity.importsJpa )
 import $import;
 #end
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -77,6 +78,7 @@ public class $entity.name implements Serializable
 
 #if ( $entity.hasCompositePrimaryKey() )
 	@EmbeddedId
+	@Valid
     private $keyType $keyName = new $keyType();
 
 #else 

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Review;
@@ -48,6 +50,11 @@ public class ReviewServiceImpl implements ReviewService {
 			reviews.add(review);
 		}
 		return reviews;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Review> findAllByPage(Pageable pageable) {
+		return reviewRepository.findAll(pageable);
 	}
 	
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Customer;
@@ -47,6 +49,11 @@ public class CustomerServiceImpl implements CustomerService {
 			customers.add(customer);
 		}
 		return customers;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Customer> findAllByPage(Pageable pageable) {
+		return customerRepository.findAll(pageable);
 	}
 	
 }

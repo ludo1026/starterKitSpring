@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telosys.starterkits.bean.Badge;
@@ -47,6 +49,11 @@ public class BadgeServiceImpl implements BadgeService {
 			badges.add(badge);
 		}
 		return badges;
+	}
+	
+	@Transactional(readOnly=true)
+	public Page<Badge> findAllByPage(Pageable pageable) {
+		return badgeRepository.findAll(pageable);
 	}
 	
 }

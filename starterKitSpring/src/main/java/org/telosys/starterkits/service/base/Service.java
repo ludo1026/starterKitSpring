@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Service.
  *
@@ -44,5 +47,7 @@ public interface Service<T extends Serializable, ID extends Serializable> {
 	 * @return list entities
 	 */
 	List<T> search(final Map<String,Object> criteria);
+
+	public Page<T> findAllByPage(Pageable pageable);
 
 }
