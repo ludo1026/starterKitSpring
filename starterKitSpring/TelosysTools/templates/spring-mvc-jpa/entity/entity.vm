@@ -27,7 +27,7 @@ package ${target.javaPackageFromFolder($SRC)};
 
 import java.io.Serializable;
 
-//import javax.validation.constraints.* ;
+import javax.validation.constraints.* ;
 //import org.hibernate.validator.constraints.* ;
 
 #foreach( $import in $entity.imports )
@@ -83,12 +83,14 @@ public class $entity.name implements Serializable
 
 #else 
 $keyField.jpaAnnotations(4)
+$keyField.beanValidationAnnotationsJSR303(4)
     private $keyType $keyName#if($keyField.hasInitialValue()) = ${keyField.initialValue}#end;
 
 #end
 ##-- ENTITY DATA FIELDS 
 #foreach( $field in $dataFields )
 $field.jpaAnnotations(4)
+$field.beanValidationAnnotationsJSR303(4)
     private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
 #end
