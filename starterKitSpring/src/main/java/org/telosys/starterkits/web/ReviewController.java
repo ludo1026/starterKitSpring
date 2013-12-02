@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -60,12 +61,12 @@ public class ReviewController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("reviewForm") Review review, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Review review, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			review = reviewService.save(review);
 			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getId().getCustomerCode(), review.getId().getBookId());
 		} else {
-			return null;
+			return "review/edit";
 		}
 	}
 

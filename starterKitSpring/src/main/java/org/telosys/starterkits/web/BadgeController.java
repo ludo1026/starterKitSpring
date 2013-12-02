@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -59,12 +60,12 @@ public class BadgeController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("badgeForm") Badge badge, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Badge badge, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			badge = badgeService.save(badge);
 			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
 		} else {
-			return null;
+			return "badge/edit";
 		}
 	}
 

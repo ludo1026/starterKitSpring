@@ -5,6 +5,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="country"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/country" var="url_form_submit" />
@@ -15,11 +19,17 @@
 						<td>
 							<form:input path="code" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_code_error_id" path="code" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="country.name"/></th>
 						<td>
 							<form:input path="name" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
 					</tr>
 					<tr>

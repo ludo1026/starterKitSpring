@@ -7,6 +7,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="review"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/review" var="url_form_submit" />
@@ -17,11 +21,17 @@
 						<td>
 							<form:input path="id.customerCode" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.customerCode_error_id" path="id.customerCode" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="review.bookId"/></th>
 						<td>
 							<form:input path="id.bookId" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.bookId_error_id" path="id.bookId" />
 						</td>
 					</tr>
 					<tr>
@@ -29,11 +39,17 @@
 						<td>
 							<form:input path="reviewText" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_reviewText_error_id" path="reviewText" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="review.reviewNote"/></th>
 						<td>
 							<form:input path="reviewNote" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_reviewNote_error_id" path="reviewNote" />
 						</td>
 					</tr>
 					<tr>
@@ -41,11 +57,17 @@
 						<td>
 							<form:input path="creation" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_creation_error_id" path="creation" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="review.lastUpdate"/></th>
 						<td>
 							<form:input path="lastUpdate" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_lastUpdate_error_id" path="lastUpdate" />
 						</td>
 					</tr>
 					<tr>

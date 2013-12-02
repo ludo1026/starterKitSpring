@@ -7,6 +7,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="bookorderitem"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/bookorderitem" var="url_form_submit" />
@@ -17,11 +21,17 @@
 						<td>
 							<form:input path="id.bookOrderId" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.bookOrderId_error_id" path="id.bookOrderId" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="bookorderitem.bookId"/></th>
 						<td>
 							<form:input path="id.bookId" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.bookId_error_id" path="id.bookId" />
 						</td>
 					</tr>
 					<tr>
@@ -29,11 +39,17 @@
 						<td>
 							<form:input path="quantity" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_quantity_error_id" path="quantity" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="bookorderitem.price"/></th>
 						<td>
 							<form:input path="price" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_price_error_id" path="price" />
 						</td>
 					</tr>
 					<tr>

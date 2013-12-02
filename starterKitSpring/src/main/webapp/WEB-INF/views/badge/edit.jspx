@@ -5,6 +5,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="badge"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/badge" var="url_form_submit" />
@@ -15,17 +19,26 @@
 						<td>
 							<form:input path="badgeNumber" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_badgeNumber_error_id" path="badgeNumber" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="badge.authorizationLevel"/></th>
 						<td>
 							<form:input path="authorizationLevel" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_authorizationLevel_error_id" path="authorizationLevel" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="badge.endOfValidity"/></th>
 						<td>
 							<form:input path="endOfValidity" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_endOfValidity_error_id" path="endOfValidity" />
 						</td>
 					</tr>
 					<tr>

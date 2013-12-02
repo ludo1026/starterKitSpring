@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -59,12 +60,12 @@ public class ShopController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("shopForm") Shop shop, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Shop shop, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			shop = shopService.save(shop);
 			return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
 		} else {
-			return null;
+			return "shop/edit";
 		}
 	}
 

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -59,12 +60,12 @@ public class CountryController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("countryForm") Country country, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Country country, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			country = countryService.save(country);
 			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
 		} else {
-			return null;
+			return "country/edit";
 		}
 	}
 

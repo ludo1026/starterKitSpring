@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -60,12 +61,12 @@ public class BookOrderItemController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("bookorderitemForm") BookOrderItem bookorderitem, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid BookOrderItem bookorderitem, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			bookorderitem = bookorderitemService.save(bookorderitem);
 			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getId().getBookOrderId(), bookorderitem.getId().getBookId());
 		} else {
-			return null;
+			return "bookorderitem/edit";
 		}
 	}
 

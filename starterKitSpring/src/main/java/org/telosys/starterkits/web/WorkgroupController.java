@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -59,12 +60,12 @@ public class WorkgroupController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("workgroupForm") Workgroup workgroup, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Workgroup workgroup, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			workgroup = workgroupService.save(workgroup);
 			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
 		} else {
-			return null;
+			return "workgroup/edit";
 		}
 	}
 

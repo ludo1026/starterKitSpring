@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -98,12 +99,12 @@ public class ${beanClass.name}Controller
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("${beanClass.name.toLowerCase()}Form") ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
 			return "redirect:/${beanClass.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
 		} else {
-			return null;
+			return "${beanClass.name.toLowerCase()}/edit";
 		}
 	}
 

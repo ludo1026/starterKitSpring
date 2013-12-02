@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -59,12 +60,12 @@ public class EmployeeController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@ModelAttribute("employeeForm") Employee employee, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Employee employee, BindingResult result, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			employee = employeeService.save(employee);
 			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
 		} else {
-			return null;
+			return "employee/edit";
 		}
 	}
 

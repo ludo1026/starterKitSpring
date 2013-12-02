@@ -48,6 +48,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="${beanClass.name.toLowerCase()}"/></legend>
+		
+		<c:if test="${_}{not empty message}">
+			<div id="message" class="${_}{message.type}">${_}{message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/${beanClass.name.toLowerCase()}" var="url_form_submit" />
@@ -73,6 +77,9 @@
 #else
 							<form:input path="$fieldName" class="form-control"/>
 #end
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_${fieldName}_error_id" path="$fieldName" />
 						</td>
 					</tr>
 #end

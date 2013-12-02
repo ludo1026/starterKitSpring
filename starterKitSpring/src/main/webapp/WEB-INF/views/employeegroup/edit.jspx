@@ -7,6 +7,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="employeegroup"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/employeegroup" var="url_form_submit" />
@@ -17,11 +21,17 @@
 						<td>
 							<form:input path="id.employeeCode" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.employeeCode_error_id" path="id.employeeCode" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="employeegroup.groupId"/></th>
 						<td>
 							<form:input path="id.groupId" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id.groupId_error_id" path="id.groupId" />
 						</td>
 					</tr>
 					<tr>

@@ -19,7 +19,7 @@ reset=R\u00e9initialiser
 ${entity.name.toLowerCase()}=${entity.name}
 ${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
 #foreach( $field in ${entity.attributes} )
-${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.name}
+${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
 #end
 
 #end

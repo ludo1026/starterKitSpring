@@ -5,6 +5,10 @@
 
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="author"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/author" var="url_form_submit" />
@@ -15,17 +19,26 @@
 						<td>
 							<form:input path="id" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_id_error_id" path="id" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="author.firstName"/></th>
 						<td>
 							<form:input path="firstName" class="form-control"/>
 						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_firstName_error_id" path="firstName" />
+						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="author.lastName"/></th>
 						<td>
 							<form:input path="lastName" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_lastName_error_id" path="lastName" />
 						</td>
 					</tr>
 					<tr>
