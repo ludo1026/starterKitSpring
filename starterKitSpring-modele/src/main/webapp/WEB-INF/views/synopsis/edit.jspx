@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+<jsp:output omit-xml-declaration="yes"/>
+
+	<fieldset class="col-sm-12 bordure">
+		<legend class="legende"><s:message code="synopsis"/></legend>
+		
+		<c:if test="${not empty message}">
+			<div id="message" class="${message.type}">${message.message}</div>
+		</c:if>
+
+	    <div class="container">
+	    	<s:url value="/synopsis" var="url_form_submit" />
+			<form:form modelAttribute="synopsis" cssClass="well" method="PUT" action="${url_form_submit}">
+				<table>
+					<tr>
+						<th align="left"><s:message code="synopsis.bookId"/></th>
+						<td>
+							<form:input path="bookId" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_bookId_error_id" path="bookId" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="synopsis.synopsis"/></th>
+						<td>
+							<form:input path="synopsis" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_synopsis_error_id" path="synopsis" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<form:errors/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
+							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
+							<s:url var="deleteSynopsisUrl" value="/synopsis/delete/${bookId}"/>
+							<a class="btn btn-info" href="${deleteSynopsisUrl}"><s:message code="delete"/></a>
+							<s:url var="allSynopsisUrl" value="/synopsis"/>
+							<a class="btn btn-info" href="${allSynopsisUrl}"><s:message code="list"/></a>
+						</td>
+					</tr>
+				</table>
+			</form:form>
+		</div>	
+    </fieldset>
+</div>
