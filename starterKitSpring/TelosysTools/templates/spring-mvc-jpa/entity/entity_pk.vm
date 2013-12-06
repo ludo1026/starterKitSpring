@@ -27,7 +27,7 @@ public class ${entity.name}Id implements Serializable
 ##-- ENTITY KEY ATTRIBUTES 
 #foreach( $field in $entity.keyAttributes )
 $field.jpaAnnotationsEmbeddedID(4)
-    private $field.formatedType(0) $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
+    private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
     
 #end
 ##-- CONSTRUCTORS
@@ -48,13 +48,13 @@ $field.jpaAnnotationsEmbeddedID(4)
 #foreach( $field in $entity.keyAttributes )
 #if ( $field.databaseName ) 
 #end
-#if ( $field.setter )    public void ${field.setter}( $field.type value )
+#if ( $field.setter )    public void ${field.setter}( $field.wrapperType value )
     {
         this.$field.name = value;
     }
 
 #end
-#if ( $field.getter )    public $field.type ${field.getter}()
+#if ( $field.getter )    public $field.wrapperType ${field.getter}()
     {
         return this.$field.name;
     }

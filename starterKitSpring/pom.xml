@@ -12,6 +12,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- Add here the JDBC driver -->
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>

@@ -51,6 +51,10 @@
         	</a>
 			<spring:url value="/" var="url_home"/>
 			<a class="navbar-brand" href="${url_home}"><spring:message code="back.welcome"/></a>
+			<ul class="nav navbar-nav">
+				<li><a class="navbar-brand" href="?lang=en_US"><span class="glyphicon glyphicon-th-large"></span>English</a></li>
+				<li><a class="navbar-brand" href="?lang=fr_FR"><span class="glyphicon glyphicon-th-large"></span>Français</a></li>
+			</ul>
         </div>
       </div>
     </nav>
