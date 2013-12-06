@@ -5,35 +5,18 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="review"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="review"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/review" var="url_form_submit" />
 			<form:form modelAttribute="review" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="review.bookId"/></th>
-						<td>
-							<form:input path="id.bookId" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.bookId_error_id" path="id.bookId" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="review.customerCode"/></th>
-						<td>
-							<form:input path="id.customerCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.customerCode_error_id" path="id.customerCode" />
-						</td>
-					</tr>
 					<tr>
 						<th align="left"><s:message code="review.creation"/></th>
 						<td>
@@ -71,6 +54,14 @@
 						</td>
 					</tr>
 					<tr>
+						<th align="left"><s:message code="review.book"/></th>
+						<td><form:select class="form-control" id="_book_id" items="${books}" path="book"/></td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="review.customer"/></th>
+						<td><form:select class="form-control" id="_customer_id" items="${customers}" path="customer"/></td>
+					</tr>
+					<tr>
 						<td colspan="2">
 							<form:errors/>
 						</td>
@@ -87,6 +78,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Book;
 import org.telosys.starterkits.service.BookService;
+import org.telosys.starterkits.service.PublisherService;
+import org.telosys.starterkits.service.AuthorService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
@@ -35,6 +37,10 @@ public class BookController
     private BookService bookService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+    private PublisherService publisherService;
+	@Resource
+    private AuthorService authorService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -44,7 +50,8 @@ public class BookController
 	void populateEditForm(Model uiModel, Book book) {
 		uiModel.addAttribute("book", book);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
+    	uiModel.addAttribute("publishers", publisherService.loadAll());
+    	uiModel.addAttribute("authors", authorService.loadAll());
 	}
 
 	@RequestMapping("/create")

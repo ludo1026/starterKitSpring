@@ -13,6 +13,8 @@ import $import;
 import $import;
 #end
 
+#set( $entityId = $entity.name + "Id" )
+
 /**
  * Composite primary key for entity "${entity.name}" ( stored in table "${entity.databaseTable}" )
  *
@@ -76,4 +78,6 @@ $field.jpaAnnotationsEmbeddedID(4)
         return sb.toString();
     }
 
+$java.equalsMethod($entityId, $entity.keyAttributes)
+$java.hashCodeMethod($entityId, $entity.keyAttributes)
 }

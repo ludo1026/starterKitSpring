@@ -44,7 +44,6 @@ public class AuthorController
 	void populateEditForm(Model uiModel, Author author) {
 		uiModel.addAttribute("author", author);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")

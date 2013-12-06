@@ -44,7 +44,6 @@ public class WorkgroupController
 	void populateEditForm(Model uiModel, Workgroup workgroup) {
 		uiModel.addAttribute("workgroup", workgroup);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")

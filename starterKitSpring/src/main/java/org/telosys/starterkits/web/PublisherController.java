@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Publisher;
 import org.telosys.starterkits.service.PublisherService;
+import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
@@ -35,6 +36,8 @@ public class PublisherController
     private PublisherService publisherService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+    private CountryService countryService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -44,7 +47,7 @@ public class PublisherController
 	void populateEditForm(Model uiModel, Publisher publisher) {
 		uiModel.addAttribute("publisher", publisher);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
+    	uiModel.addAttribute("countrys", countryService.loadAll());
 	}
 
 	@RequestMapping("/create")

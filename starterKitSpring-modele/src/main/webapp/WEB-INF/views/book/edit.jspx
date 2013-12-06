@@ -26,19 +26,19 @@
 					<tr>
 						<th align="left"><s:message code="book.publisherId"/></th>
 						<td>
-							<form:input path="publisherId" class="form-control"/>
+							<form:input path="publisher.code" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_publisherId_error_id" path="publisherId" />
+							<form:errors cssClass="alert alert-danger" id="_publisher_publisherId_error_id" path="publisher.code" />
 						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="book.authorId"/></th>
 						<td>
-							<form:input path="authorId" class="form-control"/>
+							<form:input path="author.id" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_authorId_error_id" path="authorId" />
+							<form:errors cssClass="alert alert-danger" id="_author_authorId_error_id" path="author.id" />
 						</td>
 					</tr>
 					<tr>

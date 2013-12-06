@@ -45,7 +45,6 @@ public class EmployeeGroupController
 	void populateEditForm(Model uiModel, EmployeeGroup employeegroup) {
 		uiModel.addAttribute("employeegroup", employeegroup);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")

@@ -44,7 +44,6 @@ public class BadgeController
 	void populateEditForm(Model uiModel, Badge badge) {
 		uiModel.addAttribute("badge", badge);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")

@@ -44,7 +44,6 @@ public class CountryController
 	void populateEditForm(Model uiModel, Country country) {
 		uiModel.addAttribute("country", country);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")

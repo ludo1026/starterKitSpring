@@ -3,14 +3,15 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="country"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="country"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/country" var="url_form_submit" />
 			<form:form modelAttribute="country" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
@@ -49,6 +50,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

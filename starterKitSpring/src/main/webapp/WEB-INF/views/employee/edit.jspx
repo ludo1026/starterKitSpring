@@ -3,14 +3,15 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="employee"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="employee"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/employee" var="url_form_submit" />
 			<form:form modelAttribute="employee" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
@@ -60,22 +61,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="employee.badgeNumber"/></th>
-						<td>
-							<form:input path="badgeNumber" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_badgeNumber_error_id" path="badgeNumber" />
-						</td>
+						<th align="left"><s:message code="employee.shop"/></th>
+						<td><form:select class="form-control" id="_shop_id" items="${shops}" path="shop"/></td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="employee.shopCode"/></th>
-						<td>
-							<form:input path="shopCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_shopCode_error_id" path="shopCode" />
-						</td>
+						<th align="left"><s:message code="employee.badge"/></th>
+						<td><form:select class="form-control" id="_badge_id" items="${badges}" path="badge"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -94,6 +85,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

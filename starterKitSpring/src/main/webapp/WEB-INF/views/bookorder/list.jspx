@@ -2,19 +2,23 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
-		<div class="container">
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="bookorder"/></legend>
+		
 			<c:if test="${not empty message}">
 				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 			</c:if>
+
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th><s:message code="bookorder.id"/></th>
 						<th><s:message code="bookorder.date"/></th>
 						<th><s:message code="bookorder.state"/></th>
-						<th><s:message code="bookorder.customerCode"/></th>
-						<th><s:message code="bookorder.employeeCode"/></th>
-						<th><s:message code="bookorder.shopCode"/></th>
+						<th><s:message code="bookorder.shop"/></th>
+						<th><s:message code="bookorder.customer"/></th>
+						<th><s:message code="bookorder.employee"/></th>
 						<s:url value="/bookorder/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -25,14 +29,15 @@
 							<td>${bookorder.id}</td>
 							<td>${bookorder.date}</td>
 							<td>${bookorder.state}</td>
-							<td>${bookorder.customerCode}</td>
-							<td>${bookorder.employeeCode}</td>
-							<td>${bookorder.shopCode}</td>
+							<td>${bookorder.shop}</td>
+							<td>${bookorder.customer}</td>
+							<td>${bookorder.employee}</td>
 							<s:url var="editBookOrderUrl" value="/bookorder/${bookorder.id}"/>
 							<td><a class="btn btn-info" href="${editBookOrderUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
-		</div>
+		</fieldset>
+	</div>
 </div>

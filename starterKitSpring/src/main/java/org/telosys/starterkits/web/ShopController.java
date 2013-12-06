@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Shop;
 import org.telosys.starterkits.service.ShopService;
+import org.telosys.starterkits.service.EmployeeService;
+import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
@@ -35,6 +37,10 @@ public class ShopController
     private ShopService shopService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+    private EmployeeService employeeService;
+	@Resource
+    private CountryService countryService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -44,7 +50,8 @@ public class ShopController
 	void populateEditForm(Model uiModel, Shop shop) {
 		uiModel.addAttribute("shop", shop);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
+    	uiModel.addAttribute("employees", employeeService.loadAll());
+    	uiModel.addAttribute("countrys", countryService.loadAll());
 	}
 
 	@RequestMapping("/create")

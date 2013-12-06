@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Review;
 import org.telosys.starterkits.bean.ReviewId;
    import org.telosys.starterkits.service.ReviewService;
+import org.telosys.starterkits.service.BookService;
+import org.telosys.starterkits.service.CustomerService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
@@ -36,6 +38,10 @@ public class ReviewController
     private ReviewService reviewService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+    private BookService bookService;
+	@Resource
+    private CustomerService customerService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -45,7 +51,8 @@ public class ReviewController
 	void populateEditForm(Model uiModel, Review review) {
 		uiModel.addAttribute("review", review);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
+    	uiModel.addAttribute("books", bookService.loadAll());
+    	uiModel.addAttribute("customers", customerService.loadAll());
 	}
 
 	@RequestMapping("/create")
