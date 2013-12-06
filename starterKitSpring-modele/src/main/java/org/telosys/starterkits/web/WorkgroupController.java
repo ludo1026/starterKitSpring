@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Workgroup;
-
 import org.telosys.starterkits.service.WorkgroupService;
+import org.telosys.starterkits.web.bean.Message;
+import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
@@ -43,7 +44,6 @@ public class WorkgroupController
 	void populateEditForm(Model uiModel, Workgroup workgroup) {
 		uiModel.addAttribute("workgroup", workgroup);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")
@@ -60,9 +60,10 @@ public class WorkgroupController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Workgroup workgroup, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Workgroup workgroup, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			workgroup = workgroupService.save(workgroup);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
 		} else {
 			return "workgroup/edit";

@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Book;
-
 import org.telosys.starterkits.service.BookService;
+import org.telosys.starterkits.service.PublisherService;
+import org.telosys.starterkits.service.AuthorService;
+import org.telosys.starterkits.web.bean.Message;
+import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
@@ -34,6 +37,10 @@ public class BookController
     private BookService bookService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+    private PublisherService publisherService;
+	@Resource
+    private AuthorService authorService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -43,7 +50,8 @@ public class BookController
 	void populateEditForm(Model uiModel, Book book) {
 		uiModel.addAttribute("book", book);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
+    	uiModel.addAttribute("publishers", publisherService.loadAll());
+    	uiModel.addAttribute("authors", authorService.loadAll());
 	}
 
 	@RequestMapping("/create")
@@ -60,9 +68,10 @@ public class BookController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Book book, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Book book, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			book = bookService.save(book);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
 		} else {
 			return "book/edit";

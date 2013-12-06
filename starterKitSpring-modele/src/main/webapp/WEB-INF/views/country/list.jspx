@@ -2,7 +2,14 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
-		<div class="container">
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="country"/></legend>
+		
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
+
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -23,5 +30,6 @@
 					</c:forEach>
 				</tbody>
 			</table>
-		</div>
+		</fieldset>
+	</div>
 </div>

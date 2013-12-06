@@ -3,14 +3,15 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="shop"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="shop"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/shop" var="url_form_submit" />
 			<form:form modelAttribute="shop" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
@@ -21,15 +22,6 @@
 						</td>
 						<td>
 							<form:errors cssClass="alert alert-danger" id="_code_error_id" path="code" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="shop.name"/></th>
-						<td>
-							<form:input path="name" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
 					</tr>
 					<tr>
@@ -51,39 +43,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="shop.zipCode"/></th>
-						<td>
-							<form:input path="zipCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
-						</td>
-					</tr>
-					<tr>
 						<th align="left"><s:message code="shop.city"/></th>
 						<td>
 							<form:input path="city" class="form-control"/>
 						</td>
 						<td>
 							<form:errors cssClass="alert alert-danger" id="_city_error_id" path="city" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="shop.countryCode"/></th>
-						<td>
-							<form:input path="countryCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_countryCode_error_id" path="countryCode" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="shop.phone"/></th>
-						<td>
-							<form:input path="phone" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_phone_error_id" path="phone" />
 						</td>
 					</tr>
 					<tr>
@@ -96,13 +61,39 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="shop.executive"/></th>
+						<th align="left"><s:message code="shop.name"/></th>
 						<td>
-							<form:input path="executive" class="form-control"/>
+							<form:input path="name" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_executive_error_id" path="executive" />
+							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.phone"/></th>
+						<td>
+							<form:input path="phone" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_phone_error_id" path="phone" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.zipCode"/></th>
+						<td>
+							<form:input path="zipCode" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.employee"/></th>
+						<td><form:select class="form-control" id="_employee_id" items="${employees}" path="employee"/></td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.country"/></th>
+						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -121,6 +112,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

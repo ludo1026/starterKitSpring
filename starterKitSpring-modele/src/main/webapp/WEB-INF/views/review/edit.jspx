@@ -5,53 +5,18 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="review"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="review"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/review" var="url_form_submit" />
 			<form:form modelAttribute="review" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="review.customerCode"/></th>
-						<td>
-							<form:input path="id.customerCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.customerCode_error_id" path="id.customerCode" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="review.bookId"/></th>
-						<td>
-							<form:input path="id.bookId" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.bookId_error_id" path="id.bookId" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="review.reviewText"/></th>
-						<td>
-							<form:input path="reviewText" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_reviewText_error_id" path="reviewText" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="review.reviewNote"/></th>
-						<td>
-							<form:input path="reviewNote" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_reviewNote_error_id" path="reviewNote" />
-						</td>
-					</tr>
 					<tr>
 						<th align="left"><s:message code="review.creation"/></th>
 						<td>
@@ -71,6 +36,32 @@
 						</td>
 					</tr>
 					<tr>
+						<th align="left"><s:message code="review.reviewNote"/></th>
+						<td>
+							<form:input path="reviewNote" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_reviewNote_error_id" path="reviewNote" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="review.reviewText"/></th>
+						<td>
+							<form:input path="reviewText" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_reviewText_error_id" path="reviewText" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="review.book"/></th>
+						<td><form:select class="form-control" id="_book_id" items="${books}" path="book"/></td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="review.customer"/></th>
+						<td><form:select class="form-control" id="_customer_id" items="${customers}" path="customer"/></td>
+					</tr>
+					<tr>
 						<td colspan="2">
 							<form:errors/>
 						</td>
@@ -79,7 +70,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteReviewUrl" value="/review/delete/${id.customerCode}/${id.bookId}"/>
+							<s:url var="deleteReviewUrl" value="/review/delete/${id.bookId}/${id.customerCode}"/>
 							<a class="btn btn-info" href="${deleteReviewUrl}"><s:message code="delete"/></a>
 							<s:url var="allReviewUrl" value="/review"/>
 							<a class="btn btn-info" href="${allReviewUrl}"><s:message code="list"/></a>
@@ -87,6 +78,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

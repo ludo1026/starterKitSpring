@@ -3,14 +3,15 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
-	<fieldset class="col-sm-12 bordure">
-		<legend class="legende"><s:message code="customer"/></legend>
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="customer"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
-		</c:if>
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 
-	    <div class="container">
+	    
 	    	<s:url value="/customer" var="url_form_submit" />
 			<form:form modelAttribute="customer" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
@@ -24,12 +25,21 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="customer.countryCode"/></th>
+						<th align="left"><s:message code="customer.age"/></th>
 						<td>
-							<form:input path="countryCode" class="form-control"/>
+							<form:input path="age" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_countryCode_error_id" path="countryCode" />
+							<form:errors cssClass="alert alert-danger" id="_age_error_id" path="age" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="customer.city"/></th>
+						<td>
+							<form:input path="city" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_city_error_id" path="city" />
 						</td>
 					</tr>
 					<tr>
@@ -69,33 +79,6 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="customer.age"/></th>
-						<td>
-							<form:input path="age" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_age_error_id" path="age" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="customer.city"/></th>
-						<td>
-							<form:input path="city" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_city_error_id" path="city" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="customer.zipCode"/></th>
-						<td>
-							<form:input path="zipCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
-						</td>
-					</tr>
-					<tr>
 						<th align="left"><s:message code="customer.phone"/></th>
 						<td>
 							<form:input path="phone" class="form-control"/>
@@ -114,6 +97,19 @@
 						</td>
 					</tr>
 					<tr>
+						<th align="left"><s:message code="customer.zipCode"/></th>
+						<td>
+							<form:input path="zipCode" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="customer.country"/></th>
+						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country"/></td>
+					</tr>
+					<tr>
 						<td colspan="2">
 							<form:errors/>
 						</td>
@@ -130,6 +126,6 @@
 					</tr>
 				</table>
 			</form:form>
-		</div>	
-    </fieldset>
+	    </fieldset>
+	</div>	
 </div>

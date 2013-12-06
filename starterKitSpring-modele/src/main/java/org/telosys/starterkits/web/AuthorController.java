@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
-
 import javax.validation.Valid;
-
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -46,7 +44,6 @@ public class AuthorController
 	void populateEditForm(Model uiModel, Author author) {
 		uiModel.addAttribute("author", author);
 		// Listes déroulantes des objets liés
-		// uiModel.addAttribute("bases", Base.findAllBases());
 	}
 
 	@RequestMapping("/create")
