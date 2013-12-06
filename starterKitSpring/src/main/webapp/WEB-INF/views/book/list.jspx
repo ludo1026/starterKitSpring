@@ -3,19 +3,22 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 		<div class="container">
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th><s:message code="book.id"/></th>
-						<th><s:message code="book.publisherId"/></th>
-						<th><s:message code="book.authorId"/></th>
-						<th><s:message code="book.isbn"/></th>
-						<th><s:message code="book.title"/></th>
-						<th><s:message code="book.price"/></th>
-						<th><s:message code="book.quantity"/></th>
-						<th><s:message code="book.discount"/></th>
 						<th><s:message code="book.availability"/></th>
 						<th><s:message code="book.bestSeller"/></th>
+						<th><s:message code="book.discount"/></th>
+						<th><s:message code="book.isbn"/></th>
+						<th><s:message code="book.price"/></th>
+						<th><s:message code="book.quantity"/></th>
+						<th><s:message code="book.title"/></th>
+						<th><s:message code="book.authorId"/></th>
+						<th><s:message code="book.publisherId"/></th>
 						<s:url value="/book/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -24,15 +27,15 @@
 					<c:forEach items="${listBooks}" var="book">
 						<tr>
 							<td>${book.id}</td>
-							<td>${book.publisherId}</td>
-							<td>${book.authorId}</td>
-							<td>${book.isbn}</td>
-							<td>${book.title}</td>
-							<td>${book.price}</td>
-							<td>${book.quantity}</td>
-							<td>${book.discount}</td>
 							<td>${book.availability}</td>
 							<td>${book.bestSeller}</td>
+							<td>${book.discount}</td>
+							<td>${book.isbn}</td>
+							<td>${book.price}</td>
+							<td>${book.quantity}</td>
+							<td>${book.title}</td>
+							<td>${book.authorId}</td>
+							<td>${book.publisherId}</td>
 							<s:url var="editBookUrl" value="/book/${book.id}"/>
 							<td><a class="btn btn-info" href="${editBookUrl}"><s:message code="edit"/></a></td>
 						</tr>

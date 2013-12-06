@@ -7,7 +7,7 @@
 		<legend class="legende"><s:message code="bookorder"/></legend>
 		
 		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
+			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 		</c:if>
 
 	    <div class="container">
@@ -24,12 +24,21 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="bookorder.shopCode"/></th>
+						<th align="left"><s:message code="bookorder.date"/></th>
 						<td>
-							<form:input path="shopCode" class="form-control"/>
+							<form:input path="date" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_shopCode_error_id" path="shopCode" />
+							<form:errors cssClass="alert alert-danger" id="_date_error_id" path="date" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="bookorder.state"/></th>
+						<td>
+							<form:input path="state" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_state_error_id" path="state" />
 						</td>
 					</tr>
 					<tr>
@@ -51,21 +60,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="bookorder.date"/></th>
+						<th align="left"><s:message code="bookorder.shopCode"/></th>
 						<td>
-							<form:input path="date" class="form-control"/>
+							<form:input path="shopCode" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_date_error_id" path="date" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="bookorder.state"/></th>
-						<td>
-							<form:input path="state" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_state_error_id" path="state" />
+							<form:errors cssClass="alert alert-danger" id="_shopCode_error_id" path="shopCode" />
 						</td>
 					</tr>
 					<tr>

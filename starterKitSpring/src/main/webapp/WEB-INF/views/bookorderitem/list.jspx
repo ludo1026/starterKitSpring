@@ -3,13 +3,16 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 		<div class="container">
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="bookorderitem.bookOrderId"/></th>
 						<th><s:message code="bookorderitem.bookId"/></th>
-						<th><s:message code="bookorderitem.quantity"/></th>
+						<th><s:message code="bookorderitem.bookOrderId"/></th>
 						<th><s:message code="bookorderitem.price"/></th>
+						<th><s:message code="bookorderitem.quantity"/></th>
 						<s:url value="/bookorderitem/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -17,11 +20,11 @@
 				<tbody>
 					<c:forEach items="${listBookOrderItems}" var="bookorderitem">
 						<tr>
-							<td>${bookorderitem.id.bookOrderId}</td>
 							<td>${bookorderitem.id.bookId}</td>
-							<td>${bookorderitem.quantity}</td>
+							<td>${bookorderitem.id.bookOrderId}</td>
 							<td>${bookorderitem.price}</td>
-							<s:url var="editBookOrderItemUrl" value="/bookorderitem/${bookorderitem.id.bookOrderId}/${bookorderitem.id.bookId}"/>
+							<td>${bookorderitem.quantity}</td>
+							<s:url var="editBookOrderItemUrl" value="/bookorderitem/${bookorderitem.id.bookId}/${bookorderitem.id.bookOrderId}"/>
 							<td><a class="btn btn-info" href="${editBookOrderItemUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

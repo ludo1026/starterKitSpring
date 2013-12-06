@@ -7,7 +7,7 @@
 		<legend class="legende"><s:message code="workgroup"/></legend>
 		
 		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
+			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 		</c:if>
 
 	    <div class="container">
@@ -24,12 +24,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="workgroup.name"/></th>
+						<th align="left"><s:message code="workgroup.creationDate"/></th>
 						<td>
-							<form:input path="name" class="form-control"/>
+							<form:input path="creationDate" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
+							<form:errors cssClass="alert alert-danger" id="_creationDate_error_id" path="creationDate" />
 						</td>
 					</tr>
 					<tr>
@@ -42,12 +42,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="workgroup.creationDate"/></th>
+						<th align="left"><s:message code="workgroup.name"/></th>
 						<td>
-							<form:input path="creationDate" class="form-control"/>
+							<form:input path="name" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_creationDate_error_id" path="creationDate" />
+							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
 					</tr>
 					<tr>

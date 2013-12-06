@@ -7,7 +7,7 @@
 		<legend class="legende"><s:message code="book"/></legend>
 		
 		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
+			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 		</c:if>
 
 	    <div class="container">
@@ -24,21 +24,30 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="book.publisherId"/></th>
+						<th align="left"><s:message code="book.availability"/></th>
 						<td>
-							<form:input path="publisherId" class="form-control"/>
+							<form:input path="availability" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_publisherId_error_id" path="publisherId" />
+							<form:errors cssClass="alert alert-danger" id="_availability_error_id" path="availability" />
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="book.authorId"/></th>
+						<th align="left"><s:message code="book.bestSeller"/></th>
 						<td>
-							<form:input path="authorId" class="form-control"/>
+							<form:input path="bestSeller" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_authorId_error_id" path="authorId" />
+							<form:errors cssClass="alert alert-danger" id="_bestSeller_error_id" path="bestSeller" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="book.discount"/></th>
+						<td>
+							<form:input path="discount" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_discount_error_id" path="discount" />
 						</td>
 					</tr>
 					<tr>
@@ -48,15 +57,6 @@
 						</td>
 						<td>
 							<form:errors cssClass="alert alert-danger" id="_isbn_error_id" path="isbn" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="book.title"/></th>
-						<td>
-							<form:input path="title" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_title_error_id" path="title" />
 						</td>
 					</tr>
 					<tr>
@@ -78,30 +78,30 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="book.discount"/></th>
+						<th align="left"><s:message code="book.title"/></th>
 						<td>
-							<form:input path="discount" class="form-control"/>
+							<form:input path="title" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_discount_error_id" path="discount" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="book.availability"/></th>
-						<td>
-							<form:input path="availability" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_availability_error_id" path="availability" />
+							<form:errors cssClass="alert alert-danger" id="_title_error_id" path="title" />
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="book.bestSeller"/></th>
+						<th align="left"><s:message code="book.authorId"/></th>
 						<td>
-							<form:input path="bestSeller" class="form-control"/>
+							<form:input path="authorId" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_bestSeller_error_id" path="bestSeller" />
+							<form:errors cssClass="alert alert-danger" id="_authorId_error_id" path="authorId" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="book.publisherId"/></th>
+						<td>
+							<form:input path="publisherId" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_publisherId_error_id" path="publisherId" />
 						</td>
 					</tr>
 					<tr>

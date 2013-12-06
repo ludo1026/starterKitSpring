@@ -3,6 +3,6 @@
 <db driver="org.postgresql.Driver" id="0" isolationLevel="" name="POSTGRESQL database" poolSize="1" url="jdbc:postgresql://localhost:5432/bookstore">
 <property name="user" value="bookstore"/>
 <property name="password" value="bookstore"/>
-<metadata catalog="" schema="TO_BE_DEFINED" table-name-pattern="%" table-types="TABLE"/>
+<metadata catalog="bookstore" schema="" table-name-pattern="%" table-types="TABLE"/>
 </db>
 </databases>

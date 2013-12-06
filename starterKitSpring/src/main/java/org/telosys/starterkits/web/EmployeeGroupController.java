@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.EmployeeGroup;
-
 import org.telosys.starterkits.bean.EmployeeGroupId;
    import org.telosys.starterkits.service.EmployeeGroupService;
+import org.telosys.starterkits.web.bean.Message;
+import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
@@ -61,9 +62,10 @@ public class EmployeeGroupController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid EmployeeGroup employeegroup, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid EmployeeGroup employeegroup, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			employeegroup = employeegroupService.save(employeegroup);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getId().getEmployeeCode(), employeegroup.getId().getGroupId());
 		} else {
 			return "employeegroup/edit";

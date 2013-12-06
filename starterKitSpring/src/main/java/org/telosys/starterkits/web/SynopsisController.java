@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Synopsis;
-
 import org.telosys.starterkits.service.SynopsisService;
+import org.telosys.starterkits.web.bean.Message;
+import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
@@ -60,9 +61,10 @@ public class SynopsisController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Synopsis synopsis, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Synopsis synopsis, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			synopsis = synopsisService.save(synopsis);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
 		} else {
 			return "synopsis/edit";

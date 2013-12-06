@@ -7,7 +7,7 @@
 		<legend class="legende"><s:message code="shop"/></legend>
 		
 		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
+			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 		</c:if>
 
 	    <div class="container">
@@ -21,15 +21,6 @@
 						</td>
 						<td>
 							<form:errors cssClass="alert alert-danger" id="_code_error_id" path="code" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="shop.name"/></th>
-						<td>
-							<form:input path="name" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
 					</tr>
 					<tr>
@@ -51,15 +42,6 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="shop.zipCode"/></th>
-						<td>
-							<form:input path="zipCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
-						</td>
-					</tr>
-					<tr>
 						<th align="left"><s:message code="shop.city"/></th>
 						<td>
 							<form:input path="city" class="form-control"/>
@@ -69,12 +51,21 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="shop.countryCode"/></th>
+						<th align="left"><s:message code="shop.email"/></th>
 						<td>
-							<form:input path="countryCode" class="form-control"/>
+							<form:input path="email" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_countryCode_error_id" path="countryCode" />
+							<form:errors cssClass="alert alert-danger" id="_email_error_id" path="email" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.name"/></th>
+						<td>
+							<form:input path="name" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_name_error_id" path="name" />
 						</td>
 					</tr>
 					<tr>
@@ -87,12 +78,21 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="shop.email"/></th>
+						<th align="left"><s:message code="shop.zipCode"/></th>
 						<td>
-							<form:input path="email" class="form-control"/>
+							<form:input path="zipCode" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_email_error_id" path="email" />
+							<form:errors cssClass="alert alert-danger" id="_zipCode_error_id" path="zipCode" />
+						</td>
+					</tr>
+					<tr>
+						<th align="left"><s:message code="shop.countryCode"/></th>
+						<td>
+							<form:input path="countryCode" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_countryCode_error_id" path="countryCode" />
 						</td>
 					</tr>
 					<tr>

@@ -50,7 +50,7 @@
 		<legend class="legende"><s:message code="${beanClass.name.toLowerCase()}"/></legend>
 		
 		<c:if test="${_}{not empty message}">
-			<div id="message" class="${_}{message.type}">${_}{message.message}</div>
+			<div id="message" class="alert alert-${_}{message.type.css}"><s:message code="${_}{message.message}"/></div>
 		</c:if>
 
 	    <div class="container">

@@ -3,17 +3,20 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 		<div class="container">
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th><s:message code="publisher.code"/></th>
-						<th><s:message code="publisher.countryCode"/></th>
-						<th><s:message code="publisher.name"/></th>
-						<th><s:message code="publisher.email"/></th>
-						<th><s:message code="publisher.contact"/></th>
 						<th><s:message code="publisher.city"/></th>
-						<th><s:message code="publisher.zipCode"/></th>
+						<th><s:message code="publisher.contact"/></th>
+						<th><s:message code="publisher.email"/></th>
+						<th><s:message code="publisher.name"/></th>
 						<th><s:message code="publisher.phone"/></th>
+						<th><s:message code="publisher.zipCode"/></th>
+						<th><s:message code="publisher.countryCode"/></th>
 						<s:url value="/publisher/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -22,13 +25,13 @@
 					<c:forEach items="${listPublishers}" var="publisher">
 						<tr>
 							<td>${publisher.code}</td>
-							<td>${publisher.countryCode}</td>
-							<td>${publisher.name}</td>
-							<td>${publisher.email}</td>
-							<td>${publisher.contact}</td>
 							<td>${publisher.city}</td>
-							<td>${publisher.zipCode}</td>
+							<td>${publisher.contact}</td>
+							<td>${publisher.email}</td>
+							<td>${publisher.name}</td>
 							<td>${publisher.phone}</td>
+							<td>${publisher.zipCode}</td>
+							<td>${publisher.countryCode}</td>
 							<s:url var="editPublisherUrl" value="/publisher/${publisher.code}"/>
 							<td><a class="btn btn-info" href="${editPublisherUrl}"><s:message code="edit"/></a></td>
 						</tr>

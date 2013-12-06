@@ -6,11 +6,12 @@
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende"><s:message code="author"/></legend>
 		
-		<c:if test="${not empty message}">
-			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
-		</c:if>
-
 	    <div class="container">
+
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
+
 	    	<s:url value="/author" var="url_form_submit" />
 			<form:form modelAttribute="author" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>

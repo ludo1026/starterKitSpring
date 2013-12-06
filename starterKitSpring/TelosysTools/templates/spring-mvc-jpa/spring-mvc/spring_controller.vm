@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ${ENTITY_PKG}.${beanClass.name};
-
 ## Clé primaire
 #if ( $beanClass.hasCompositePrimaryKey() )
 import ${ENTITY_PKG}.${beanClass.name}Id;
@@ -60,6 +59,8 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #set( $keyGetterToArg = $keyGetterToArg+$entityNameForKeyGetter+"."+${field.getter}+"()" )
 #end
 import ${ROOT_PKG}.service.${beanClass.name}Service;
+import ${ROOT_PKG}.web.bean.Message;
+import ${ROOT_PKG}.web.bean.TypeMessage;
 import ${ROOT_PKG}.web.helper.ControllerHelper;
 
 /**
@@ -99,9 +100,10 @@ public class ${beanClass.name}Controller
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/${beanClass.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
 		} else {
 			return "${beanClass.name.toLowerCase()}/edit";

@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Author;
-
 import org.telosys.starterkits.service.AuthorService;
+import org.telosys.starterkits.web.bean.Message;
+import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
 
 /**
@@ -60,9 +61,10 @@ public class AuthorController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Author author, BindingResult result, HttpServletRequest httpServletRequest) {
+	public String save(@Valid Author author, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			author = authorService.save(author);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/author/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, author.getId());
 		} else {
 			return "author/edit";

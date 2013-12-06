@@ -3,15 +3,18 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 		<div class="container">
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="review.customerCode"/></th>
 						<th><s:message code="review.bookId"/></th>
-						<th><s:message code="review.reviewText"/></th>
-						<th><s:message code="review.reviewNote"/></th>
+						<th><s:message code="review.customerCode"/></th>
 						<th><s:message code="review.creation"/></th>
 						<th><s:message code="review.lastUpdate"/></th>
+						<th><s:message code="review.reviewNote"/></th>
+						<th><s:message code="review.reviewText"/></th>
 						<s:url value="/review/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -19,13 +22,13 @@
 				<tbody>
 					<c:forEach items="${listReviews}" var="review">
 						<tr>
-							<td>${review.id.customerCode}</td>
 							<td>${review.id.bookId}</td>
-							<td>${review.reviewText}</td>
-							<td>${review.reviewNote}</td>
+							<td>${review.id.customerCode}</td>
 							<td>${review.creation}</td>
 							<td>${review.lastUpdate}</td>
-							<s:url var="editReviewUrl" value="/review/${review.id.customerCode}/${review.id.bookId}"/>
+							<td>${review.reviewNote}</td>
+							<td>${review.reviewText}</td>
+							<s:url var="editReviewUrl" value="/review/${review.id.bookId}/${review.id.customerCode}"/>
 							<td><a class="btn btn-info" href="${editReviewUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

@@ -11,6 +11,7 @@ create=Create
 edit=Edit
 delete=Delete
 save=Save
+save.ok=Saved successfully
 list=List
 reset=Reset
 

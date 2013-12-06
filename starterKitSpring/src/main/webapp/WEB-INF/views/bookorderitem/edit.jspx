@@ -9,22 +9,13 @@
 		<legend class="legende"><s:message code="bookorderitem"/></legend>
 		
 		<c:if test="${not empty message}">
-			<div id="message" class="${message.type}">${message.message}</div>
+			<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
 		</c:if>
 
 	    <div class="container">
 	    	<s:url value="/bookorderitem" var="url_form_submit" />
 			<form:form modelAttribute="bookorderitem" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="bookorderitem.bookOrderId"/></th>
-						<td>
-							<form:input path="id.bookOrderId" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.bookOrderId_error_id" path="id.bookOrderId" />
-						</td>
-					</tr>
 					<tr>
 						<th align="left"><s:message code="bookorderitem.bookId"/></th>
 						<td>
@@ -35,12 +26,12 @@
 						</td>
 					</tr>
 					<tr>
-						<th align="left"><s:message code="bookorderitem.quantity"/></th>
+						<th align="left"><s:message code="bookorderitem.bookOrderId"/></th>
 						<td>
-							<form:input path="quantity" class="form-control"/>
+							<form:input path="id.bookOrderId" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_quantity_error_id" path="quantity" />
+							<form:errors cssClass="alert alert-danger" id="_id.bookOrderId_error_id" path="id.bookOrderId" />
 						</td>
 					</tr>
 					<tr>
@@ -53,6 +44,15 @@
 						</td>
 					</tr>
 					<tr>
+						<th align="left"><s:message code="bookorderitem.quantity"/></th>
+						<td>
+							<form:input path="quantity" class="form-control"/>
+						</td>
+						<td>
+							<form:errors cssClass="alert alert-danger" id="_quantity_error_id" path="quantity" />
+						</td>
+					</tr>
+					<tr>
 						<td colspan="2">
 							<form:errors/>
 						</td>
@@ -61,7 +61,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteBookOrderItemUrl" value="/bookorderitem/delete/${id.bookOrderId}/${id.bookId}"/>
+							<s:url var="deleteBookOrderItemUrl" value="/bookorderitem/delete/${id.bookId}/${id.bookOrderId}"/>
 							<a class="btn btn-info" href="${deleteBookOrderItemUrl}"><s:message code="delete"/></a>
 							<s:url var="allBookOrderItemUrl" value="/bookorderitem"/>
 							<a class="btn btn-info" href="${allBookOrderItemUrl}"><s:message code="list"/></a>

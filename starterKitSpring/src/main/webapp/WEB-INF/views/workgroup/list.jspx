@@ -3,13 +3,16 @@
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 		<div class="container">
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th><s:message code="workgroup.id"/></th>
-						<th><s:message code="workgroup.name"/></th>
-						<th><s:message code="workgroup.description"/></th>
 						<th><s:message code="workgroup.creationDate"/></th>
+						<th><s:message code="workgroup.description"/></th>
+						<th><s:message code="workgroup.name"/></th>
 						<s:url value="/workgroup/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
 					</tr>
@@ -18,9 +21,9 @@
 					<c:forEach items="${listWorkgroups}" var="workgroup">
 						<tr>
 							<td>${workgroup.id}</td>
-							<td>${workgroup.name}</td>
-							<td>${workgroup.description}</td>
 							<td>${workgroup.creationDate}</td>
+							<td>${workgroup.description}</td>
+							<td>${workgroup.name}</td>
 							<s:url var="editWorkgroupUrl" value="/workgroup/${workgroup.id}"/>
 							<td><a class="btn btn-info" href="${editWorkgroupUrl}"><s:message code="edit"/></a></td>
 						</tr>
