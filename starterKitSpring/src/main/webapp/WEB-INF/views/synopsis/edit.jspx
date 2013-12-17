@@ -26,7 +26,7 @@
 					</tr>
 					<tr>
 						<th align="left"><s:message code="synopsis.book"/></th>
-						<td><form:select class="form-control" id="_book_id" items="${books}" path="book"/></td>
+						<td><form:select class="form-control" id="_book_id" items="${books}" path="book.id" itemValue="id"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -37,7 +37,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteSynopsisUrl" value="/synopsis/delete/${bookId}"/>
+							<s:url var="deleteSynopsisUrl" value="/synopsis/delete{bookId}"/>
 							<a class="btn btn-info" href="${deleteSynopsisUrl}"><s:message code="delete"/></a>
 							<s:url var="allSynopsisUrl" value="/synopsis"/>
 							<a class="btn btn-info" href="${allSynopsisUrl}"><s:message code="list"/></a>

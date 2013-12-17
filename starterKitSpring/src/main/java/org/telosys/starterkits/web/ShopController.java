@@ -42,11 +42,6 @@ public class ShopController
 	@Resource
     private CountryService countryService;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Shop shop) {
 		uiModel.addAttribute("shop", shop);
 		// Listes déroulantes des objets liés

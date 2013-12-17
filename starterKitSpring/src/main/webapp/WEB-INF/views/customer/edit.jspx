@@ -107,7 +107,7 @@
 					</tr>
 					<tr>
 						<th align="left"><s:message code="customer.country"/></th>
-						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country"/></td>
+						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country.code" itemValue="code"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -118,7 +118,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteCustomerUrl" value="/customer/delete/${code}"/>
+							<s:url var="deleteCustomerUrl" value="/customer/delete{code}"/>
 							<a class="btn btn-info" href="${deleteCustomerUrl}"><s:message code="delete"/></a>
 							<s:url var="allCustomerUrl" value="/customer"/>
 							<a class="btn btn-info" href="${allCustomerUrl}"><s:message code="list"/></a>

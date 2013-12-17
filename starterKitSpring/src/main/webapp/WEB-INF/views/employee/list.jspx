@@ -34,7 +34,7 @@
 							<td>${employee.manager}</td>
 							<td>${employee.shop}</td>
 							<td>${employee.badge}</td>
-							<s:url var="editEmployeeUrl" value="/employee/${employee.code}"/>
+							<s:url var="editEmployeeUrl" value="/employee{code}"/>
 							<td><a class="btn btn-info" href="${editEmployeeUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

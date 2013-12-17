@@ -32,7 +32,7 @@
 							<td>${bookorder.shop}</td>
 							<td>${bookorder.customer}</td>
 							<td>${bookorder.employee}</td>
-							<s:url var="editBookOrderUrl" value="/bookorder/${bookorder.id}"/>
+							<s:url var="editBookOrderUrl" value="/bookorder{id}"/>
 							<td><a class="btn btn-info" href="${editBookOrderUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

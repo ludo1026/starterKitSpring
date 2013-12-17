@@ -1,6 +1,7 @@
-package org.telosys.starterkits.web;
+   package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.Review;
 import org.telosys.starterkits.bean.ReviewId;
-   import org.telosys.starterkits.service.ReviewService;
+import org.telosys.starterkits.service.ReviewService;
 import org.telosys.starterkits.service.BookService;
 import org.telosys.starterkits.service.CustomerService;
 import org.telosys.starterkits.web.bean.Message;
@@ -42,11 +43,6 @@ public class ReviewController
     private BookService bookService;
 	@Resource
     private CustomerService customerService;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
 
 	void populateEditForm(Model uiModel, Review review) {
 		uiModel.addAttribute("review", review);
@@ -73,28 +69,28 @@ public class ReviewController
 		if (!result.hasErrors()) {
 			review = reviewService.save(review);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getId().getBookId(), review.getId().getCustomerCode());
+			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBook().getId(), review.getCustomer().getCode());
 		} else {
 			return "review/edit";
 		}
 	}
 
-	@RequestMapping(value = "/{bookId}/{customerCode}")
-	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
-		ReviewId id = new ReviewId();
-		id.setBookId(bookId);
-		id.setCustomerCode(customerCode);
-		Review review = reviewService.load(id);
+	@RequestMapping(value = "/{book_id}/{customer_code}")
+	public String edit(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("customer_code") String customer_code) {
+		ReviewId reviewid = new ReviewId();
+		reviewid.setBook(bookService.load(book_id));
+		reviewid.setCustomer(customerService.load(customer_code));
+		Review review = reviewService.load(reviewid);
 		this.populateEditForm(uiModel, review);
 		return "review/edit";
 	}
 
-	@RequestMapping(value = "/delete/{bookId}/{customerCode}")
-	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
-		ReviewId id = new ReviewId();
-		id.setBookId(bookId);
-		id.setCustomerCode(customerCode);
-		reviewService.delete(id);
+	@RequestMapping(value = "/delete/{book_id}/{customer_code}")
+	public String delete(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("customer_code") String customer_code) {
+		ReviewId reviewid = new ReviewId();
+		reviewid.setBook(bookService.load(book_id));
+		reviewid.setCustomer(customerService.load(customer_code));
+		reviewService.delete(reviewid);
 		return "redirect:/review";
 	}
 	

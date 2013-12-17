@@ -89,11 +89,11 @@
 					</tr>
 					<tr>
 						<th align="left"><s:message code="book.publisher"/></th>
-						<td><form:select class="form-control" id="_publisher_id" items="${publishers}" path="publisher"/></td>
+						<td><form:select class="form-control" id="_publisher_id" items="${publishers}" path="publisher" itemValue="code"/></td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="book.author"/></th>
-						<td><form:select class="form-control" id="_author_id" items="${authors}" path="author"/></td>
+						<td><form:select class="form-control" id="_author_id" items="${authors}" path="author" itemValue="id"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">

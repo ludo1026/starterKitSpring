@@ -80,7 +80,7 @@
 					</tr>
 					<tr>
 						<th align="left"><s:message code="publisher.country"/></th>
-						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country"/></td>
+						<td><form:select class="form-control" id="_country_id" items="${countrys}" path="country.code" itemValue="code"/></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -91,7 +91,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deletePublisherUrl" value="/publisher/delete/${code}"/>
+							<s:url var="deletePublisherUrl" value="/publisher/delete{code}"/>
 							<a class="btn btn-info" href="${deletePublisherUrl}"><s:message code="delete"/></a>
 							<s:url var="allPublisherUrl" value="/publisher"/>
 							<a class="btn btn-info" href="${allPublisherUrl}"><s:message code="list"/></a>

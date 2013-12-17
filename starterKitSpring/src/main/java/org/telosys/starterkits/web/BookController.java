@@ -1,6 +1,7 @@
 package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +42,6 @@ public class BookController
     private PublisherService publisherService;
 	@Resource
     private AuthorService authorService;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
 
 	void populateEditForm(Model uiModel, Book book) {
 		uiModel.addAttribute("book", book);

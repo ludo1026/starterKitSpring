@@ -26,7 +26,7 @@
 							<td>${author.id}</td>
 							<td>${author.firstName}</td>
 							<td>${author.lastName}</td>
-							<s:url var="editAuthorUrl" value="/author/${author.id}"/>
+							<s:url var="editAuthorUrl" value="/author{id}"/>
 							<td><a class="btn btn-info" href="${editAuthorUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

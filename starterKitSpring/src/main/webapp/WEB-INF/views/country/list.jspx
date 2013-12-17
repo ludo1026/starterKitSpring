@@ -24,7 +24,7 @@
 						<tr>
 							<td>${country.code}</td>
 							<td>${country.name}</td>
-							<s:url var="editCountryUrl" value="/country/${country.code}"/>
+							<s:url var="editCountryUrl" value="/country{code}"/>
 							<td><a class="btn btn-info" href="${editCountryUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

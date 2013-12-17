@@ -1,4 +1,4 @@
-package org.telosys.starterkits.web;
+   package org.telosys.starterkits.web;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.EmployeeGroup;
 import org.telosys.starterkits.bean.EmployeeGroupId;
-   import org.telosys.starterkits.service.EmployeeGroupService;
+import org.telosys.starterkits.service.EmployeeGroupService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
@@ -36,11 +36,6 @@ public class EmployeeGroupController
     private EmployeeGroupService employeegroupService;
 	@Resource
 	private ControllerHelper controllerHelper;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
 
 	void populateEditForm(Model uiModel, EmployeeGroup employeegroup) {
 		uiModel.addAttribute("employeegroup", employeegroup);
@@ -65,7 +60,7 @@ public class EmployeeGroupController
 		if (!result.hasErrors()) {
 			employeegroup = employeegroupService.save(employeegroup);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getId().getEmployeeCode(), employeegroup.getId().getGroupId());
+			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());
 		} else {
 			return "employeegroup/edit";
 		}
@@ -73,20 +68,20 @@ public class EmployeeGroupController
 
 	@RequestMapping(value = "/{employeeCode}/{groupId}")
 	public String edit(Model uiModel, @PathVariable("employeeCode") String employeeCode, @PathVariable("groupId") Short groupId) {
-		EmployeeGroupId id = new EmployeeGroupId();
-		id.setEmployeeCode(employeeCode);
-		id.setGroupId(groupId);
-		EmployeeGroup employeegroup = employeegroupService.load(id);
+		EmployeeGroupId employeegroupid = new EmployeeGroupId();
+		employeegroupid.setEmployeeCode(employeeCode);
+		employeegroupid.setGroupId(groupId);
+		EmployeeGroup employeegroup = employeegroupService.load(employeegroupid);
 		this.populateEditForm(uiModel, employeegroup);
 		return "employeegroup/edit";
 	}
 
 	@RequestMapping(value = "/delete/{employeeCode}/{groupId}")
 	public String delete(Model uiModel, @PathVariable("employeeCode") String employeeCode, @PathVariable("groupId") Short groupId) {
-		EmployeeGroupId id = new EmployeeGroupId();
-		id.setEmployeeCode(employeeCode);
-		id.setGroupId(groupId);
-		employeegroupService.delete(id);
+		EmployeeGroupId employeegroupid = new EmployeeGroupId();
+		employeegroupid.setEmployeeCode(employeeCode);
+		employeegroupid.setGroupId(groupId);
+		employeegroupService.delete(employeegroupid);
 		return "redirect:/employeegroup";
 	}
 	

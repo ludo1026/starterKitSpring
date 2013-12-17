@@ -42,11 +42,6 @@ public class EmployeeController
 	@Resource
     private BadgeService badgeService;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Employee employee) {
 		uiModel.addAttribute("employee", employee);
 		// Listes déroulantes des objets liés

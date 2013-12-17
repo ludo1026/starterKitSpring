@@ -36,11 +36,6 @@ public class AuthorController
 	@Resource
 	private ControllerHelper controllerHelper;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Author author) {
 		uiModel.addAttribute("author", author);
 		// Listes déroulantes des objets liés

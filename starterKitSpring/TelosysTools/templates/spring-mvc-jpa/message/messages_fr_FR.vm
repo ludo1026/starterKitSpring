@@ -22,9 +22,9 @@ ${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
 #foreach( $field in ${entity.attributes} )
 ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
 #end
-#foreach( $field in $entity.selectedLinks )
-#if( !$field.isCardinalityManyToMany() && !$field.isCardinalityOneToMany() )
-${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.type}
+#foreach( $link in $entity.selectedLinks )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+${entity.name.toLowerCase()}.${link.formatedName(0)}=${link.targetEntity}
 #end
 #end
 #end

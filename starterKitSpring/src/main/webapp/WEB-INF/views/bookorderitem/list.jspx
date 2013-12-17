@@ -28,7 +28,7 @@
 							<td>${bookorderitem.quantity}</td>
 							<td>${bookorderitem.book}</td>
 							<td>${bookorderitem.bookOrder}</td>
-							<s:url var="editBookOrderItemUrl" value="/bookorderitem/${bookorderitem.id.bookId}/${bookorderitem.id.bookOrderId}"/>
+							<s:url var="editBookOrderItemUrl" value="/bookorderitem/${bookorderitem.book.id}/${bookorderitem.bookOrder.id}"/>
 							<td><a class="btn btn-info" href="${editBookOrderItemUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

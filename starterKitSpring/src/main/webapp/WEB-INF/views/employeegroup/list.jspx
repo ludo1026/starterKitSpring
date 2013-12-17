@@ -22,9 +22,9 @@
 				<tbody>
 					<c:forEach items="${listEmployeeGroups}" var="employeegroup">
 						<tr>
-							<td>${employeegroup.id.employeeCode}</td>
-							<td>${employeegroup.id.groupId}</td>
-							<s:url var="editEmployeeGroupUrl" value="/employeegroup/${employeegroup.id.employeeCode}/${employeegroup.id.groupId}"/>
+							<td>${employeegroup.employeeCode}</td>
+							<td>${employeegroup.groupId}</td>
+							<s:url var="editEmployeeGroupUrl" value="/employeegroup/${employeegroup.employeeCode}/${employeegroup.groupId}"/>
 							<td><a class="btn btn-info" href="${editEmployeeGroupUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

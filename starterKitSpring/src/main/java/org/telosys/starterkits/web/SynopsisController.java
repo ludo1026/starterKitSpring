@@ -39,11 +39,6 @@ public class SynopsisController
 	@Resource
     private BookService bookService;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Synopsis synopsis) {
 		uiModel.addAttribute("synopsis", synopsis);
 		// Listes déroulantes des objets liés

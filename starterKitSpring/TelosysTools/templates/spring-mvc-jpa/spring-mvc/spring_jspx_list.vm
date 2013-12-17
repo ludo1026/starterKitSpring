@@ -1,26 +1,75 @@
 #set( $_ = "$" )
-##--------------------------------------------------------------------------------------------------------
-## Data fields = fields not in Primary Key and not in selected Links    
-#set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_IN_SELECTED_LINKS ) )
-##--------------------------------------------------------------------------------------------------------
-## Link fields = fields not in Primary Key and used as FK in selected Links    
-#set( $linkFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.IN_SELECTED_LINKS ) )
-##--------------------------------------------------------------------------------------------------------
-## Clé primaire
-#if ( $beanClass.hasCompositePrimaryKey() )
-#set( $keyType = "${beanClass.name}Id" )
+## Macro
+## Champs de la clé primaire qui ne sont pas dans les liens
+#macro( isFieldUsedInLinks, $field, $links )
+#set( $isFieldUsedInLinks = false )
+#foreach( $link in $links )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#foreach( $joinColumn in $link.joinColumns )
+#if( $joinColumn == $field.databaseName )
+#set( $isFieldUsedInLinks = true )
+#end
+#end
+#end
+#end
+#end
+## Liens utilisant les champs
+#macro( isLinkUsedByFields, $link, $fields)
+#set( $isLinkUsedByFields = false )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#foreach( $field in $fields )
+#foreach( $joinColumn in $link.joinColumns )
+#if( $joinColumn == $field.databaseName )
+#set( $isLinkUsedByFields = true )
+#end
+#end
+#end
+#end
+#end
+## Informations sur la clé primaire d'une entité
+#macro( defineKeyInfoForEntity, $entity )
+#if ( $entity.hasCompositePrimaryKey() )
+#set( $keyType = "${entity.name}Id" )
 #set( $keyName = "id" )
 #set( $keySetter = "setId" )
 #set( $keyGetter = "getId" )
 #else
+#set( $keyField = $entity.keyAttributes[0] )
+#set( $keyType = "$keyField.wrapperType" )
+#set( $keyName = "$keyField.formatedName(0)" )
+#set( $keySetter = $keyField.setter )
+#set( $keyGetter = $keyField.getter )
+#end
+#end
+#defineKeyInfoForEntity( $entity )
+##--------------------------------------------------------------------------------------------------------
+## PRIMARY KEY IN URL
+## keyURLPath
+## keyPathVariable
+## keyGetterToArg
+#set( $keyURLPath = "")
+#if ( $entity.hasCompositePrimaryKey() )
+## FIELDS
 #foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.wrapperType" )
-#set( $keyName = "$field.formatedName(0)" )
-#set( $keyField = $field )
-#set( $keySetter = $field.setter )
-#set( $keyGetter = $field.getter )
+#isFieldUsedInLinks( $field, $entity.selectedLinks )
+#if( ! $isFieldUsedInLinks )
+#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${field.formatedName(0)}+"}" )
 #end
 #end
+## LINKS
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedByFields( $link, $entity.keyAttributes )
+#if( $isLinkUsedByFields )
+#set( $linkEntity = $model.getEntityByClassName($link.targetEntity) )
+#foreach( $field in $linkEntity.keyAttributes )
+#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${link.formatedName(0)}+"."+${field.formatedName(0)}+"}" )
+#end
+#end
+#end
+#else
+#set( $keyURLPath = $keyURLPath+"{"+${keyName}+"}" )
+#end
+##--------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
@@ -36,15 +85,17 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-#foreach( $field in $dataFields )
-#set( $fieldName = "current.${field.name}" )
-#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-#set( $fieldName = "current.key.${field.formatedName(0)}" )
-#end
+## FIELDS
+#foreach( $field in $entity.attributes )
+#isFieldUsedInLinks( $field, $entity.selectedLinks )
+#if( ! $isFieldUsedInLinks )
 						<th><s:message code="${beanClass.name.toLowerCase()}.${field.formatedName(0)}"/></th>
 #end
+#end
+## LINKS
 #foreach( $link in $entity.selectedLinks )
-#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#isLinkUsedByFields( $link, $entity.attributes )
+#if( $isLinkUsedByFields )
 						<th><s:message code="${beanClass.name.toLowerCase()}.${link.formatedName(0)}"/></th>
 #end
 #end
@@ -55,26 +106,19 @@
 				<tbody>
 					<c:forEach items="${_}{list${beanClass.name}s}" var="${beanClass.name.toLowerCase()}">
 						<tr>
-#foreach( $field in $dataFields )
-#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-							<td>${_}{${beanClass.name.toLowerCase()}.${keyName}.${field.formatedName(0)}}</td>
-#else
+## FIELDS
+#foreach( $field in $entity.attributes )
+#isFieldUsedInLinks( $field, $entity.selectedLinks )
+#if( ! $isFieldUsedInLinks )
 							<td>${_}{${beanClass.name.toLowerCase()}.${field.formatedName(0)}}</td>
 #end
 #end
 ## Lien vers les entités
+## LINKS
 #foreach( $link in $entity.selectedLinks )
-#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#isLinkUsedByFields( $link, $entity.attributes )
+#if( $isLinkUsedByFields )
 							<td>${_}{${beanClass.name.toLowerCase()}.${link.formatedName(0)}}</td>
-#end
-#end
-## URL
-#set( $keyURLPath = "")
-#foreach( $field in $entity.keyAttributes )
-#if( $field.isKeyElement() && $beanClass.hasCompositePrimaryKey() )
-#set( $keyURLPath = $keyURLPath+"/${"+${beanClass.name.toLowerCase()}+"."+$keyName+"."+${field.formatedName(0)}+"}" )
-#else
-#set( $keyURLPath = $keyURLPath+"/${"+${beanClass.name.toLowerCase()}+"."+${field.formatedName(0)}+"}" )
 #end
 #end
 							<s:url var="edit${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}$keyURLPath"/>

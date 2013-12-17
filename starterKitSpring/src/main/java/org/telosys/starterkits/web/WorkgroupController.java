@@ -1,6 +1,7 @@
 package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +36,6 @@ public class WorkgroupController
     private WorkgroupService workgroupService;
 	@Resource
 	private ControllerHelper controllerHelper;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
 
 	void populateEditForm(Model uiModel, Workgroup workgroup) {
 		uiModel.addAttribute("workgroup", workgroup);

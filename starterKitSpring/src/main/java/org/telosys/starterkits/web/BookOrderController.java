@@ -1,6 +1,7 @@
 package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -44,11 +45,6 @@ public class BookOrderController
     private CustomerService customerService;
 	@Resource
     private EmployeeService employeeService;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
 
 	void populateEditForm(Model uiModel, BookOrder bookorder) {
 		uiModel.addAttribute("bookorder", bookorder);

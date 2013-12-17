@@ -1,0 +1,229 @@
+## Macro
+## Champs de la clé primaire qui ne sont pas dans les liens
+#macro( isFieldUsedInLink, $field, $entity )
+#set( $isFieldUsedInLink = false )
+#foreach( $link in $entity.selectedLinks )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#foreach( $joinColumn in $link.joinColumns )
+#if( $joinColumn == $field.databaseName )
+#set( $isFieldUsedInLink = true )
+#end
+#end
+#end
+#end
+#end
+## Liens issus des champs de la clé primaire
+#macro( isLinkUsedInPK, $link, $entity)
+#set( $isLinkUsedInPK = false )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
+#foreach( $field in $entity.keyAttributes )
+#foreach( $joinColumn in $link.joinColumns )
+#if( $joinColumn == $field.databaseName )
+#set( $isLinkUsedInPK = true )
+#end
+#end
+#end
+#end
+#end
+## Informations sur la clé primaire d'une entité
+#macro( defineKeyInfoForEntity, $entity )
+#if ( $entity.hasCompositePrimaryKey() )
+#set( $keyType = "${entity.name}Id" )
+#set( $keyName = "id" )
+#set( $keySetter = "setId" )
+#set( $keyGetter = "getId" )
+#else
+#foreach( $field in $entity.keyAttributes )
+#set( $keyType = "$field.wrapperType" )
+#set( $keyName = "$field.formatedName(0)" )
+#set( $keyField = $field )
+#set( $keySetter = $field.setter )
+#set( $keyGetter = $field.getter )
+#end
+#end
+#end
+## Fin des macros
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.io.Serializable;
+
+#foreach( $import in $entity.importsForKeyFields )
+import $import;
+#end
+#foreach( $import in $entity.importsJpa )
+import $import;
+#end
+
+#set( $entityId = $entity.name + "Id" )
+
+/**
+ * Composite primary key for entity "${entity.name}" ( stored in table "${entity.databaseTable}" )
+ *
+ * @author Telosys Tools Generator
+ *
+ */
+@Embeddable
+public class ${entity.name}Id implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+
+## Champs de la clé primaire qui ne sont pas dans les liens
+#foreach( $field in $entity.keyAttributes )
+#isFieldUsedInLink( $field, $entity )
+#if( ! $isFieldUsedInLink )
+$field.jpaAnnotationsEmbeddedID(4)
+    private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
+
+#end
+#end
+
+## Liens contenus issus des champs de la clé primaire
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedInPK( $link, $entity )
+#if( $isLinkUsedInPK )
+$link.jpaAnnotations(4)
+    private $link.formatedType(0) $link.formatedName(0);
+
+#end
+#end
+
+##-- CONSTRUCTORS
+    public ${entity.name}Id()
+    {
+        super();
+    }
+
+##-- GETTERS & SETTERS FOR KEY FIELDS
+#foreach( $field in $entity.keyAttributes )
+#isFieldUsedInLink( $field, $entity )
+#if( ! $isFieldUsedInLink )
+#if ( $field.databaseName ) 
+#end
+#if ( $field.setter )    public void ${field.setter}( $field.wrapperType value )
+    {
+        this.$field.name = value;
+    }
+
+#end
+#if ( $field.getter )    public $field.wrapperType ${field.getter}()
+    {
+        return this.$field.name;
+    }
+
+#end
+#end
+#end
+## Liens contenus issus des champs de la clé primaire
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedInPK( $link, $entity )
+#if( $isLinkUsedInPK )
+#if ( $link.isCardinalityManyToMany() || $link.isCardinalityOneToMany() ) 
+    @XmlTransient
+#end
+#if ( $link.setter )    public void ${link.setter}( ${link.linkType} ${link.javaName} )
+    {
+        this.${link.javaName} = ${link.javaName};
+    }
+
+#end
+#if ( $link.getter )    public ${link.linkType} ${link.getter}()
+    {
+        return this.${link.javaName};
+    }
+
+#end
+#end
+#end
+
+##-- toString METHOD
+    public String toString()
+    {
+		StringBuffer sb = new StringBuffer(); 
+#set( $count = 0 )
+#foreach( $field in $entity.keyAttributes )
+#isFieldUsedInLink( $field, $entity )
+#if( ! $isFieldUsedInLink )
+#if( $count > 0 )
+		sb.append("|"); 
+#end
+		sb.append($field.formatedName(0)); 
+#set( $count = $count + 1 )
+#end
+#end
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedInPK( $link, $entity )
+#if( $isLinkUsedInPK )
+#if( $count > 0 )
+		sb.append("|"); 
+#end
+#defineKeyInfoForEntity( $model.getEntityByClassName($link.targetEntity) )
+		if(this.${link.formatedName(0)} != null && this.${link.formatedName(0)}.${keyGetter}() != null) {
+			sb.append(this.${link.formatedName(0)}.${keyGetter}());
+		}
+#set( $count = $count + 1 )
+#end
+#end  
+        return sb.toString();
+    }
+
+	public boolean equals(Object obj) { 
+		if ( this == obj ) return true ; 
+		if ( obj == null ) return false ;
+		if ( this.getClass() != obj.getClass() ) return false ; 
+		${entity.name}Id other = (${entity.name}Id) obj;
+#foreach( $field in $entity.keyAttributes )
+#isFieldUsedInLink( $field, $entity )
+#if( ! $isFieldUsedInLink )
+		if(this.${field.formatedName(0)} == null) {
+			if(other.${field.formatedName(0)} != null) {
+				return false;
+			}
+		} else {
+			if(!this.${field.formatedName(0)}.equals(other.${field.formatedName(0)})) {
+				return false;
+			}
+		}
+#end
+#end
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedInPK( $link, $entity )
+#if( $isLinkUsedInPK )
+#defineKeyInfoForEntity( $model.getEntityByClassName($link.targetEntity) )
+		if(this.${link.formatedName(0)} == null) {
+			if(other.${link.formatedName(0)} != null) {
+				return false;
+			}
+		} else if(this.${link.formatedName(0)}.${keyGetter}() == null) {
+			if(other.${link.formatedName(0)}.${keyGetter}() != null) {
+				return false;
+			}
+		} else {
+			if(!this.${link.formatedName(0)}.${keyGetter}().equals(other.${link.formatedName(0)}.${keyGetter}())) {
+				return false;
+			}
+		}
+#end
+#end
+		return true; 
+	} 
+
+	public int hashCode() { 
+		final int prime = 31; 
+		int result = 1; 
+#foreach( $field in $entity.keyAttributes )
+#isFieldUsedInLink( $field, $entity )
+#if( ! $isFieldUsedInLink )
+		result = prime * result + ((${field.formatedName(0)} == null) ? 0 : ${field.formatedName(0)}.hashCode() ) ; 
+#end
+#end	
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedInPK( $link, $entity )
+#if( $isLinkUsedInPK )
+#defineKeyInfoForEntity( $model.getEntityByClassName($link.targetEntity) )
+		result = prime * result + ((${link.formatedName(0)} == null) ? 0 : ((${link.formatedName(0)}.${keyGetter}() == null) ? 0 : ${link.formatedName(0)}.${keyGetter}().hashCode() ) );
+#end
+#end
+		return result; 
+	} 
+
+}

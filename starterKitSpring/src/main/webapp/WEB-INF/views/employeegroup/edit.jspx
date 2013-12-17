@@ -1,6 +1,4 @@
-  				
-	  							
-	  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
@@ -20,19 +18,19 @@
 					<tr>
 						<th align="left"><s:message code="employeegroup.employeeCode"/></th>
 						<td>
-							<form:input path="id.employeeCode" class="form-control"/>
+							<form:input path="employeeCode" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.employeeCode_error_id" path="id.employeeCode" />
+							<form:errors cssClass="alert alert-danger" id="_employeeCode_error_id" path="employeeCode" />
 						</td>
 					</tr>
 					<tr>
 						<th align="left"><s:message code="employeegroup.groupId"/></th>
 						<td>
-							<form:input path="id.groupId" class="form-control"/>
+							<form:input path="groupId" class="form-control"/>
 						</td>
 						<td>
-							<form:errors cssClass="alert alert-danger" id="_id.groupId_error_id" path="id.groupId" />
+							<form:errors cssClass="alert alert-danger" id="_groupId_error_id" path="groupId" />
 						</td>
 					</tr>
 					<tr>
@@ -44,7 +42,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteEmployeeGroupUrl" value="/employeegroup/delete/${id.employeeCode}/${id.groupId}"/>
+							<s:url var="deleteEmployeeGroupUrl" value="/employeegroup/delete/${employeegroup.employeeCode}/${employeegroup.groupId}"/>
 							<a class="btn btn-info" href="${deleteEmployeeGroupUrl}"><s:message code="delete"/></a>
 							<s:url var="allEmployeeGroupUrl" value="/employeegroup"/>
 							<a class="btn btn-info" href="${allEmployeeGroupUrl}"><s:message code="list"/></a>

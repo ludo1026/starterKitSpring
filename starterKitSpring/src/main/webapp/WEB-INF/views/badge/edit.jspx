@@ -51,7 +51,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteBadgeUrl" value="/badge/delete/${badgeNumber}"/>
+							<s:url var="deleteBadgeUrl" value="/badge/delete{badgeNumber}"/>
 							<a class="btn btn-info" href="${deleteBadgeUrl}"><s:message code="delete"/></a>
 							<s:url var="allBadgeUrl" value="/badge"/>
 							<a class="btn btn-info" href="${allBadgeUrl}"><s:message code="list"/></a>

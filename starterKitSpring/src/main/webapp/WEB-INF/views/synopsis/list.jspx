@@ -24,7 +24,7 @@
 						<tr>
 							<td>${synopsis.synopsis}</td>
 							<td>${synopsis.book}</td>
-							<s:url var="editSynopsisUrl" value="/synopsis/${synopsis.bookId}"/>
+							<s:url var="editSynopsisUrl" value="/synopsis{bookId}"/>
 							<td><a class="btn btn-info" href="${editSynopsisUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

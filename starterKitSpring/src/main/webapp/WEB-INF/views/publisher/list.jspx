@@ -36,7 +36,7 @@
 							<td>${publisher.phone}</td>
 							<td>${publisher.zipCode}</td>
 							<td>${publisher.country}</td>
-							<s:url var="editPublisherUrl" value="/publisher/${publisher.code}"/>
+							<s:url var="editPublisherUrl" value="/publisher{code}"/>
 							<td><a class="btn btn-info" href="${editPublisherUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

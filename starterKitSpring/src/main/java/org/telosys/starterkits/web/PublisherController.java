@@ -39,11 +39,6 @@ public class PublisherController
 	@Resource
     private CountryService countryService;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Publisher publisher) {
 		uiModel.addAttribute("publisher", publisher);
 		// Listes déroulantes des objets liés

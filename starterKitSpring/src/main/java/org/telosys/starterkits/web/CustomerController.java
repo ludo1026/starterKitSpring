@@ -39,11 +39,6 @@ public class CustomerController
 	@Resource
     private CountryService countryService;
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-	}
-
 	void populateEditForm(Model uiModel, Customer customer) {
 		uiModel.addAttribute("customer", customer);
 		// Listes déroulantes des objets liés
