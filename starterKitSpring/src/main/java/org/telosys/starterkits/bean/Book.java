@@ -33,7 +33,7 @@ public class Book implements Serializable
 
     @Id
     @Column(name="id", nullable=false)
-
+    @GeneratedValue
     private Integer id;
 
     @Column(name="availability")
@@ -66,11 +66,11 @@ public class Book implements Serializable
     private String title ;
 
     @ManyToOne
-    @JoinColumn(name="publisher_id", referencedColumnName="code")
+    @JoinColumn(name="publisher_id", referencedColumnName="code", insertable=false, updatable=false)
     private Publisher publisher;
 
     @ManyToOne
-    @JoinColumn(name="author_id", referencedColumnName="id")
+    @JoinColumn(name="author_id", referencedColumnName="id", insertable=false, updatable=false)
     private Author author;
 
 	public Integer getId() {

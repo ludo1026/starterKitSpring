@@ -28,7 +28,7 @@
 							<td>${workgroup.creationDate}</td>
 							<td>${workgroup.description}</td>
 							<td>${workgroup.name}</td>
-							<s:url var="editWorkgroupUrl" value="/workgroup{id}"/>
+							<s:url var="editWorkgroupUrl" value="/workgroup/${workgroup.id}"/>
 							<td><a class="btn btn-info" href="${editWorkgroupUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

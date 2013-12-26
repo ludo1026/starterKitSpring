@@ -67,7 +67,7 @@
 #end
 #end
 #else
-#set( $keyURLPath = $keyURLPath+"{"+${keyName}+"}" )
+#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${keyName}+"}" )
 #end
 ##--------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>

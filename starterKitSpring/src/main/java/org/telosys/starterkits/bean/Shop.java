@@ -65,11 +65,11 @@ public class Shop implements Serializable
     private Integer zipCode ;
 
     @ManyToOne
-    @JoinColumn(name="executive", referencedColumnName="code")
+    @JoinColumn(name="executive", referencedColumnName="code", insertable=false, updatable=false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name="country_code", referencedColumnName="code")
+    @JoinColumn(name="country_code", referencedColumnName="code", insertable=false, updatable=false)
     private Country country;
 
 	public String getCode() {

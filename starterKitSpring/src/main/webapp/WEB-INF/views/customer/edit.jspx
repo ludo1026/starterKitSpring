@@ -118,7 +118,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteCustomerUrl" value="/customer/delete{code}"/>
+							<s:url var="deleteCustomerUrl" value="/customer/delete/${customer.code}"/>
 							<a class="btn btn-info" href="${deleteCustomerUrl}"><s:message code="delete"/></a>
 							<s:url var="allCustomerUrl" value="/customer"/>
 							<a class="btn btn-info" href="${allCustomerUrl}"><s:message code="list"/></a>

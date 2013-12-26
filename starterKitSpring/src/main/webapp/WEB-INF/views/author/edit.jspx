@@ -51,7 +51,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteAuthorUrl" value="/author/delete{id}"/>
+							<s:url var="deleteAuthorUrl" value="/author/delete/${author.id}"/>
 							<a class="btn btn-info" href="${deleteAuthorUrl}"><s:message code="delete"/></a>
 							<s:url var="allAuthorUrl" value="/author"/>
 							<a class="btn btn-info" href="${allAuthorUrl}"><s:message code="list"/></a>

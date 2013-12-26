@@ -40,7 +40,7 @@
 							<td>${book.title}</td>
 							<td>${book.publisher}</td>
 							<td>${book.author}</td>
-							<s:url var="editBookUrl" value="/book{id}"/>
+							<s:url var="editBookUrl" value="/book/${book.id}"/>
 							<td><a class="btn btn-info" href="${editBookUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

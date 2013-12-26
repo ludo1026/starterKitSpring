@@ -46,15 +46,15 @@ public class BookOrder implements Serializable
     private Integer state ;
 
     @ManyToOne
-    @JoinColumn(name="shop_code", referencedColumnName="code")
+    @JoinColumn(name="shop_code", referencedColumnName="code", insertable=false, updatable=false)
     private Shop shop;
 
     @ManyToOne
-    @JoinColumn(name="customer_code", referencedColumnName="code")
+    @JoinColumn(name="customer_code", referencedColumnName="code", insertable=false, updatable=false)
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name="employee_code", referencedColumnName="code")
+    @JoinColumn(name="employee_code", referencedColumnName="code", insertable=false, updatable=false)
     private Employee employee;
 
 	public Integer getId() {

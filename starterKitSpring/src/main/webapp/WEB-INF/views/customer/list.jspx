@@ -42,7 +42,7 @@
 							<td>${customer.reviewer}</td>
 							<td>${customer.zipCode}</td>
 							<td>${customer.country}</td>
-							<s:url var="editCustomerUrl" value="/customer{code}"/>
+							<s:url var="editCustomerUrl" value="/customer/${customer.code}"/>
 							<td><a class="btn btn-info" href="${editCustomerUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

@@ -54,11 +54,11 @@ public class Employee implements Serializable
     private Short manager ;
 
     @ManyToOne
-    @JoinColumn(name="shop_code", referencedColumnName="code")
+    @JoinColumn(name="shop_code", referencedColumnName="code", insertable=false, updatable=false)
     private Shop shop;
 
     @ManyToOne
-    @JoinColumn(name="badge_number", referencedColumnName="badge_number")
+    @JoinColumn(name="badge_number", referencedColumnName="badge_number", insertable=false, updatable=false)
     private Badge badge;
 
 	public String getCode() {

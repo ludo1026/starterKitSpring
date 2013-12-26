@@ -60,7 +60,7 @@ public class Publisher implements Serializable
     private Integer zipCode ;
 
     @ManyToOne
-    @JoinColumn(name="country_code", referencedColumnName="code")
+    @JoinColumn(name="country_code", referencedColumnName="code", insertable=false, updatable=false)
     private Country country;
 
 	public Integer getCode() {

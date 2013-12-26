@@ -42,7 +42,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteCountryUrl" value="/country/delete{code}"/>
+							<s:url var="deleteCountryUrl" value="/country/delete/${country.code}"/>
 							<a class="btn btn-info" href="${deleteCountryUrl}"><s:message code="delete"/></a>
 							<s:url var="allCountryUrl" value="/country"/>
 							<a class="btn btn-info" href="${allCountryUrl}"><s:message code="list"/></a>

@@ -45,7 +45,6 @@
 ##--------------------------------------------------------------------------------------------------------
 ## Data fields = fields not in Primary Key
 #set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY ) )
-## Key fields = fields in Primary Key
 #set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
 ##--------------------------------------------------------------------------------------------------------
 ## IF COMPOSITE PRIMARY KEY : GENERATE A JAVA CLASS FOR THIS COMPOSITE KEY

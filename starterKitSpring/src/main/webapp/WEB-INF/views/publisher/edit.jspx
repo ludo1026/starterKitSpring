@@ -91,7 +91,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deletePublisherUrl" value="/publisher/delete{code}"/>
+							<s:url var="deletePublisherUrl" value="/publisher/delete/${publisher.code}"/>
 							<a class="btn btn-info" href="${deletePublisherUrl}"><s:message code="delete"/></a>
 							<s:url var="allPublisherUrl" value="/publisher"/>
 							<a class="btn btn-info" href="${allPublisherUrl}"><s:message code="list"/></a>

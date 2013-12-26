@@ -65,46 +65,46 @@ public class BookOrderItemId implements Serializable
         return sb.toString();
     }
 
-//	public boolean equals(Object obj) { 
-//		if ( this == obj ) return true ; 
-//		if ( obj == null ) return false ;
-//		if ( this.getClass() != obj.getClass() ) return false ; 
-//		BookOrderItemId other = (BookOrderItemId) obj;
-//		if(this.book == null) {
-//			if(other.book != null) {
-//				return false;
-//			}
-//		} else if(this.book.getId() == null) {
-//			if(other.book.getId() != null) {
-//				return false;
-//			}
-//		} else {
-//			if(!this.book.getId().equals(other.book.getId())) {
-//				return false;
-//			}
-//		}
-//		if(this.bookOrder == null) {
-//			if(other.bookOrder != null) {
-//				return false;
-//			}
-//		} else if(this.bookOrder.getId() == null) {
-//			if(other.bookOrder.getId() != null) {
-//				return false;
-//			}
-//		} else {
-//			if(!this.bookOrder.getId().equals(other.bookOrder.getId())) {
-//				return false;
-//			}
-//		}
-//		return true; 
-//	} 
-//
-//	public int hashCode() { 
-//		final int prime = 31; 
-//		int result = 1; 
-//		result = prime * result + ((book == null) ? 0 : ((book.getId() == null) ? 0 : book.getId().hashCode() ) );
-//		result = prime * result + ((bookOrder == null) ? 0 : ((bookOrder.getId() == null) ? 0 : bookOrder.getId().hashCode() ) );
-//		return result; 
-//	} 
+	public boolean equals(Object obj) { 
+		if ( this == obj ) return true ; 
+		if ( obj == null ) return false ;
+		if ( this.getClass() != obj.getClass() ) return false ; 
+		BookOrderItemId other = (BookOrderItemId) obj;
+		if(this.book == null) {
+			if(other.book != null) {
+				return false;
+			}
+		} else if(this.book.getId() == null) {
+			if(other.book.getId() != null) {
+				return false;
+			}
+		} else {
+			if(!this.book.getId().equals(other.book.getId())) {
+				return false;
+			}
+		}
+		if(this.bookOrder == null) {
+			if(other.bookOrder != null) {
+				return false;
+			}
+		} else if(this.bookOrder.getId() == null) {
+			if(other.bookOrder.getId() != null) {
+				return false;
+			}
+		} else {
+			if(!this.bookOrder.getId().equals(other.bookOrder.getId())) {
+				return false;
+			}
+		}
+		return true; 
+	} 
+
+	public int hashCode() { 
+		final int prime = 31; 
+		int result = 1; 
+		result = prime * result + ((book == null) ? 0 : ((book.getId() == null) ? 0 : book.getId().hashCode() ) );
+		result = prime * result + ((bookOrder == null) ? 0 : ((bookOrder.getId() == null) ? 0 : bookOrder.getId().hashCode() ) );
+		return result; 
+	} 
 
 }

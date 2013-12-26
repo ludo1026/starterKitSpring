@@ -40,7 +40,7 @@
 							<td>${shop.zipCode}</td>
 							<td>${shop.employee}</td>
 							<td>${shop.country}</td>
-							<s:url var="editShopUrl" value="/shop{code}"/>
+							<s:url var="editShopUrl" value="/shop/${shop.code}"/>
 							<td><a class="btn btn-info" href="${editShopUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

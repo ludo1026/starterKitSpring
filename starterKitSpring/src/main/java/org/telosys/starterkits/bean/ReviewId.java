@@ -18,11 +18,11 @@ public class ReviewId implements Serializable
 
 
     @ManyToOne
-    @JoinColumn(name="book_id", referencedColumnName="id")
+    @JoinColumn(name="book_id", referencedColumnName="id", insertable=false, updatable=false)
     private Book book;
 
     @ManyToOne
-    @JoinColumn(name="customer_code", referencedColumnName="code")
+    @JoinColumn(name="customer_code", referencedColumnName="code", insertable=false, updatable=false)
     private Customer customer;
 
 

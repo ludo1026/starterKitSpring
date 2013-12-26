@@ -26,7 +26,7 @@
 							<td>${badge.badgeNumber}</td>
 							<td>${badge.authorizationLevel}</td>
 							<td>${badge.endOfValidity}</td>
-							<s:url var="editBadgeUrl" value="/badge{badgeNumber}"/>
+							<s:url var="editBadgeUrl" value="/badge/${badge.badgeNumber}"/>
 							<td><a class="btn btn-info" href="${editBadgeUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>
