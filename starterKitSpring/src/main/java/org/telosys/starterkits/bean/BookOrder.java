@@ -7,7 +7,6 @@ import javax.validation.constraints.* ;
 
 import java.util.Date;
 
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -46,15 +45,15 @@ public class BookOrder implements Serializable
     private Integer state ;
 
     @ManyToOne
-    @JoinColumn(name="shop_code", referencedColumnName="code", insertable=false, updatable=false)
+    @JoinColumn(name="shop_code", referencedColumnName="code")
     private Shop shop;
 
     @ManyToOne
-    @JoinColumn(name="customer_code", referencedColumnName="code", insertable=false, updatable=false)
+    @JoinColumn(name="customer_code", referencedColumnName="code")
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name="employee_code", referencedColumnName="code", insertable=false, updatable=false)
+    @JoinColumn(name="employee_code", referencedColumnName="code")
     private Employee employee;
 
 	public Integer getId() {

@@ -7,7 +7,6 @@ import javax.validation.constraints.* ;
 
 import java.math.BigDecimal;
 
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -33,7 +32,7 @@ public class Book implements Serializable
 
     @Id
     @Column(name="id", nullable=false)
-    @GeneratedValue
+
     private Integer id;
 
     @Column(name="availability")
@@ -66,11 +65,11 @@ public class Book implements Serializable
     private String title ;
 
     @ManyToOne
-    @JoinColumn(name="publisher_id", referencedColumnName="code", insertable=false, updatable=false)
+    @JoinColumn(name="publisher_id", referencedColumnName="code")
     private Publisher publisher;
 
     @ManyToOne
-    @JoinColumn(name="author_id", referencedColumnName="id", insertable=false, updatable=false)
+    @JoinColumn(name="author_id", referencedColumnName="id")
     private Author author;
 
 	public Integer getId() {

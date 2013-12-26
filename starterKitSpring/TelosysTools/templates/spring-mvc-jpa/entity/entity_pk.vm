@@ -50,7 +50,7 @@ import java.io.Serializable;
 #foreach( $import in $entity.importsForKeyFields )
 import $import;
 #end
-#foreach( $import in $entity.importsJpa )
+#foreach( $import in $jpa.imports($entity) )
 import $import;
 #end
 
@@ -71,7 +71,7 @@ public class ${entity.name}Id implements Serializable
 #foreach( $field in $entity.keyAttributes )
 #isFieldUsedInLinks( $field, $entity.selectedLinks )
 #if( ! $isFieldUsedInLinks )
-$field.jpaAnnotationsEmbeddedID(4)
+$jpa.embeddedIdAnnotations(4, $field)
     private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
 #end
@@ -81,7 +81,7 @@ $field.jpaAnnotationsEmbeddedID(4)
 #foreach( $link in $entity.selectedLinks )
 #isLinkUsedByFields( $link, $entity.keyAttributes )
 #if( $isLinkUsedByFields )
-$link.jpaAnnotations(4)
+$jpa.linkAnnotations(4, $link, null)
     private $link.formatedType(0) $link.formatedName(0);
 
 #end

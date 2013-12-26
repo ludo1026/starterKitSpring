@@ -85,7 +85,7 @@ import ${ENTITY_PKG}.${beanClass.name}Id;
 #end
 #end
 
-#foreach( $import in $jpa.imports($entity) )
+#foreach( $import in $entity.importsJpa )
 import $import;
 #end
 import javax.validation.Valid;
@@ -101,7 +101,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlRootElement  // JAXB annotation for REST Web Services
 @XmlAccessorType(XmlAccessType.PROPERTY) // JAXB accessor = getter/setter pair
-$jpa.entityAnnotations(0,$entity)
+$entity.jpaAnnotations
 // Define named queries here
 // @NamedQueries ( {
 //  @NamedQuery ( name="${entity.name}.query1", query="SELECT x FROM ${entity.name} x WHERE  " ),
@@ -117,7 +117,7 @@ public class $entity.name implements Serializable
     private $keyType $keyName = new $keyType();
 
 #else 
-$jpa.fieldAnnotations(4,$keyField)
+$keyField.jpaAnnotations(4)
 $keyField.beanValidationAnnotationsJSR303(4)
     private $keyType $keyName#if($keyField.hasInitialValue()) = ${keyField.initialValue}#end;
 
@@ -126,7 +126,7 @@ $keyField.beanValidationAnnotationsJSR303(4)
 #foreach( $field in $dataFields )
 #isFieldUsedInLinks( $field, $entity.selectedLinks )
 #if( ! $isFieldUsedInLinks )
-$jpa.fieldAnnotations(4, $field)
+$field.jpaAnnotations(4)
 $field.beanValidationAnnotationsJSR303(4)
     private $field.wrapperType $field.formatedName(0) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
@@ -136,7 +136,7 @@ $field.beanValidationAnnotationsJSR303(4)
 #foreach( $link in $entity.selectedLinks )
 #isLinkUsedByFields( $link, $dataFields )
 #if( $isLinkUsedByFields )
-$jpa.linkAnnotations(4,$link, null)
+$link.jpaAnnotations(4)
     private $link.formatedType(0) $link.formatedName(0);
 
 #end

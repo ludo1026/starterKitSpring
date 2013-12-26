@@ -6,7 +6,6 @@ import javax.validation.constraints.* ;
 //import org.hibernate.validator.constraints.* ;
 
 
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
