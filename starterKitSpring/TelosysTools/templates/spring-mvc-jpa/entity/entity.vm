@@ -98,6 +98,7 @@
 ## * $entityCurrent current entity
 ## * $entityTarget target entity
 ## * $link link between current entity and target entity
+## * $fieldsOfEntityCurrent current entity fields
 ## */
 #macro( fieldsMappingForLink, $entityCurrent, $entityTarget, $link, $fieldsOfEntityCurrent )
 #set( $fieldsMappingForLink = {})
