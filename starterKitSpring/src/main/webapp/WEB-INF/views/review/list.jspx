@@ -32,7 +32,7 @@
 							<td>${review.reviewText}</td>
 							<td>${review.book}</td>
 							<td>${review.customer}</td>
-							<s:url var="editReviewUrl" value="/review/${review.book.id}/${review.customer.code}"/>
+							<s:url var="editReviewUrl" value="/review/${review.bookId}/${review.customerCode}"/>
 							<td><a class="btn btn-info" href="${editReviewUrl}"><s:message code="edit"/></a></td>
 						</tr>
 					</c:forEach>

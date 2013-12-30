@@ -60,6 +60,7 @@ public class SynopsisController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@Valid Synopsis synopsis, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		synopsis.setBookId(synopsis.getBook().getId());
 		if (!result.hasErrors()) {
 			synopsis = synopsisService.save(synopsis);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));

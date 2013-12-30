@@ -66,30 +66,32 @@ public class BookOrderItemController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@Valid BookOrderItem bookorderitem, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		bookorderitem.getId().setBookId(bookorderitem.getBook().getId());
+		bookorderitem.getId().setBookOrderId(bookorderitem.getBookOrder().getId());
 		if (!result.hasErrors()) {
 			bookorderitem = bookorderitemService.save(bookorderitem);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBook().getId(), bookorderitem.getBookOrder().getId());
+			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
 		} else {
 			return "bookorderitem/edit";
 		}
 	}
 
-	@RequestMapping(value = "/{book_id}/{bookOrder_id}")
-	public String edit(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("bookOrder_id") Integer bookOrder_id) {
+	@RequestMapping(value = "/{bookId}/{bookOrderId}")
+	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
 		BookOrderItemId bookorderitemid = new BookOrderItemId();
-		bookorderitemid.setBook(bookService.load(book_id));
-		bookorderitemid.setBookOrder(bookorderService.load(bookOrder_id));
+		bookorderitemid.setBookId(bookId);
+		bookorderitemid.setBookOrderId(bookOrderId);
 		BookOrderItem bookorderitem = bookorderitemService.load(bookorderitemid);
 		this.populateEditForm(uiModel, bookorderitem);
 		return "bookorderitem/edit";
 	}
 
-	@RequestMapping(value = "/delete/{book_id}/{bookOrder_id}")
-	public String delete(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("bookOrder_id") Integer bookOrder_id) {
+	@RequestMapping(value = "/delete/{bookId}/{bookOrderId}")
+	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
 		BookOrderItemId bookorderitemid = new BookOrderItemId();
-		bookorderitemid.setBook(bookService.load(book_id));
-		bookorderitemid.setBookOrder(bookorderService.load(bookOrder_id));
+		bookorderitemid.setBookId(bookId);
+		bookorderitemid.setBookOrderId(bookOrderId);
 		bookorderitemService.delete(bookorderitemid);
 		return "redirect:/bookorderitem";
 	}

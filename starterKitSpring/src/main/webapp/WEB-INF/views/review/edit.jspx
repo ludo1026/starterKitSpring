@@ -15,6 +15,7 @@
 	    	<s:url value="/review" var="url_form_submit" />
 			<form:form modelAttribute="review" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
+
 					<tr>
 						<th align="left"><s:message code="review.creation"/></th>
 						<td>
@@ -68,7 +69,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteReviewUrl" value="/review/delete/${review.book.id}/${review.customer.code}"/>
+							<s:url var="deleteReviewUrl" value="/review/delete/${review.bookId}/${review.customerCode}"/>
 							<a class="btn btn-info" href="${deleteReviewUrl}"><s:message code="delete"/></a>
 							<s:url var="allReviewUrl" value="/review"/>
 							<a class="btn btn-info" href="${allReviewUrl}"><s:message code="list"/></a>

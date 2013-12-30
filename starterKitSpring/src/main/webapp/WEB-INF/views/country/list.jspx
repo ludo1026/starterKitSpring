@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="country.code"/></th>
 						<th><s:message code="country.name"/></th>
 						<s:url value="/country/create" var="url_create" />
 						<th><a class="btn btn-info" href='${url_create}'><s:message code="create"/></a></th>
@@ -22,7 +21,6 @@
 				<tbody>
 					<c:forEach items="${listCountrys}" var="country">
 						<tr>
-							<td>${country.code}</td>
 							<td>${country.name}</td>
 							<s:url var="editCountryUrl" value="/country/${country.code}"/>
 							<td><a class="btn btn-info" href="${editCountryUrl}"><s:message code="edit"/></a></td>

@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="publisher.code"/></th>
 						<th><s:message code="publisher.city"/></th>
 						<th><s:message code="publisher.contact"/></th>
 						<th><s:message code="publisher.email"/></th>
@@ -28,7 +27,6 @@
 				<tbody>
 					<c:forEach items="${listPublishers}" var="publisher">
 						<tr>
-							<td>${publisher.code}</td>
 							<td>${publisher.city}</td>
 							<td>${publisher.contact}</td>
 							<td>${publisher.email}</td>

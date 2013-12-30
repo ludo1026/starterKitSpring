@@ -15,15 +15,7 @@
 	    	<s:url value="/workgroup" var="url_form_submit" />
 			<form:form modelAttribute="workgroup" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="workgroup.id"/></th>
-						<td>
-							<form:input path="id" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_id_error_id" path="id" />
-						</td>
-					</tr>
+
 					<tr>
 						<th align="left"><s:message code="workgroup.creationDate"/></th>
 						<td>

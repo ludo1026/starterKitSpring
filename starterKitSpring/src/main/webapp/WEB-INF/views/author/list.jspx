@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="author.id"/></th>
 						<th><s:message code="author.firstName"/></th>
 						<th><s:message code="author.lastName"/></th>
 						<s:url value="/author/create" var="url_create" />
@@ -23,7 +22,6 @@
 				<tbody>
 					<c:forEach items="${listAuthors}" var="author">
 						<tr>
-							<td>${author.id}</td>
 							<td>${author.firstName}</td>
 							<td>${author.lastName}</td>
 							<s:url var="editAuthorUrl" value="/author/${author.id}"/>

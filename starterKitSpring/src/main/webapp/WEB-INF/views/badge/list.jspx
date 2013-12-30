@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="badge.badgeNumber"/></th>
 						<th><s:message code="badge.authorizationLevel"/></th>
 						<th><s:message code="badge.endOfValidity"/></th>
 						<s:url value="/badge/create" var="url_create" />
@@ -23,7 +22,6 @@
 				<tbody>
 					<c:forEach items="${listBadges}" var="badge">
 						<tr>
-							<td>${badge.badgeNumber}</td>
 							<td>${badge.authorizationLevel}</td>
 							<td>${badge.endOfValidity}</td>
 							<s:url var="editBadgeUrl" value="/badge/${badge.badgeNumber}"/>

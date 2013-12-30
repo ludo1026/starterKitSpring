@@ -66,30 +66,32 @@ public class ReviewController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String save(@Valid Review review, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		review.setBookId(review.getBook().getId());
+		review.setCustomerCode(review.getCustomer().getCode());
 		if (!result.hasErrors()) {
 			review = reviewService.save(review);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBook().getId(), review.getCustomer().getCode());
+			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
 		} else {
 			return "review/edit";
 		}
 	}
 
-	@RequestMapping(value = "/{book_id}/{customer_code}")
-	public String edit(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("customer_code") String customer_code) {
+	@RequestMapping(value = "/{bookId}/{customerCode}")
+	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
 		ReviewId reviewid = new ReviewId();
-		reviewid.setBook(bookService.load(book_id));
-		reviewid.setCustomer(customerService.load(customer_code));
+		reviewid.setBookId(bookId);
+		reviewid.setCustomerCode(customerCode);
 		Review review = reviewService.load(reviewid);
 		this.populateEditForm(uiModel, review);
 		return "review/edit";
 	}
 
-	@RequestMapping(value = "/delete/{book_id}/{customer_code}")
-	public String delete(Model uiModel, @PathVariable("book_id") Integer book_id, @PathVariable("customer_code") String customer_code) {
+	@RequestMapping(value = "/delete/{bookId}/{customerCode}")
+	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
 		ReviewId reviewid = new ReviewId();
-		reviewid.setBook(bookService.load(book_id));
-		reviewid.setCustomer(customerService.load(customer_code));
+		reviewid.setBookId(bookId);
+		reviewid.setCustomerCode(customerCode);
 		reviewService.delete(reviewid);
 		return "redirect:/review";
 	}

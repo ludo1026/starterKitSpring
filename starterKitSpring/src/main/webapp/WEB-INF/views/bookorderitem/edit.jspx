@@ -15,6 +15,7 @@
 	    	<s:url value="/bookorderitem" var="url_form_submit" />
 			<form:form modelAttribute="bookorderitem" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
+
 					<tr>
 						<th align="left"><s:message code="bookorderitem.price"/></th>
 						<td>
@@ -50,7 +51,7 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="deleteBookOrderItemUrl" value="/bookorderitem/delete/${bookorderitem.book.id}/${bookorderitem.bookOrder.id}"/>
+							<s:url var="deleteBookOrderItemUrl" value="/bookorderitem/delete/${bookorderitem.bookId}/${bookorderitem.bookOrderId}"/>
 							<a class="btn btn-info" href="${deleteBookOrderItemUrl}"><s:message code="delete"/></a>
 							<s:url var="allBookOrderItemUrl" value="/bookorderitem"/>
 							<a class="btn btn-info" href="${allBookOrderItemUrl}"><s:message code="list"/></a>

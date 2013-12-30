@@ -15,24 +15,7 @@
 	    	<s:url value="/employeegroup" var="url_form_submit" />
 			<form:form modelAttribute="employeegroup" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="employeegroup.employeeCode"/></th>
-						<td>
-							<form:input path="employeeCode" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_employeeCode_error_id" path="employeeCode" />
-						</td>
-					</tr>
-					<tr>
-						<th align="left"><s:message code="employeegroup.groupId"/></th>
-						<td>
-							<form:input path="groupId" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_groupId_error_id" path="groupId" />
-						</td>
-					</tr>
+
 					<tr>
 						<td colspan="2">
 							<form:errors/>

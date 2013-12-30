@@ -15,6 +15,7 @@
 	    	<s:url value="/synopsis" var="url_form_submit" />
 			<form:form modelAttribute="synopsis" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
+
 					<tr>
 						<th align="left"><s:message code="synopsis.synopsis"/></th>
 						<td>

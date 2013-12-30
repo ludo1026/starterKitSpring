@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="customer.code"/></th>
 						<th><s:message code="customer.age"/></th>
 						<th><s:message code="customer.city"/></th>
 						<th><s:message code="customer.firstName"/></th>
@@ -31,7 +30,6 @@
 				<tbody>
 					<c:forEach items="${listCustomers}" var="customer">
 						<tr>
-							<td>${customer.code}</td>
 							<td>${customer.age}</td>
 							<td>${customer.city}</td>
 							<td>${customer.firstName}</td>

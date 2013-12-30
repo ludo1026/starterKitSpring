@@ -15,15 +15,7 @@
 	    	<s:url value="/country" var="url_form_submit" />
 			<form:form modelAttribute="country" cssClass="well" method="PUT" action="${url_form_submit}">
 				<table>
-					<tr>
-						<th align="left"><s:message code="country.code"/></th>
-						<td>
-							<form:input path="code" class="form-control"/>
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_code_error_id" path="code" />
-						</td>
-					</tr>
+
 					<tr>
 						<th align="left"><s:message code="country.name"/></th>
 						<td>

@@ -24,7 +24,7 @@ ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
 #end
 #foreach( $link in $entity.selectedLinks )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
-${entity.name.toLowerCase()}.${link.formatedName(0)}=${link.targetEntity}
+${entity.name.toLowerCase()}.${link.formatedName(0)}=${link.targetEntityType}
 #end
 #end
 #end

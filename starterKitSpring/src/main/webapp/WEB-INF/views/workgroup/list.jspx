@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="workgroup.id"/></th>
 						<th><s:message code="workgroup.creationDate"/></th>
 						<th><s:message code="workgroup.description"/></th>
 						<th><s:message code="workgroup.name"/></th>
@@ -24,7 +23,6 @@
 				<tbody>
 					<c:forEach items="${listWorkgroups}" var="workgroup">
 						<tr>
-							<td>${workgroup.id}</td>
 							<td>${workgroup.creationDate}</td>
 							<td>${workgroup.description}</td>
 							<td>${workgroup.name}</td>

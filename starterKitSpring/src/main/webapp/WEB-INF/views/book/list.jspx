@@ -13,7 +13,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><s:message code="book.id"/></th>
 						<th><s:message code="book.availability"/></th>
 						<th><s:message code="book.bestSeller"/></th>
 						<th><s:message code="book.discount"/></th>
@@ -30,7 +29,6 @@
 				<tbody>
 					<c:forEach items="${listBooks}" var="book">
 						<tr>
-							<td>${book.id}</td>
 							<td>${book.availability}</td>
 							<td>${book.bestSeller}</td>
 							<td>${book.discount}</td>

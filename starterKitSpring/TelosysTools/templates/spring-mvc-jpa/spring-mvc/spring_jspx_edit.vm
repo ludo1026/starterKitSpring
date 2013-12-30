@@ -1,18 +1,16 @@
 #set( $_ = "$" )
+##--------------------------------------------------------------------------------------------------------
+## Key fields = fields in Primary Key    
+#set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
+##--------------------------------------------------------------------------------------------------------
+## Data fields = fields not in Primary Key and not in selected Links    
+#set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
+##--------------------------------------------------------------------------------------------------------
+## Link fields = fields not in Primary Key and used as FK in selected Links    
+#set( $fieldLinks = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.IN_SELECTED_LINKS ) )
+##--------------------------------------------------------------------------------------------------------
 ## Macro
-## Champs de la clé primaire qui ne sont pas dans les liens
-#macro( isFieldUsedInLinks, $field, $links )
-#set( $isFieldUsedInLinks = false )
-#foreach( $link in $links )
-#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $isFieldUsedInLinks = true )
-#end
-#end
-#end
-#end
-#end
+##--------------------------------------------------------------------------------------------------------
 ## Liens utilisant les champs
 #macro( isLinkUsedByFields, $link, $fields)
 #set( $isLinkUsedByFields = false )
@@ -24,6 +22,13 @@
 #end
 #end
 #end
+#end
+#end
+#set( $linkNotInKeys = [] )
+#foreach( $link in $entity.selectedLinks )
+#isLinkUsedByFields( $link, $fieldLinks )
+#if( $isLinkUsedByFields )
+$linkNotInKeys.add($link)
 #end
 #end
 ## Informations sur la clé primaire d'une entité
@@ -41,30 +46,14 @@
 #set( $keyGetter = $keyField.getter )
 #end
 #end
+##--------------------------------------------------------------------------------------------------------
 #defineKeyInfoForEntity( $entity )
 ##--------------------------------------------------------------------------------------------------------
-## PRIMARY KEY IN URL
-## keyURLPath
-## keyPathVariable
-## keyGetterToArg
+## keyURLPath : PRIMARY KEY IN URL
 #set( $keyURLPath = "")
 #if ( $entity.hasCompositePrimaryKey() )
-## FIELDS
 #foreach( $field in $entity.keyAttributes )
-#isFieldUsedInLinks( $field, $entity.selectedLinks )
-#if( ! $isFieldUsedInLinks )
 #set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${field.formatedName(0)}+"}" )
-#end
-#end
-## LINKS
-#foreach( $link in $entity.selectedLinks )
-#isLinkUsedByFields( $link, $entity.keyAttributes )
-#if( $isLinkUsedByFields )
-#set( $linkEntity = $model.getEntityByClassName($link.targetEntity) )
-#foreach( $field in $linkEntity.keyAttributes )
-#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${link.formatedName(0)}+"."+${field.formatedName(0)}+"}" )
-#end
-#end
 #end
 #else
 #set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${keyName}+"}" )
@@ -77,29 +66,29 @@
 
 	<div class="container">
 		<fieldset class="col-sm-12 bordure">
-			<legend class="legende"><s:message code="${beanClass.name.toLowerCase()}"/></legend>
+			<legend class="legende"><s:message code="${entity.name.toLowerCase()}"/></legend>
 		
 			<c:if test="${_}{not empty message}">
 				<div id="message" class="alert alert-${_}{message.type.css}"><s:message code="${_}{message.message}"/></div>
 			</c:if>
 
 	    
-	    	<s:url value="/${beanClass.name.toLowerCase()}" var="url_form_submit" />
-			<form:form modelAttribute="${beanClass.name.toLowerCase()}" cssClass="well" method="PUT" action="${_}{url_form_submit}">
+	    	<s:url value="/${entity.name.toLowerCase()}" var="url_form_submit" />
+			<form:form modelAttribute="${entity.name.toLowerCase()}" cssClass="well" method="PUT" action="${_}{url_form_submit}">
 				<table>
+## KEY FIELDS
+
 ## FIELDS
-#foreach( $field in $entity.attributes )
-#isFieldUsedInLinks( $field, $entity.selectedLinks )
-#if( ! $isFieldUsedInLinks )
+#foreach( $field in $dataFields )
 					<tr>
-						<th align="left"><s:message code="${beanClass.name.toLowerCase()}.${field.formatedName(0)}"/></th>
+						<th align="left"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></th>
 						<td>
 #if( $field.wrapperType == "Boolean" )
 							<form:checkbox path="$fieldName" class="form-control"/>
 ## #elseif( $field.wrapperType == "Date" )
-##							<form:input path="$fieldName" id="${beanClass.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
+##							<form:input path="$fieldName" id="${entity.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
 ##							<script type="text/javascript">
-##								$('#${beanClass.name.toLowerCase()}_${fieldName}_input').datepicker({
+##								$('#${entity.name.toLowerCase()}_${fieldName}_input').datepicker({
 ##								});
 ##							</script>
 #else
@@ -111,14 +100,12 @@
 						</td>
 					</tr>
 #end
-#end
 ## LINKS
-#foreach( $link in $entity.selectedLinks )
-#isLinkUsedByFields( $link, $entity.attributes )
-#if( $isLinkUsedByFields )
-#set( $linkEntity = $model.getEntityByClassName($link.targetEntity) )
+#foreach( $link in $entity.links )
+#if ( $link.isCardinalityOneToOne() || $link.isCardinalityManyToOne() )
+#set( $linkEntity = $model.getEntityByClassName($link.targetEntityType) )
 #if ( $linkEntity.hasCompositePrimaryKey() )
-#set( $linkKeyType = "${beanClass.name}Key" )
+#set( $linkKeyType = "${entity.name}Key" )
 #set( $linkKeyName = "id" )
 #else
 #set( $linkKeyField = $linkEntity.keyAttributes[0] )
@@ -126,8 +113,8 @@
 #set( $linkKeyName = "$linkKeyField.formatedName(0)" )
 #end
 					<tr>
-						<th align="left"><s:message code="${beanClass.name.toLowerCase()}.${link.formatedName(0)}"/></th>
-						<td><form:select class="form-control" id="_${link.formatedName(0)}_id" items="${_}{${link.targetEntity.toLowerCase()}s}" path="${link.formatedName(0)}.$linkKeyName" itemValue="$linkKeyName"/></td>
+						<th align="left"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></th>
+						<td><form:select class="form-control" id="_${link.formatedName(0)}_id" items="${_}{${link.targetEntityType.toLowerCase()}s}" path="${link.formatedName(0)}.$linkKeyName" itemValue="$linkKeyName"/></td>
 					</tr>
 #end
 #end
@@ -140,10 +127,10 @@
 						<td colspan="2">
 					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
 							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="delete${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}/delete${keyURLPath}"/>
-							<a class="btn btn-info" href="${_}{delete${beanClass.name}Url}"><s:message code="delete"/></a>
-							<s:url var="all${beanClass.name}Url" value="/${beanClass.name.toLowerCase()}"/>
-							<a class="btn btn-info" href="${_}{all${beanClass.name}Url}"><s:message code="list"/></a>
+							<s:url var="delete${entity.name}Url" value="/${entity.name.toLowerCase()}/delete${keyURLPath}"/>
+							<a class="btn btn-info" href="${_}{delete${entity.name}Url}"><s:message code="delete"/></a>
+							<s:url var="all${entity.name}Url" value="/${entity.name.toLowerCase()}"/>
+							<a class="btn btn-info" href="${_}{all${entity.name}Url}"><s:message code="list"/></a>
 						</td>
 					</tr>
 				</table>
