@@ -36,17 +36,6 @@ public class CountryController
 	@Resource
 	private ControllerHelper controllerHelper;
 
-	void populateEditForm(Model uiModel, Country country) {
-		uiModel.addAttribute("country", country);
-		// Listes déroulantes des objets liés
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Country());
-		return "country/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Country> list = countryService.loadAll();
@@ -54,22 +43,46 @@ public class CountryController
 		return "country/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Country country, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Country country) {
+		uiModel.addAttribute("country", country);
+		// Listes déroulantes des objets liés
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Country());
+		return "country/create";
+	}
+
+	@RequestMapping(value = "/{code}")
+	public String displayEditForm(Model uiModel, @PathVariable("code") String code) {
+		Country country = countryService.load(code);
+		this.populateForm(uiModel, country);
+		return "country/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Country country, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			country = countryService.save(country);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
 		} else {
-			return "country/edit";
+			populateForm(uiModel, country);
+			return "country/create";
 		}
 	}
 
-	@RequestMapping(value = "/{code}")
-	public String edit(Model uiModel, @PathVariable("code") String code) {
-		Country country = countryService.load(code);
-		this.populateEditForm(uiModel, country);
-		return "country/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Country country, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			country = countryService.save(country);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
+		} else {
+			populateForm(uiModel, country);
+			return "country/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")

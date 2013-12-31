@@ -1,68 +1,6 @@
 ##--------------------------------------------------------------------------------------------------------
-## Key fields = fields in Primary Key    
-#set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
+package ${target.javaPackageFromFolder(${SRC})};
 ##--------------------------------------------------------------------------------------------------------
-## Data fields = fields not in Primary Key and not in selected Links    
-#set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
-##--------------------------------------------------------------------------------------------------------
-## Macro
-## Liens utilisant les champs
-#macro( isLinkUsedByFields, $link, $fields)
-#set( $isLinkUsedByFields = false )
-#foreach( $field in $fields )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $isLinkUsedByFields = true )
-#end
-#end
-#end
-#end
-## Liens correspondants aux champs
-#macro( linksForField, $links, $field)
-#set( $linksForField = [] )
-#foreach( $link in $links )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $linksForField.add($link) )
-#end
-#end
-#end
-#end
-#macro( linksForFields, $links, $fields)
-#set( $linksForFields = [] )
-#foreach( $field in $fields )
-#foreach( $link in $links )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $linksForFields.add($link) )
-#end
-#end
-#end
-#end
-#end
-## Champs correspondants aux liens
-#macro( fieldsForLink, $link, $fields)
-#set( $fieldsForLink = [] )
-#foreach( $field in $fields )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $fieldsForLink.add($link) )
-#end
-#end
-#end
-#end
-#macro( fieldsForLinks, $links, $fields)
-#set( $fieldsForLinks = [] )
-#foreach( $link in $links )
-#foreach( $field in $fields )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $fieldsForLinks.add($link) )
-#end
-#end
-#end
-#end
-#end
 ## Informations sur la clé primaire d'une entité
 #macro( defineKeyInfoForEntity, $entity )
 #if ( $entity.hasCompositePrimaryKey() )
@@ -90,7 +28,7 @@
 #set( $keyGetterToArg = "")
 #if ( $entity.hasCompositePrimaryKey() )
 ## FIELDS
-#foreach( $field in $keyFields )
+#foreach( $field in $entity.keyAttributes )
 #if( $keyURLPath != "" ) #set( $keyURLPath = $keyURLPath + "/" ) #end
 #if( $keyPathVariable != "" ) #set( $keyPathVariable = $keyPathVariable + ", " ) #end
 #if( $keyGetterToArg != "" ) #set( $keyGetterToArg = $keyGetterToArg + ", " ) #end
@@ -103,8 +41,6 @@
 #set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${keyName}+""") "+${keyType}+" "+${keyName} )
 #set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${keyGetter}+"()" )
 #end
-##--------------------------------------------------------------------------------------------------------
-package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.List;
 #foreach( $import in $entity.imports )
@@ -127,12 +63,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ${ENTITY_PKG}.${beanClass.name};
+import ${ENTITY_PKG}.${entity.name};
 ## Cl� primaire
-#if ( $beanClass.hasCompositePrimaryKey() )
-import ${ENTITY_PKG}.${beanClass.name}Id;
+#if ( $entity.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.${entity.name}Id;
 #end
-import ${ROOT_PKG}.service.${beanClass.name}Service;
+import ${ROOT_PKG}.service.${entity.name}Service;
 ## Lien vers les entités
 #foreach( $link in $entity.selectedLinks )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
@@ -144,14 +80,14 @@ import ${ROOT_PKG}.web.bean.TypeMessage;
 import ${ROOT_PKG}.web.helper.ControllerHelper;
 
 /**
- * ${beanClass.name}.
+ * ${entity.name}.
  */
 @Controller
-@RequestMapping("/${beanClass.name.toLowerCase()}")
-public class ${beanClass.name}Controller 
+@RequestMapping("/${entity.name.toLowerCase()}")
+public class ${entity.name}Controller 
 {
 	@Resource
-    private ${beanClass.name}Service ${beanClass.name.toLowerCase()}Service;
+    private ${entity.name}Service ${entity.name.toLowerCase()}Service;
 	@Resource
 	private ControllerHelper controllerHelper;
 ## Lien vers les entités
@@ -162,8 +98,15 @@ public class ${beanClass.name}Controller
 #end
 #end
 
-	void populateEditForm(Model uiModel, ${beanClass.name} ${beanClass.name.toLowerCase()}) {
-		uiModel.addAttribute("${beanClass.name.toLowerCase()}", ${beanClass.name.toLowerCase()});
+	@RequestMapping()
+	public String list(Model uiModel) {
+		List<${entity.name}> list = ${entity.name.toLowerCase()}Service.loadAll();
+		uiModel.addAttribute("list${entity.name}s", list);
+		return "${entity.name.toLowerCase()}/list";
+	}
+
+	void populateForm(Model uiModel, ${entity.name} ${entity.name.toLowerCase()}) {
+		uiModel.addAttribute("${entity.name.toLowerCase()}", ${entity.name.toLowerCase()});
 		// Listes déroulantes des objets liés
 ## Lien vers les entités
 #foreach( $link in $entity.selectedLinks )
@@ -174,51 +117,48 @@ public class ${beanClass.name}Controller
 	}
 
 	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new ${beanClass.name}());
-		return "${beanClass.name.toLowerCase()}/edit";
-	}
-
-	@RequestMapping()
-	public String list(Model uiModel) {
-		List<${beanClass.name}> list = ${beanClass.name.toLowerCase()}Service.loadAll();
-		uiModel.addAttribute("list${beanClass.name}s", list);
-		return "${beanClass.name.toLowerCase()}/list";
-	}
-
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid ${beanClass.name} ${beanClass.name.toLowerCase()}, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-#foreach( $field in $entity.getAttributesByCriteria( $const.KEY, $const.IN_SELECTED_LINKS ) )
-#linksForField( $entity.links, $field )
-#foreach( $link in $linksForField )
-#set( $entityLink = $model.getEntityByClassName($link.targetEntityType) )
-#foreach( $entityLinkKeyField in $entityLink.keyAttributes )
-		${entity.name.toLowerCase()}.${field.setter}(${entity.name.toLowerCase()}.${link.getter}().${entityLinkKeyField.getter}());
-#end
-#end
-#end
-		if (!result.hasErrors()) {
-			${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Service.save(${beanClass.name.toLowerCase()});
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/${beanClass.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
-		} else {
-			return "${beanClass.name.toLowerCase()}/edit";
-		}
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new ${entity.name}());
+		return "${entity.name.toLowerCase()}/create";
 	}
 
 	@RequestMapping(value = "/${keyURLPath}")
-	public String edit(Model uiModel, $keyPathVariable) {
+	public String displayEditForm(Model uiModel, $keyPathVariable) {
 #if ( $entity.hasCompositePrimaryKey() )
 		$keyType ${keyType.toLowerCase()} = new $keyType();
 #foreach( $field in $entity.keyAttributes )
 		${keyType.toLowerCase()}.${field.setter}(${field.formatedName(0)});
 #end
-		${beanClass.name} ${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Service.load(${keyType.toLowerCase()});
+		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${keyType.toLowerCase()});
 #else
-		${beanClass.name} ${beanClass.name.toLowerCase()} = ${beanClass.name.toLowerCase()}Service.load(${keyName});
+		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${keyName});
 #end
-		this.populateEditForm(uiModel, ${beanClass.name.toLowerCase()});
-		return "${beanClass.name.toLowerCase()}/edit";
+		this.populateForm(uiModel, ${entity.name.toLowerCase()});
+		return "${entity.name.toLowerCase()}/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
+		} else {
+			populateForm(uiModel, ${entity.name.toLowerCase()});
+			return "${entity.name.toLowerCase()}/create";
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
+		} else {
+			populateForm(uiModel, ${entity.name.toLowerCase()});
+			return "${entity.name.toLowerCase()}/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/${keyURLPath}")
@@ -232,7 +172,7 @@ public class ${beanClass.name}Controller
 #else
 		${entity.name.toLowerCase()}Service.delete(${keyName});
 #end
-		return "redirect:/${beanClass.name.toLowerCase()}";
+		return "redirect:/${entity.name.toLowerCase()}";
 	}
 	
 }

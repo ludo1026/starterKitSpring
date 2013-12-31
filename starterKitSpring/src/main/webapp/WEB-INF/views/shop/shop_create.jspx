@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+<jsp:output omit-xml-declaration="yes"/>
+
+	<div class="container">
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende"><s:message code="shop"/></legend>
+		
+			<c:if test="${not empty message}">
+				<div id="message" class="alert alert-${message.type.css}"><s:message code="${message.message}"/></div>
+			</c:if>
+			
+	    	<s:url value="/shop" var="url_form_submit" />
+			<form:form class="form-horizontal" modelAttribute="shop" cssClass="well form-horizontal" method="POST" action="${url_form_submit}">
+				
+				<form:errors path="*" cssClass="alert alert-danger" element="div" />
+	    		
+				<div class="form-group">
+					<label for="code" class="col-sm-2 control-label"><s:message code="shop.code"/></label>
+					<div class="col-sm-10">
+						<form:input path="code" class="form-control" />
+						<form:errors cssClass="label label-danger" id="_code_error_id" path="code" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="address1" class="col-sm-2 control-label"><s:message code="shop.address1"/></label>
+					<div class="col-sm-10">
+						<form:input path="address1" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_address1_error_id" path="address1" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="address2" class="col-sm-2 control-label"><s:message code="shop.address2"/></label>
+					<div class="col-sm-10">
+						<form:input path="address2" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_address2_error_id" path="address2" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="city" class="col-sm-2 control-label"><s:message code="shop.city"/></label>
+					<div class="col-sm-10">
+						<form:input path="city" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_city_error_id" path="city" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-sm-2 control-label"><s:message code="shop.email"/></label>
+					<div class="col-sm-10">
+						<form:input path="email" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_email_error_id" path="email" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="name" class="col-sm-2 control-label"><s:message code="shop.name"/></label>
+					<div class="col-sm-10">
+						<form:input path="name" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_name_error_id" path="name" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="phone" class="col-sm-2 control-label"><s:message code="shop.phone"/></label>
+					<div class="col-sm-10">
+						<form:input path="phone" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_phone_error_id" path="phone" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="zipCode" class="col-sm-2 control-label"><s:message code="shop.zipCode"/></label>
+					<div class="col-sm-10">
+						<form:input path="zipCode" class="form-control"/>
+						<form:errors cssClass="label label-danger" id="_zipCode_error_id" path="zipCode" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="employee" class="col-sm-2 control-label"><s:message code="shop.employee"/></label>
+					<div class="col-sm-10">
+						<select id="_employee_code" class="form-control" name="employee">
+							<option></option>
+							<c:forEach items="${employees}" var="employee">
+								<c:choose>
+									<c:when test="${not empty shop.employee and not empty shop.employee.code and employee.code == shop.employee.code}">
+										<option value="${employee.code}" selected="selected">${employee}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${employee.code}">${employee}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+						<form:errors />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="country" class="col-sm-2 control-label"><s:message code="shop.country"/></label>
+					<div class="col-sm-10">
+						<select id="_country_code" class="form-control" name="country">
+							<option></option>
+							<c:forEach items="${countrys}" var="country">
+								<c:choose>
+									<c:when test="${not empty shop.country and not empty shop.country.code and country.code == shop.country.code}">
+										<option value="${country.code}" selected="selected">${country}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${country.code}">${country}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+						<form:errors />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-2">
+						<s:url var="deleteShopUrl" value="/shop/delete/${shop.code}"/>
+						<a role="button" class="btn btn-default btn-block" href="${deleteShopUrl}"><s:message code="delete"/></a>
+					</div>
+    				<div class="col-sm-offset-4 col-sm-2">
+		 				<s:url var="allShopUrl" value="/shop"/>
+						<a role="button" class="btn btn-default btn-block" href="${allShopUrl}"><s:message code="back"/></a>
+					</div>
+    				<div class="col-sm-2">
+						<button type="submit" class="btn btn-primary btn-lg btn-block"><s:message code="save"/></button>
+					</div>
+				</div>
+			</form:form>
+	    </fieldset>
+	</div>	
+</div>

@@ -43,19 +43,6 @@ public class BookController
 	@Resource
     private AuthorService authorService;
 
-	void populateEditForm(Model uiModel, Book book) {
-		uiModel.addAttribute("book", book);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("publishers", publisherService.loadAll());
-    	uiModel.addAttribute("authors", authorService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Book());
-		return "book/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Book> list = bookService.loadAll();
@@ -63,22 +50,48 @@ public class BookController
 		return "book/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Book book, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Book book) {
+		uiModel.addAttribute("book", book);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("publishers", publisherService.loadAll());
+    	uiModel.addAttribute("authors", authorService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Book());
+		return "book/create";
+	}
+
+	@RequestMapping(value = "/{id}")
+	public String displayEditForm(Model uiModel, @PathVariable("id") Integer id) {
+		Book book = bookService.load(id);
+		this.populateForm(uiModel, book);
+		return "book/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Book book, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			book = bookService.save(book);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
 		} else {
-			return "book/edit";
+			populateForm(uiModel, book);
+			return "book/create";
 		}
 	}
 
-	@RequestMapping(value = "/{id}")
-	public String edit(Model uiModel, @PathVariable("id") Integer id) {
-		Book book = bookService.load(id);
-		this.populateEditForm(uiModel, book);
-		return "book/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Book book, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			book = bookService.save(book);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
+		} else {
+			populateForm(uiModel, book);
+			return "book/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")

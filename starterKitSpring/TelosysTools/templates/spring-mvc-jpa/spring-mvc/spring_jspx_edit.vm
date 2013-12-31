@@ -1,4 +1,4 @@
-#set( $_ = "$" )
+#set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
 ## Key fields = fields in Primary Key    
 #set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
@@ -22,13 +22,6 @@
 #end
 #end
 #end
-#end
-#end
-#set( $linkNotInKeys = [] )
-#foreach( $link in $entity.selectedLinks )
-#isLinkUsedByFields( $link, $fieldLinks )
-#if( $isLinkUsedByFields )
-$linkNotInKeys.add($link)
 #end
 #end
 ## Informations sur la clé primaire d'une entité
@@ -71,37 +64,56 @@ $linkNotInKeys.add($link)
 			<c:if test="${_}{not empty message}">
 				<div id="message" class="alert alert-${_}{message.type.css}"><s:message code="${_}{message.message}"/></div>
 			</c:if>
-
-	    
+			
 	    	<s:url value="/${entity.name.toLowerCase()}" var="url_form_submit" />
-			<form:form modelAttribute="${entity.name.toLowerCase()}" cssClass="well" method="PUT" action="${_}{url_form_submit}">
-				<table>
-## KEY FIELDS
-
+			<form:form class="form-horizontal" modelAttribute="${entity.name.toLowerCase()}" cssClass="well form-horizontal" method="PUT" action="${_}{url_form_submit}">
+				
+				<form:errors path="*" cssClass="alert alert-danger" element="div" />
+	    		
+## KEY
+#foreach( $field in $keyFields )
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+				<form:hidden path="${field.formatedName(0)}" />
+#else
+				<div class="form-group">
+					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
+					<div class="col-sm-10">
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+						<form:input path="${field.name}" class="form-control" disabled="true" />
+#else
+						<form:input path="${field.name}" class="form-control" disabled="false" />
+#end
+						<form:errors cssClass="label label-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />
+					</div>
+				</div>
+#end
+#end
 ## FIELDS
 #foreach( $field in $dataFields )
-					<tr>
-						<th align="left"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></th>
-						<td>
+				<div class="form-group">
 #if( $field.wrapperType == "Boolean" )
-							<form:checkbox path="$fieldName" class="form-control"/>
+					<div class="col-sm-offset-2 col-sm-10">
+						<form:checkbox path="$field.name" class="form-control"/>
+						<label for="${field.formatedName(0)}" class="control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 ## #elseif( $field.wrapperType == "Date" )
-##							<form:input path="$fieldName" id="${entity.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
-##							<script type="text/javascript">
-##								$('#${entity.name.toLowerCase()}_${fieldName}_input').datepicker({
-##								});
-##							</script>
+##						<form:input path="$fieldName" id="${entity.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
+##						<script type="text/javascript">
+##							$('#${entity.name.toLowerCase()}_${fieldName}_input').datepicker({
+##							});
+##						</script>
 #else
-							<form:input path="${field.formatedName(0)}" class="form-control"/>
+					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
+					<div class="col-sm-10">
+						<form:input path="${field.formatedName(0)}" class="form-control"/>
 #end
-						</td>
-						<td>
-							<form:errors cssClass="alert alert-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />
-						</td>
-					</tr>
+						<form:errors cssClass="label label-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />
+					</div>
+				</div>
 #end
-## LINKS
+## LINKS : afficher uniquement les liens qui sont modifiables (pas dans la clé primaire)
 #foreach( $link in $entity.links )
+#isLinkUsedByFields( $link, $fieldLinks )
+#if( $isLinkUsedByFields )
 #if ( $link.isCardinalityOneToOne() || $link.isCardinalityManyToOne() )
 #set( $linkEntity = $model.getEntityByClassName($link.targetEntityType) )
 #if ( $linkEntity.hasCompositePrimaryKey() )
@@ -112,28 +124,41 @@ $linkNotInKeys.add($link)
 #set( $linkKeyType = "$linkKeyField.wrapperType" )
 #set( $linkKeyName = "$linkKeyField.formatedName(0)" )
 #end
-					<tr>
-						<th align="left"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></th>
-						<td><form:select class="form-control" id="_${link.formatedName(0)}_id" items="${_}{${link.targetEntityType.toLowerCase()}s}" path="${link.formatedName(0)}.$linkKeyName" itemValue="$linkKeyName"/></td>
-					</tr>
+				<div class="form-group">
+					<label for="${link.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
+					<div class="col-sm-10">
+						<select id="_${link.formatedName(0)}_${linkKeyName}" class="form-control" name="${link.formatedName(0)}">
+							<option></option>
+							<c:forEach items="${_}{${link.targetEntityType.toLowerCase()}s}" var="${link.targetEntityType.toLowerCase()}">
+								<c:choose>
+									<c:when test="${_}{not empty ${entity.name.toLowerCase()}.${link.formatedName(0)} and not empty ${entity.name.toLowerCase()}.${link.formatedName(0)}.${linkKeyName} and ${link.targetEntityType.toLowerCase()}.${linkKeyName} == ${entity.name.toLowerCase()}.${link.formatedName(0)}.${linkKeyName}}">
+										<option value="${_}{${link.targetEntityType.toLowerCase()}.${linkKeyName}}" selected="selected">${_}{${link.targetEntityType.toLowerCase()}}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${_}{${link.targetEntityType.toLowerCase()}.${linkKeyName}}">${_}{${link.targetEntityType.toLowerCase()}}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+						<form:errors />
+					</div>
+				</div>
 #end
 #end
-					<tr>
-						<td colspan="2">
-							<form:errors/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-					 		<button type="submit" class="btn btn-info"><s:message code="save"/></button>
-							<button type="reset" class="btn btn-info"><s:message code="reset"/></button>
-							<s:url var="delete${entity.name}Url" value="/${entity.name.toLowerCase()}/delete${keyURLPath}"/>
-							<a class="btn btn-info" href="${_}{delete${entity.name}Url}"><s:message code="delete"/></a>
-							<s:url var="all${entity.name}Url" value="/${entity.name.toLowerCase()}"/>
-							<a class="btn btn-info" href="${_}{all${entity.name}Url}"><s:message code="list"/></a>
-						</td>
-					</tr>
-				</table>
+#end
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-2">
+						<s:url var="delete${entity.name}Url" value="/${entity.name.toLowerCase()}/delete${keyURLPath}"/>
+						<a role="button" class="btn btn-default btn-block" href="${_}{delete${entity.name}Url}"><s:message code="delete"/></a>
+					</div>
+    				<div class="col-sm-offset-4 col-sm-2">
+		 				<s:url var="all${entity.name}Url" value="/${entity.name.toLowerCase()}"/>
+						<a role="button" class="btn btn-default btn-block" href="${_}{all${entity.name}Url}"><s:message code="back"/></a>
+					</div>
+    				<div class="col-sm-2">
+						<button type="submit" class="btn btn-primary btn-lg btn-block"><s:message code="save"/></button>
+					</div>
+				</div>
 			</form:form>
 	    </fieldset>
 	</div>	

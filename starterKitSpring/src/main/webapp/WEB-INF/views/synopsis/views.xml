@@ -3,9 +3,12 @@
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 	<definition extends="default" name="synopsis/list">
-		<put-attribute name="body" value="/WEB-INF/views/synopsis/list.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/synopsis/synopsis_list.jspx" />
+	</definition>
+	<definition extends="default" name="synopsis/create">
+		<put-attribute name="body" value="/WEB-INF/views/synopsis/synopsis_create.jspx" />
 	</definition>
 	<definition extends="default" name="synopsis/edit">
-		<put-attribute name="body" value="/WEB-INF/views/synopsis/edit.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/synopsis/synopsis_edit.jspx" />
 	</definition>
 </tiles-definitions>

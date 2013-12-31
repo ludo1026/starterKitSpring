@@ -37,17 +37,6 @@ public class BadgeController
 	@Resource
 	private ControllerHelper controllerHelper;
 
-	void populateEditForm(Model uiModel, Badge badge) {
-		uiModel.addAttribute("badge", badge);
-		// Listes déroulantes des objets liés
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Badge());
-		return "badge/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Badge> list = badgeService.loadAll();
@@ -55,22 +44,46 @@ public class BadgeController
 		return "badge/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Badge badge, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Badge badge) {
+		uiModel.addAttribute("badge", badge);
+		// Listes déroulantes des objets liés
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Badge());
+		return "badge/create";
+	}
+
+	@RequestMapping(value = "/{badgeNumber}")
+	public String displayEditForm(Model uiModel, @PathVariable("badgeNumber") Integer badgeNumber) {
+		Badge badge = badgeService.load(badgeNumber);
+		this.populateForm(uiModel, badge);
+		return "badge/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Badge badge, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			badge = badgeService.save(badge);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
 		} else {
-			return "badge/edit";
+			populateForm(uiModel, badge);
+			return "badge/create";
 		}
 	}
 
-	@RequestMapping(value = "/{badgeNumber}")
-	public String edit(Model uiModel, @PathVariable("badgeNumber") Integer badgeNumber) {
-		Badge badge = badgeService.load(badgeNumber);
-		this.populateEditForm(uiModel, badge);
-		return "badge/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Badge badge, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			badge = badgeService.save(badge);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
+		} else {
+			populateForm(uiModel, badge);
+			return "badge/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{badgeNumber}")

@@ -3,9 +3,12 @@
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 	<definition extends="default" name="country/list">
-		<put-attribute name="body" value="/WEB-INF/views/country/list.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/country/country_list.jspx" />
+	</definition>
+	<definition extends="default" name="country/create">
+		<put-attribute name="body" value="/WEB-INF/views/country/country_create.jspx" />
 	</definition>
 	<definition extends="default" name="country/edit">
-		<put-attribute name="body" value="/WEB-INF/views/country/edit.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/country/country_edit.jspx" />
 	</definition>
 </tiles-definitions>

@@ -39,18 +39,6 @@ public class PublisherController
 	@Resource
     private CountryService countryService;
 
-	void populateEditForm(Model uiModel, Publisher publisher) {
-		uiModel.addAttribute("publisher", publisher);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("countrys", countryService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Publisher());
-		return "publisher/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Publisher> list = publisherService.loadAll();
@@ -58,22 +46,47 @@ public class PublisherController
 		return "publisher/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Publisher publisher, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Publisher publisher) {
+		uiModel.addAttribute("publisher", publisher);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("countrys", countryService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Publisher());
+		return "publisher/create";
+	}
+
+	@RequestMapping(value = "/{code}")
+	public String displayEditForm(Model uiModel, @PathVariable("code") Integer code) {
+		Publisher publisher = publisherService.load(code);
+		this.populateForm(uiModel, publisher);
+		return "publisher/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Publisher publisher, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			publisher = publisherService.save(publisher);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
 		} else {
-			return "publisher/edit";
+			populateForm(uiModel, publisher);
+			return "publisher/create";
 		}
 	}
 
-	@RequestMapping(value = "/{code}")
-	public String edit(Model uiModel, @PathVariable("code") Integer code) {
-		Publisher publisher = publisherService.load(code);
-		this.populateEditForm(uiModel, publisher);
-		return "publisher/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Publisher publisher, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			publisher = publisherService.save(publisher);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
+		} else {
+			populateForm(uiModel, publisher);
+			return "publisher/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")

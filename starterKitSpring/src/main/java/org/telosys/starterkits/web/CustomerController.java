@@ -39,18 +39,6 @@ public class CustomerController
 	@Resource
     private CountryService countryService;
 
-	void populateEditForm(Model uiModel, Customer customer) {
-		uiModel.addAttribute("customer", customer);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("countrys", countryService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Customer());
-		return "customer/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Customer> list = customerService.loadAll();
@@ -58,22 +46,47 @@ public class CustomerController
 		return "customer/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Customer customer, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Customer customer) {
+		uiModel.addAttribute("customer", customer);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("countrys", countryService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Customer());
+		return "customer/create";
+	}
+
+	@RequestMapping(value = "/{code}")
+	public String displayEditForm(Model uiModel, @PathVariable("code") String code) {
+		Customer customer = customerService.load(code);
+		this.populateForm(uiModel, customer);
+		return "customer/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Customer customer, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			customer = customerService.save(customer);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
 		} else {
-			return "customer/edit";
+			populateForm(uiModel, customer);
+			return "customer/create";
 		}
 	}
 
-	@RequestMapping(value = "/{code}")
-	public String edit(Model uiModel, @PathVariable("code") String code) {
-		Customer customer = customerService.load(code);
-		this.populateEditForm(uiModel, customer);
-		return "customer/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Customer customer, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			customer = customerService.save(customer);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
+		} else {
+			populateForm(uiModel, customer);
+			return "customer/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")

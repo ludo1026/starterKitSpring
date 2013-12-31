@@ -1,5 +1,5 @@
-   package org.telosys.starterkits.web;
-
+package org.telosys.starterkits.web;
+   
 import java.util.List;
 import java.util.Date;
 
@@ -44,19 +44,6 @@ public class ReviewController
 	@Resource
     private CustomerService customerService;
 
-	void populateEditForm(Model uiModel, Review review) {
-		uiModel.addAttribute("review", review);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("books", bookService.loadAll());
-    	uiModel.addAttribute("customers", customerService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Review());
-		return "review/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Review> list = reviewService.loadAll();
@@ -64,27 +51,51 @@ public class ReviewController
 		return "review/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Review review, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		review.setBookId(review.getBook().getId());
-		review.setCustomerCode(review.getCustomer().getCode());
+	void populateForm(Model uiModel, Review review) {
+		uiModel.addAttribute("review", review);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("books", bookService.loadAll());
+    	uiModel.addAttribute("customers", customerService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Review());
+		return "review/create";
+	}
+
+	@RequestMapping(value = "/{bookId}/{customerCode}")
+	public String displayEditForm(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
+		ReviewId reviewid = new ReviewId();
+		reviewid.setBookId(bookId);
+		reviewid.setCustomerCode(customerCode);
+		Review review = reviewService.load(reviewid);
+		this.populateForm(uiModel, review);
+		return "review/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Review review, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			review = reviewService.save(review);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
 		} else {
-			return "review/edit";
+			populateForm(uiModel, review);
+			return "review/create";
 		}
 	}
 
-	@RequestMapping(value = "/{bookId}/{customerCode}")
-	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
-		ReviewId reviewid = new ReviewId();
-		reviewid.setBookId(bookId);
-		reviewid.setCustomerCode(customerCode);
-		Review review = reviewService.load(reviewid);
-		this.populateEditForm(uiModel, review);
-		return "review/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Review review, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			review = reviewService.save(review);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
+		} else {
+			populateForm(uiModel, review);
+			return "review/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}/{customerCode}")

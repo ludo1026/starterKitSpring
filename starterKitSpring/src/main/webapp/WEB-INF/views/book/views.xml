@@ -3,9 +3,12 @@
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 	<definition extends="default" name="book/list">
-		<put-attribute name="body" value="/WEB-INF/views/book/list.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/book/book_list.jspx" />
+	</definition>
+	<definition extends="default" name="book/create">
+		<put-attribute name="body" value="/WEB-INF/views/book/book_create.jspx" />
 	</definition>
 	<definition extends="default" name="book/edit">
-		<put-attribute name="body" value="/WEB-INF/views/book/edit.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/book/book_edit.jspx" />
 	</definition>
 </tiles-definitions>

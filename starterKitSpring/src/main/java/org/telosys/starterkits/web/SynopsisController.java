@@ -39,18 +39,6 @@ public class SynopsisController
 	@Resource
     private BookService bookService;
 
-	void populateEditForm(Model uiModel, Synopsis synopsis) {
-		uiModel.addAttribute("synopsis", synopsis);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("books", bookService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Synopsis());
-		return "synopsis/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Synopsis> list = synopsisService.loadAll();
@@ -58,23 +46,47 @@ public class SynopsisController
 		return "synopsis/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Synopsis synopsis, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		synopsis.setBookId(synopsis.getBook().getId());
+	void populateForm(Model uiModel, Synopsis synopsis) {
+		uiModel.addAttribute("synopsis", synopsis);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("books", bookService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Synopsis());
+		return "synopsis/create";
+	}
+
+	@RequestMapping(value = "/{bookId}")
+	public String displayEditForm(Model uiModel, @PathVariable("bookId") Integer bookId) {
+		Synopsis synopsis = synopsisService.load(bookId);
+		this.populateForm(uiModel, synopsis);
+		return "synopsis/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Synopsis synopsis, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			synopsis = synopsisService.save(synopsis);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
 		} else {
-			return "synopsis/edit";
+			populateForm(uiModel, synopsis);
+			return "synopsis/create";
 		}
 	}
 
-	@RequestMapping(value = "/{bookId}")
-	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId) {
-		Synopsis synopsis = synopsisService.load(bookId);
-		this.populateEditForm(uiModel, synopsis);
-		return "synopsis/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Synopsis synopsis, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			synopsis = synopsisService.save(synopsis);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
+		} else {
+			populateForm(uiModel, synopsis);
+			return "synopsis/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}")

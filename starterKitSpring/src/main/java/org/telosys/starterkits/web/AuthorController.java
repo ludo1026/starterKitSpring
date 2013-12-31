@@ -36,17 +36,6 @@ public class AuthorController
 	@Resource
 	private ControllerHelper controllerHelper;
 
-	void populateEditForm(Model uiModel, Author author) {
-		uiModel.addAttribute("author", author);
-		// Listes déroulantes des objets liés
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Author());
-		return "author/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Author> list = authorService.loadAll();
@@ -54,22 +43,46 @@ public class AuthorController
 		return "author/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Author author, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Author author) {
+		uiModel.addAttribute("author", author);
+		// Listes déroulantes des objets liés
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Author());
+		return "author/create";
+	}
+
+	@RequestMapping(value = "/{id}")
+	public String displayEditForm(Model uiModel, @PathVariable("id") Integer id) {
+		Author author = authorService.load(id);
+		this.populateForm(uiModel, author);
+		return "author/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Author author, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			author = authorService.save(author);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/author/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, author.getId());
 		} else {
-			return "author/edit";
+			populateForm(uiModel, author);
+			return "author/create";
 		}
 	}
 
-	@RequestMapping(value = "/{id}")
-	public String edit(Model uiModel, @PathVariable("id") Integer id) {
-		Author author = authorService.load(id);
-		this.populateEditForm(uiModel, author);
-		return "author/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Author author, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			author = authorService.save(author);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/author/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, author.getId());
+		} else {
+			populateForm(uiModel, author);
+			return "author/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")

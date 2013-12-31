@@ -7,6 +7,8 @@ package ${target.javaPackageFromFolder($SRC)};
 #set( $currentClassName = "${entity.name}Id" )
 import java.io.Serializable;
 
+import javax.validation.constraints.* ;
+
 #foreach( $import in $entity.importsForKeyFields )
 import $import;
 #end
@@ -32,7 +34,8 @@ public class $currentClassName implements Serializable
 #foreach( $field in $entity.keyAttributes )
 ##$field.jpaAnnotationsEmbeddedID(4)
 $jpa.embeddedIdAnnotations(4, $field)
-    private $field.formatedType(10) $field.formatedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
+$field.beanValidationAnnotationsJSR303(4)
+    private $field.wrapperType $field.formatedName(0)#if($field.hasInitialValue()) = ${field.initialValue} #end;
     
 #end
 
@@ -58,12 +61,12 @@ $jpa.embeddedIdAnnotations(4, $field)
 #foreach( $field in $entity.keyAttributes )
 #if ( $field.databaseName ) 
 #end
-#if ( $field.setter )    public void ${field.setter}( $field.type value )
+#if ( $field.setter )    public void ${field.setter}( $field.wrapperType value )
     {
         this.$field.name = value;
     }
 #end
-#if ( $field.getter )    public $field.type ${field.getter}()
+#if ( $field.getter )    public $field.wrapperType ${field.getter}()
     {
         return this.$field.name;
     }

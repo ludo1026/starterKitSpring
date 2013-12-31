@@ -37,17 +37,6 @@ public class WorkgroupController
 	@Resource
 	private ControllerHelper controllerHelper;
 
-	void populateEditForm(Model uiModel, Workgroup workgroup) {
-		uiModel.addAttribute("workgroup", workgroup);
-		// Listes déroulantes des objets liés
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Workgroup());
-		return "workgroup/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Workgroup> list = workgroupService.loadAll();
@@ -55,22 +44,46 @@ public class WorkgroupController
 		return "workgroup/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Workgroup workgroup, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Workgroup workgroup) {
+		uiModel.addAttribute("workgroup", workgroup);
+		// Listes déroulantes des objets liés
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Workgroup());
+		return "workgroup/create";
+	}
+
+	@RequestMapping(value = "/{id}")
+	public String displayEditForm(Model uiModel, @PathVariable("id") Short id) {
+		Workgroup workgroup = workgroupService.load(id);
+		this.populateForm(uiModel, workgroup);
+		return "workgroup/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Workgroup workgroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			workgroup = workgroupService.save(workgroup);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
 		} else {
-			return "workgroup/edit";
+			populateForm(uiModel, workgroup);
+			return "workgroup/create";
 		}
 	}
 
-	@RequestMapping(value = "/{id}")
-	public String edit(Model uiModel, @PathVariable("id") Short id) {
-		Workgroup workgroup = workgroupService.load(id);
-		this.populateEditForm(uiModel, workgroup);
-		return "workgroup/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Workgroup workgroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			workgroup = workgroupService.save(workgroup);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
+		} else {
+			populateForm(uiModel, workgroup);
+			return "workgroup/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")

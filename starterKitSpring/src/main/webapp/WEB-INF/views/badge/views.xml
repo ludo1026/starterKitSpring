@@ -3,9 +3,12 @@
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 	<definition extends="default" name="badge/list">
-		<put-attribute name="body" value="/WEB-INF/views/badge/list.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/badge/badge_list.jspx" />
+	</definition>
+	<definition extends="default" name="badge/create">
+		<put-attribute name="body" value="/WEB-INF/views/badge/badge_create.jspx" />
 	</definition>
 	<definition extends="default" name="badge/edit">
-		<put-attribute name="body" value="/WEB-INF/views/badge/edit.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/badge/badge_edit.jspx" />
 	</definition>
 </tiles-definitions>

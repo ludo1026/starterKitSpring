@@ -42,19 +42,6 @@ public class EmployeeController
 	@Resource
     private BadgeService badgeService;
 
-	void populateEditForm(Model uiModel, Employee employee) {
-		uiModel.addAttribute("employee", employee);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("shops", shopService.loadAll());
-    	uiModel.addAttribute("badges", badgeService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new Employee());
-		return "employee/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<Employee> list = employeeService.loadAll();
@@ -62,22 +49,48 @@ public class EmployeeController
 		return "employee/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid Employee employee, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+	void populateForm(Model uiModel, Employee employee) {
+		uiModel.addAttribute("employee", employee);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("shops", shopService.loadAll());
+    	uiModel.addAttribute("badges", badgeService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new Employee());
+		return "employee/create";
+	}
+
+	@RequestMapping(value = "/{code}")
+	public String displayEditForm(Model uiModel, @PathVariable("code") String code) {
+		Employee employee = employeeService.load(code);
+		this.populateForm(uiModel, employee);
+		return "employee/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid Employee employee, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			employee = employeeService.save(employee);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
 		} else {
-			return "employee/edit";
+			populateForm(uiModel, employee);
+			return "employee/create";
 		}
 	}
 
-	@RequestMapping(value = "/{code}")
-	public String edit(Model uiModel, @PathVariable("code") String code) {
-		Employee employee = employeeService.load(code);
-		this.populateEditForm(uiModel, employee);
-		return "employee/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid Employee employee, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			employee = employeeService.save(employee);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
+		} else {
+			populateForm(uiModel, employee);
+			return "employee/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")

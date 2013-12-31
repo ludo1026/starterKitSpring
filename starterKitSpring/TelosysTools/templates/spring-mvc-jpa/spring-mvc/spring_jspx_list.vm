@@ -51,6 +51,10 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
+## KEYS
+#foreach( $field in $keyFields )
+						<th><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></th>
+#end
 ## FIELDS
 #foreach( $field in $dataFields )
 						<th><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></th>
@@ -68,6 +72,10 @@
 				<tbody>
 					<c:forEach items="${_}{list${entity.name}s}" var="${entity.name.toLowerCase()}">
 						<tr>
+## KEYS
+#foreach( $field in $keyFields )
+							<td>${_}{${entity.name.toLowerCase()}.${field.formatedName(0)}}</td>
+#end
 ## FIELDS
 #foreach( $field in $dataFields )
 							<td>${_}{${entity.name.toLowerCase()}.${field.formatedName(0)}}</td>

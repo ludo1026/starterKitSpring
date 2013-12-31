@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
@@ -64,10 +65,21 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     }
 	
 	protected void installTypeConverters(FormatterRegistry registry) {
+		registry.addConverter(getStringToStringConverter());
 		registry.addConverter(getStringToDateConverter());
 		registry.addConverter(getDateToStringConverter());
 	}
     
+	public Converter<String, String> getStringToStringConverter() {
+        return new Converter<String, String>() {
+ 
+            @Override
+            public String convert(String source) {
+                return StringUtils.trimToNull(source);
+            }
+        };
+    }
+
 	public Converter<String, Date> getStringToDateConverter() {
         return new Converter<String, Date>() {
  
@@ -99,6 +111,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public void installLabelConverters(FormatterRegistry registry) {
 		// Author
         registry.addConverter(getAuthorToStringConverter());
+        registry.addConverter(getAuthorToIdConverter());
         registry.addConverter(getIdToAuthorConverter());
         registry.addConverter(getStringToAuthorConverter());
 		// Badge
@@ -158,6 +171,17 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
         return new Converter<Author, java.lang.String>() {
             public String convert(Author Author) {
 				return new StringBuilder().append(Author.getId()).toString();
+            }
+        };
+    }
+
+    public Converter<Author, Integer> getAuthorToIdConverter() {
+        return new Converter<Author, java.lang.Integer>() {
+            public Integer convert(Author author) {
+            	if(author == null) {
+            		return null;
+            	}
+				return author.getId();
             }
         };
     }

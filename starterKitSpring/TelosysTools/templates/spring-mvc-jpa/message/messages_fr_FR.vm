@@ -13,6 +13,7 @@ delete=Supprimer
 save=Enregistrer
 save.ok=Enregistrement effectu\u00e9
 list=Liste
+back=Retour
 reset=R\u00e9initialiser
 
 #foreach( $entity in $selectedEntities )
@@ -21,6 +22,9 @@ ${entity.name.toLowerCase()}=${entity.name}
 ${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
 #foreach( $field in ${entity.attributes} )
 ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
+#if( $field.isNotNull() )
+NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=Le champ ${field.label} doit \u00eatre renseign\u00e9
+#end
 #end
 #foreach( $link in $entity.selectedLinks )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )

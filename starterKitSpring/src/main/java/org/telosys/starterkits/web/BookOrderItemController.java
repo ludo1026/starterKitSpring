@@ -1,5 +1,5 @@
-   package org.telosys.starterkits.web;
-
+package org.telosys.starterkits.web;
+   
 import java.util.List;
 import java.math.BigDecimal;
 
@@ -44,19 +44,6 @@ public class BookOrderItemController
 	@Resource
     private BookOrderService bookorderService;
 
-	void populateEditForm(Model uiModel, BookOrderItem bookorderitem) {
-		uiModel.addAttribute("bookorderitem", bookorderitem);
-		// Listes déroulantes des objets liés
-    	uiModel.addAttribute("books", bookService.loadAll());
-    	uiModel.addAttribute("bookorders", bookorderService.loadAll());
-	}
-
-	@RequestMapping("/create")
-	public String create(Model uiModel) {
-		this.populateEditForm(uiModel, new BookOrderItem());
-		return "bookorderitem/edit";
-	}
-
 	@RequestMapping()
 	public String list(Model uiModel) {
 		List<BookOrderItem> list = bookorderitemService.loadAll();
@@ -64,27 +51,51 @@ public class BookOrderItemController
 		return "bookorderitem/list";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public String save(@Valid BookOrderItem bookorderitem, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		bookorderitem.getId().setBookId(bookorderitem.getBook().getId());
-		bookorderitem.getId().setBookOrderId(bookorderitem.getBookOrder().getId());
+	void populateForm(Model uiModel, BookOrderItem bookorderitem) {
+		uiModel.addAttribute("bookorderitem", bookorderitem);
+		// Listes déroulantes des objets liés
+    	uiModel.addAttribute("books", bookService.loadAll());
+    	uiModel.addAttribute("bookorders", bookorderService.loadAll());
+	}
+
+	@RequestMapping("/create")
+	public String displayCreateForm(Model uiModel) {
+		this.populateForm(uiModel, new BookOrderItem());
+		return "bookorderitem/create";
+	}
+
+	@RequestMapping(value = "/{bookId}/{bookOrderId}")
+	public String displayEditForm(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
+		BookOrderItemId bookorderitemid = new BookOrderItemId();
+		bookorderitemid.setBookId(bookId);
+		bookorderitemid.setBookOrderId(bookOrderId);
+		BookOrderItem bookorderitem = bookorderitemService.load(bookorderitemid);
+		this.populateForm(uiModel, bookorderitem);
+		return "bookorderitem/edit";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String create(@Valid BookOrderItem bookorderitem, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
 			bookorderitem = bookorderitemService.save(bookorderitem);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
 		} else {
-			return "bookorderitem/edit";
+			populateForm(uiModel, bookorderitem);
+			return "bookorderitem/create";
 		}
 	}
 
-	@RequestMapping(value = "/{bookId}/{bookOrderId}")
-	public String edit(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
-		BookOrderItemId bookorderitemid = new BookOrderItemId();
-		bookorderitemid.setBookId(bookId);
-		bookorderitemid.setBookOrderId(bookOrderId);
-		BookOrderItem bookorderitem = bookorderitemService.load(bookorderitemid);
-		this.populateEditForm(uiModel, bookorderitem);
-		return "bookorderitem/edit";
+	@RequestMapping(method = RequestMethod.PUT)
+	public String update(@Valid BookOrderItem bookorderitem, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			bookorderitem = bookorderitemService.save(bookorderitem);
+			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
+			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
+		} else {
+			populateForm(uiModel, bookorderitem);
+			return "bookorderitem/edit";
+		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}/{bookOrderId}")
