@@ -9,12 +9,15 @@
 ## Link fields = fields not in Primary Key and used as FK in selected Links    
 #set( $fieldLinks = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.IN_SELECTED_LINKS ) )
 ##--------------------------------------------------------------------------------------------------------
+## Mapped fields = fields in Primary Key or not in selected Links    
+#set( $allMappedFields = $fn.concatLists($entity.keyAttributes, $dataFields) )
+##--------------------------------------------------------------------------------------------------------
 ## Macro
 ##--------------------------------------------------------------------------------------------------------
 ## Liens utilisant les champs
+##--------------------------------------------------------------------------------------------------------
 #macro( isLinkUsedByFields, $link, $fields)
 #set( $isLinkUsedByFields = false )
-#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
 #foreach( $field in $fields )
 #foreach( $joinColumn in $link.joinColumns )
 #if( $joinColumn == $field.databaseName )
@@ -23,8 +26,22 @@
 #end
 #end
 #end
+##--------------------------------------------------------------------------------------------------------
+## Generated value
+##--------------------------------------------------------------------------------------------------------
+#macro( isGeneratedValue, $entity, $field)
+#set( $isGeneratedValue = false )
+#if( $field.isKeyElement() )
+#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#set( $isGeneratedValue = true )
 #end
+#end
+#end
+#end
+##--------------------------------------------------------------------------------------------------------
 ## Informations sur la clé primaire d'une entité
+##--------------------------------------------------------------------------------------------------------
 #macro( defineKeyInfoForEntity, $entity )
 #if ( $entity.hasCompositePrimaryKey() )
 #set( $keyType = "${entity.name}Id" )
@@ -43,6 +60,7 @@
 #defineKeyInfoForEntity( $entity )
 ##--------------------------------------------------------------------------------------------------------
 ## keyURLPath : PRIMARY KEY IN URL
+##--------------------------------------------------------------------------------------------------------
 #set( $keyURLPath = "")
 #if ( $entity.hasCompositePrimaryKey() )
 #foreach( $field in $entity.keyAttributes )
@@ -72,8 +90,10 @@
 	    		
 ## KEY
 #foreach( $field in $keyFields )
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#if( $field.isUsedInLinkJoinColumn($entity.links) )
 #else
+#isGeneratedValue( $entity, $field )
+#if( ! $isGeneratedValue )
 				<div class="form-group">
 					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
@@ -81,6 +101,7 @@
 						<form:errors cssClass="label label-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />
 					</div>
 				</div>
+#end
 #end
 #end
 ## FIELDS

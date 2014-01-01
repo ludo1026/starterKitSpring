@@ -16,15 +16,28 @@ list=List
 back=Back
 reset=Reset
 
+# errors
+already.exists=This entity already exists
+
 #foreach( $entity in $selectedEntities )
 # ${entity.name.toLowerCase()}
 ${entity.name.toLowerCase()}=${entity.name}
 ${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
 #foreach( $field in ${entity.attributes} )
 ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
+##--------------------------------------------------------------------------------------------------------
+## Validation
+##--------------------------------------------------------------------------------------------------------
+#if( $field.isKeyElement() )
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label} is required
+#end
+#else
 #if( $field.isNotNull() )
 NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label} is required
 #end
+#end
+##--------------------------------------------------------------------------------------------------------
 #end
 #foreach( $field in $entity.selectedLinks )
 #if( !$field.isCardinalityManyToMany() && !$field.isCardinalityOneToMany() )

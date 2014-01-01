@@ -5,18 +5,16 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+
 import javax.validation.Valid;
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.telosys.starterkits.bean.EmployeeGroup;
 import org.telosys.starterkits.bean.EmployeeGroupId;
@@ -67,6 +65,11 @@ public class EmployeeGroupController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid EmployeeGroup employeegroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		if (!result.hasErrors()) {
+			if(employeegroupService.load(employeegroup.getId()) != null) {
+				result.addError(new ObjectError("employeegroup", "already.exists"));
+			}
+		}
 		if (!result.hasErrors()) {
 			employeegroup = employeegroupService.save(employeegroup);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));

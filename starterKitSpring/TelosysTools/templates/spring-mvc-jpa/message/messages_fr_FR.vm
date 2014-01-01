@@ -16,13 +16,16 @@ list=Liste
 back=Retour
 reset=R\u00e9initialiser
 
+# errors
+already.exists=Cette entit\u00e9 existe d\u00e9j\u00e0
+
 #foreach( $entity in $selectedEntities )
 # ${entity.name.toLowerCase()}
 ${entity.name.toLowerCase()}=${entity.name}
 ${entity.name.toLowerCase()}.list=${entity.name.toLowerCase()}s
 #foreach( $field in ${entity.attributes} )
 ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
-#if( $field.isNotNull() )
+#if( $field.isKeyElement() || $field.isNotNull() )
 NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=Le champ ${field.label} doit \u00eatre renseign\u00e9
 #end
 #end

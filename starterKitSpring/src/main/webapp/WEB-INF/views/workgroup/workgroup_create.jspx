@@ -17,13 +17,6 @@
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
 	    		
 				<div class="form-group">
-					<label for="id" class="col-sm-2 control-label"><s:message code="workgroup.id"/></label>
-					<div class="col-sm-10">
-						<form:input path="id" class="form-control" />
-						<form:errors cssClass="label label-danger" id="_id_error_id" path="id" />
-					</div>
-				</div>
-				<div class="form-group">
 					<label for="creationDate" class="col-sm-2 control-label"><s:message code="workgroup.creationDate"/></label>
 					<div class="col-sm-10">
 						<form:input path="creationDate" class="form-control"/>

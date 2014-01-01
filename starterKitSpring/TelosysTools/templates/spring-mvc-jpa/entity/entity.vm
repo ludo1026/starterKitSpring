@@ -6,7 +6,7 @@
 #set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
 ##--------------------------------------------------------------------------------------------------------
 ## Link fields = fields not in Primary Key and used as FK in selected Links    
-#set( $linkFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.IN_SELECTED_LINKS ) )
+#set( $fieldsLink = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.IN_SELECTED_LINKS ) )
 ##--------------------------------------------------------------------------------------------------------
 ## Mapped fields = fields in Primary Key or not in selected Links    
 #set( $allMappedFields = $fn.concatLists($entity.keyAttributes, $dataFields) )
@@ -126,11 +126,31 @@
 #end
 #end
 ##--------------------------------------------------------------------------------------------------------
+## Generated value
+##--------------------------------------------------------------------------------------------------------
+#macro( isGeneratedValue, $entity, $field)
+#set( $isGeneratedValue = false )
+#if( $field.isKeyElement() )
+#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#set( $isGeneratedValue = true )
+#end
+#end
+#end
+#end
+##--------------------------------------------------------------------------------------------------------
 ## Validation
 ##--------------------------------------------------------------------------------------------------------
 #macro( beanValidationAnnotations, $entity, $field)
+#if( $field.isKeyElement() )
+#isGeneratedValue( $entity, $field )
+#if( ! $isGeneratedValue )
+    @NotNull
+#end
+#else
 #if( $field.isNotNull() )
     @NotNull
+#end
 #end
 #end
 ##--------------------------------------------------------------------------------------------------------
@@ -172,7 +192,7 @@ import javax.validation.constraints.* ;
 #foreach( $import in $entity.imports )
 import $import;
 #end
-#if( $linkFields )
+#if( $fieldsLink )
 import java.util.List;
 #end
 
@@ -214,7 +234,8 @@ public class $entity.name implements Serializable
 #foreach( $field in $entity.keyAttributes )
 ##$field.jpaAnnotations(4)
 $jpa.fieldAnnotations(4,$field)
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#isGeneratedValue( $entity, $field )
+#if( $isGeneratedValue )
 	@GeneratedValue
 #end
 ## $field.beanValidationAnnotationsJSR303(4)
@@ -242,7 +263,7 @@ $jpa.fieldAnnotations(4,$field)
     private $field.wrapperType $field.formatedName(0)#if($field.hasInitialValue()) = ${field.initialValue} #end;
 
 #end
-#foreach( $field in $linkFields )
+#foreach( $field in $fieldsLink )
 	// "$field.name" (column "$field.databaseName") is not defined by itself because used as FK in a link 
 #end
 
@@ -334,7 +355,9 @@ $jpa.linkAnnotations(4, $link, $allMappedFields )
     {
 #fieldsMappingForLink( $entity, $model.getEntityByClassName($link.targetEntityType), $link, $allMappedFields )
 #foreach( $fieldMappingForLink in $fieldsMappingForLink.entrySet() )
-		this.${fieldMappingForLink.key.setter}(${link.javaName}.${fieldMappingForLink.value.getter}());
+		if(${link.javaName} != null && this.${fieldMappingForLink.key.getter}() == null) {
+			this.${fieldMappingForLink.key.setter}(${link.javaName}.${fieldMappingForLink.value.getter}());
+		}
 #end
         this.${link.javaName} = ${link.javaName};
     }
