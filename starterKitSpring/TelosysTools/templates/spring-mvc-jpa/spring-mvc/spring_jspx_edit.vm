@@ -74,6 +74,7 @@
 
 ## LINKS : afficher uniquement les liens qui sont modifiables (pas dans la clé primaire)
 #foreach( $link in $entity.links )
+#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
 #isLinkUsedByFields( $link, $fieldLinks )
 #if( ! $isLinkUsedByFields )
 				<div class="form-group">
@@ -82,6 +83,7 @@
 						<c:out value="${_}{${entity.name.toLowerCase()}.${link.formatedName(0)}}" />
 					</div>
 				</div>
+#end
 #end
 #end
 
@@ -93,12 +95,8 @@
 				<div class="form-group">
 					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
 						<form:hidden path="${field.formatedName(0)}" />
 						<form:input path="${field.name}" class="form-control" disabled="true" />
-#else
-						<form:input path="${field.name}" class="form-control" disabled="false" />
-#end
 						<form:errors cssClass="label label-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />
 					</div>
 				</div>

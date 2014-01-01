@@ -63,11 +63,6 @@ public class WorkgroupController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Workgroup workgroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(workgroupService.load(workgroup.getId()) != null) {
-				result.addError(new ObjectError("workgroup", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			workgroup = workgroupService.save(workgroup);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());

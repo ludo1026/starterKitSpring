@@ -66,11 +66,6 @@ public class EmployeeGroupController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid EmployeeGroup employeegroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(employeegroupService.load(employeegroup.getId()) != null) {
-				result.addError(new ObjectError("employeegroup", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			employeegroup = employeegroupService.save(employeegroup);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());

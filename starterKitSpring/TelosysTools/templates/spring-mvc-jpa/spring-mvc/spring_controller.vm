@@ -1,7 +1,30 @@
 ##--------------------------------------------------------------------------------------------------------
 package ${target.javaPackageFromFolder(${SRC})};
 ##--------------------------------------------------------------------------------------------------------
+## Generated value
+##--------------------------------------------------------------------------------------------------------
+#macro( isGeneratedValue, $entity, $field)
+#set( $isGeneratedValue = false )
+#if( $field.isKeyElement() )
+#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
+#if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#set( $isGeneratedValue = true )
+#end
+#end
+#end
+#end
+#macro( hasGeneratedValue, $entity, $fields)
+#set( $hasGeneratedValue = false )
+#foreach( $field in $fields )
+#isGeneratedValue( $entity, $field )
+#if( $isGeneratedValue )
+#set( $hasGeneratedValue = true )
+#end
+#end
+#end
+##--------------------------------------------------------------------------------------------------------
 ## Informations sur la clé primaire d'une entité
+##--------------------------------------------------------------------------------------------------------
 #macro( defineKeyInfoForEntity, $entity )
 #if ( $entity.hasCompositePrimaryKey() )
 #set( $keyType = "${entity.name}Id" )
@@ -137,11 +160,14 @@ public class ${entity.name}Controller
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+#hasGeneratedValue( $entity, $entity.keyAttributes )
+#if( ! $hasGeneratedValue )
 		if (!result.hasErrors()) {
 			if(${entity.name.toLowerCase()}Service.load(${entity.name.toLowerCase()}.${keyGetter}()) != null) {
 				result.addError(new ObjectError("${entity.name.toLowerCase()}", "already.exists"));
 			}
 		}
+#end
 		if (!result.hasErrors()) {
 			${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));

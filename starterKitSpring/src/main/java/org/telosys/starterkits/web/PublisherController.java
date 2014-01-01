@@ -66,11 +66,6 @@ public class PublisherController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Publisher publisher, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(publisherService.load(publisher.getCode()) != null) {
-				result.addError(new ObjectError("publisher", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			publisher = publisherService.save(publisher);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());

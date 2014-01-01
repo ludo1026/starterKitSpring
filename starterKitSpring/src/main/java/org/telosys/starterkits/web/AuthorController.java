@@ -62,11 +62,6 @@ public class AuthorController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Author author, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(authorService.load(author.getId()) != null) {
-				result.addError(new ObjectError("author", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			author = authorService.save(author);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/author/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, author.getId());

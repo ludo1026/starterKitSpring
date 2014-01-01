@@ -63,11 +63,6 @@ public class BadgeController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Badge badge, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(badgeService.load(badge.getBadgeNumber()) != null) {
-				result.addError(new ObjectError("badge", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			badge = badgeService.save(badge);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());

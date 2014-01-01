@@ -71,11 +71,6 @@ public class BookController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Book book, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		if (!result.hasErrors()) {
-			if(bookService.load(book.getId()) != null) {
-				result.addError(new ObjectError("book", "already.exists"));
-			}
-		}
-		if (!result.hasErrors()) {
 			book = bookService.save(book);
 			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
 			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
