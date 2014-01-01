@@ -69,16 +69,32 @@
 			<form:form class="form-horizontal" modelAttribute="${entity.name.toLowerCase()}" cssClass="well form-horizontal" method="PUT" action="${_}{url_form_submit}">
 				
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
+
+## READ ONLY
+
+## LINKS : afficher uniquement les liens qui sont modifiables (pas dans la clé primaire)
+#foreach( $link in $entity.links )
+#isLinkUsedByFields( $link, $fieldLinks )
+#if( ! $isLinkUsedByFields )
+				<div class="form-group">
+					<label for="${link.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
+					<div class="col-sm-10">
+						<c:out value="${_}{${entity.name.toLowerCase()}.${link.formatedName(0)}}" />
+					</div>
+				</div>
+#end
+#end
+
+## FOR UPDATE
 	    		
 ## KEY
 #foreach( $field in $keyFields )
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
-				<form:hidden path="${field.formatedName(0)}" />
-#else
+#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
 				<div class="form-group">
 					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
 #if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+						<form:hidden path="${field.formatedName(0)}" />
 						<form:input path="${field.name}" class="form-control" disabled="true" />
 #else
 						<form:input path="${field.name}" class="form-control" disabled="false" />

@@ -111,7 +111,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public void installLabelConverters(FormatterRegistry registry) {
 		// Author
         registry.addConverter(getAuthorToStringConverter());
-        registry.addConverter(getAuthorToIdConverter());
         registry.addConverter(getIdToAuthorConverter());
         registry.addConverter(getStringToAuthorConverter());
 		// Badge
@@ -171,17 +170,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
         return new Converter<Author, java.lang.String>() {
             public String convert(Author Author) {
 				return new StringBuilder().append(Author.getId()).toString();
-            }
-        };
-    }
-
-    public Converter<Author, Integer> getAuthorToIdConverter() {
-        return new Converter<Author, java.lang.Integer>() {
-            public Integer convert(Author author) {
-            	if(author == null) {
-            		return null;
-            	}
-				return author.getId();
             }
         };
     }

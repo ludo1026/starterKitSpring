@@ -15,8 +15,36 @@
 			<form:form class="form-horizontal" modelAttribute="book" cssClass="well form-horizontal" method="PUT" action="${url_form_submit}">
 				
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
+
+
+				<div class="form-group">
+					<label for="listOfSynopsis" class="col-sm-2 control-label"><s:message code="book.listOfSynopsis"/></label>
+					<div class="col-sm-10">
+						<c:out value="${book.listOfSynopsis}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="listOfBookOrderItem" class="col-sm-2 control-label"><s:message code="book.listOfBookOrderItem"/></label>
+					<div class="col-sm-10">
+						<c:out value="${book.listOfBookOrderItem}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="listOfReview" class="col-sm-2 control-label"><s:message code="book.listOfReview"/></label>
+					<div class="col-sm-10">
+						<c:out value="${book.listOfReview}" />
+					</div>
+				</div>
+
 	    		
-				<form:hidden path="id" />
+				<div class="form-group">
+					<label for="id" class="col-sm-2 control-label"><s:message code="book.id"/></label>
+					<div class="col-sm-10">
+						<form:hidden path="id" />
+						<form:input path="id" class="form-control" disabled="true" />
+						<form:errors cssClass="label label-danger" id="_id_error_id" path="id" />
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="availability" class="col-sm-2 control-label"><s:message code="book.availability"/></label>
 					<div class="col-sm-10">

@@ -90,8 +90,7 @@
 	    		
 ## KEY
 #foreach( $field in $keyFields )
-#if( $field.isUsedInLinkJoinColumn($entity.links) )
-#else
+#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
 #isGeneratedValue( $entity, $field )
 #if( ! $isGeneratedValue )
 				<div class="form-group">
