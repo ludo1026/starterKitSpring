@@ -132,8 +132,10 @@
 #set( $isGeneratedValue = false )
 #if( $field.isKeyElement() )
 #if( ! $field.isUsedInLinkJoinColumn($entity.links) )
+#if( ! $field.isAutoIncremented() && ! $field.isGeneratedValue() )
 #if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
 #set( $isGeneratedValue = true )
+#end
 #end
 #end
 #end

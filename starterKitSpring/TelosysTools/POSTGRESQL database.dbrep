@@ -185,7 +185,7 @@
 <column dateType="DT" dbDefaultValue="" dbName="creation" dbNotNull="false" dbPosition="3" dbSize="29" dbTypeName="timestamp" inputType="" javaName="creation" javaType="java.util.Date" jdbcTypeCode="93" label="Creation" notNull="false" selected="true"/>
 <column dateType="DT" dbDefaultValue="" dbName="last_update" dbNotNull="false" dbPosition="4" dbSize="29" dbTypeName="timestamp" inputType="" javaName="lastUpdate" javaType="java.util.Date" jdbcTypeCode="93" label="Last Update" notNull="false" selected="true"/>
 <column dbDefaultValue="" dbName="review_note" dbNotNull="false" dbPosition="5" dbSize="10" dbTypeName="int4" inputType="number" javaName="reviewNote" javaType="java.lang.Integer" jdbcTypeCode="4" label="Review Note" notNull="false" selected="true"/>
-<column dbDefaultValue="" dbName="review_text" dbNotNull="false" dbPosition="6" dbSize="32700" dbTypeName="varchar" inputType="text" javaName="reviewText" javaType="java.lang.String" jdbcTypeCode="12" label="Review Text" maxLength="32700" notNull="false" selected="true"/>
+<column dbDefaultValue="" dbName="review_text" dbNotNull="false" dbPosition="6" dbSize="32700" dbTypeName="varchar" inputType="text" javaName="reviewText" javaType="java.lang.String" jdbcTypeCode="12" label="Review Text" longText="true" notNull="false" selected="true"/>
 <fk name="fk_kw35ow17l5ueaf0fqj3lm92gb">
 <fkcol colname="customer_code" colref="code" deferrable="7" deleterule="3" sequence="1" tablename="review" tableref="customer" updaterule="3"/>
 </fk>

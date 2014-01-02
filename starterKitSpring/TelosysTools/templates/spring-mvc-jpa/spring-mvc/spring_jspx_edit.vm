@@ -103,6 +103,9 @@
 ## FIELDS
 #foreach( $field in $dataFields )
 				<div class="form-group">
+#if( $field.isLongText() )
+					<textarea/>
+#end
 #if( $field.wrapperType == "Boolean" )
 					<div class="col-sm-offset-2 col-sm-10">
 						<form:checkbox path="$field.name" class="form-control"/>
