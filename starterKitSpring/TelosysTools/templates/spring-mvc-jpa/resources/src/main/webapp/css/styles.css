@@ -1,3 +1,11 @@
-.glyphicon {
-	padding: 0px 5px;
+.entity li {
+	margin: 5px;
+	font-size: 1.2em;
+}
+.entity li a {
+	display: block;
+	width: 200px;
+}
+.entity li a:hover {
+	color: #cc4444;
 }

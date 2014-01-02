@@ -9,7 +9,7 @@
 			<spring:message code="welcome_h3" arguments="${app_name}" />
 		</h3>
       
-		<ul>
+		<ul class="entity">
             <li><a href="author">Author</a></li>
             <li><a href="badge">Badge</a></li>
             <li><a href="book">Book</a></li>
