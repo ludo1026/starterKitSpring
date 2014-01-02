@@ -103,9 +103,6 @@
 ## FIELDS
 #foreach( $field in $dataFields )
 				<div class="form-group">
-#if( $field.isLongText() )
-					<textarea/>
-#end
 #if( $field.formatedType(0) == "Boolean" )
 					<div class="col-sm-offset-2 col-sm-10">
 						<form:checkbox path="$field.name" class="form-control"/>
@@ -119,10 +116,14 @@
 #else
 					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
+#if( $field.isLongText() )
+						<form:textarea path="${field.formatedName(0)}" class="form-control" rows="4" />
+#else
 #if($field.databaseSize < 100)
 						<form:input path="${field.formatedName(0)}" class="form-control" size="${field.databaseSize}" maxLength="${field.databaseSize}"/>
 #else
 						<form:input path="${field.formatedName(0)}" class="form-control" size="100" maxLength="${field.databaseSize}"/>
+#end
 #end
 #end
 						<form:errors cssClass="label label-danger" id="_${field.formatedName(0)}_error_id" path="${field.formatedName(0)}" />

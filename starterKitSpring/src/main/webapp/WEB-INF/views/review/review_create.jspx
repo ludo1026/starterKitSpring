@@ -38,7 +38,7 @@
 				<div class="form-group">
 					<label for="reviewText" class="col-sm-2 control-label"><s:message code="review.reviewText"/></label>
 					<div class="col-sm-10">
-						<form:input path="reviewText" class="form-control" size="100" maxLength="32700"/>
+						<form:textarea path="reviewText" class="form-control" rows="4" />
 						<form:errors cssClass="label label-danger" id="_reviewText_error_id" path="reviewText" />
 					</div>
 				</div>
