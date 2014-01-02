@@ -23,6 +23,7 @@ import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Shop.
@@ -34,11 +35,13 @@ public class ShopController
 	@Resource
     private ShopService shopService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private EmployeeService employeeService;
 	@Resource
     private CountryService countryService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -69,16 +72,22 @@ public class ShopController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Shop shop, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(shopService.load(shop.getCode()) != null) {
-				result.addError(new ObjectError("shop", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(shopService.load(shop.getCode()) != null) {
+					result.addError(new ObjectError("shop", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			shop = shopService.save(shop);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
-		} else {
+			if (!result.hasErrors()) {
+				shop = shopService.save(shop);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
+			} else {
+				populateForm(uiModel, shop);
+				return "shop/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "shop.error.create", e);
 			populateForm(uiModel, shop);
 			return "shop/create";
 		}
@@ -86,19 +95,29 @@ public class ShopController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Shop shop, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			shop = shopService.save(shop);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				shop = shopService.save(shop);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/shop/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, shop.getCode());
+			} else {
+				populateForm(uiModel, shop);
+				return "shop/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "shop.error.update", e);
 			populateForm(uiModel, shop);
 			return "shop/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")
-	public String delete(Model uiModel, @PathVariable("code") String code) {
-		shopService.delete(code);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("code") String code) {
+		try {
+			shopService.delete(code);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "shop.error.delete", e);
+		}
 		return "redirect:/shop";
 	}
 	

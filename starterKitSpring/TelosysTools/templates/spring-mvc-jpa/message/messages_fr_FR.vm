@@ -17,6 +17,8 @@ back=Retour
 reset=R\u00e9initialiser
 
 # errors
+error=Erreur: {0}
+error.with.cause=Erreur: {0}, cause: {1}
 already.exists=Cette entit\u00e9 existe d\u00e9j\u00e0
 
 #foreach( $entity in $selectedEntities )
@@ -34,6 +36,9 @@ NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=Le champ ${field.l
 ${entity.name.toLowerCase()}.${link.formatedName(0)}=${link.targetEntityType}
 #end
 #end
+${entity.name.toLowerCase()}.error.delete=Erreur lors de la suppression de ${entity.name} : {0} {1}
+${entity.name.toLowerCase()}.error.update=Erreur lors de la mise \u00e0 jour de ${entity.name} : {0} {1}
+${entity.name.toLowerCase()}.error.create=Erreur lors de la cr\u00e9ation de ${entity.name} : {0} {1}
 #end
 
 #exception

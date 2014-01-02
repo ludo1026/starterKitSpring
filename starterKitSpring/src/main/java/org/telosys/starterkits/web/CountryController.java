@@ -21,6 +21,7 @@ import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Country.
@@ -33,6 +34,8 @@ public class CountryController
     private CountryService countryService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -61,16 +64,22 @@ public class CountryController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Country country, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(countryService.load(country.getCode()) != null) {
-				result.addError(new ObjectError("country", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(countryService.load(country.getCode()) != null) {
+					result.addError(new ObjectError("country", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			country = countryService.save(country);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
-		} else {
+			if (!result.hasErrors()) {
+				country = countryService.save(country);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
+			} else {
+				populateForm(uiModel, country);
+				return "country/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "country.error.create", e);
 			populateForm(uiModel, country);
 			return "country/create";
 		}
@@ -78,19 +87,29 @@ public class CountryController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Country country, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			country = countryService.save(country);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				country = countryService.save(country);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/country/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, country.getCode());
+			} else {
+				populateForm(uiModel, country);
+				return "country/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "country.error.update", e);
 			populateForm(uiModel, country);
 			return "country/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")
-	public String delete(Model uiModel, @PathVariable("code") String code) {
-		countryService.delete(code);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("code") String code) {
+		try {
+			countryService.delete(code);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "country.error.delete", e);
+		}
 		return "redirect:/country";
 	}
 	

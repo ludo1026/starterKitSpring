@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Customer.
@@ -33,9 +34,11 @@ public class CustomerController
 	@Resource
     private CustomerService customerService;
 	@Resource
+    private CountryService countryService;
+	@Resource
 	private ControllerHelper controllerHelper;
 	@Resource
-    private CountryService countryService;
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -65,16 +68,22 @@ public class CustomerController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Customer customer, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(customerService.load(customer.getCode()) != null) {
-				result.addError(new ObjectError("customer", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(customerService.load(customer.getCode()) != null) {
+					result.addError(new ObjectError("customer", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			customer = customerService.save(customer);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
-		} else {
+			if (!result.hasErrors()) {
+				customer = customerService.save(customer);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
+			} else {
+				populateForm(uiModel, customer);
+				return "customer/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "customer.error.create", e);
 			populateForm(uiModel, customer);
 			return "customer/create";
 		}
@@ -82,19 +91,29 @@ public class CustomerController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Customer customer, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			customer = customerService.save(customer);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				customer = customerService.save(customer);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/customer/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, customer.getCode());
+			} else {
+				populateForm(uiModel, customer);
+				return "customer/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "customer.error.update", e);
 			populateForm(uiModel, customer);
 			return "customer/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")
-	public String delete(Model uiModel, @PathVariable("code") String code) {
-		customerService.delete(code);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("code") String code) {
+		try {
+			customerService.delete(code);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "customer.error.delete", e);
+		}
 		return "redirect:/customer";
 	}
 	

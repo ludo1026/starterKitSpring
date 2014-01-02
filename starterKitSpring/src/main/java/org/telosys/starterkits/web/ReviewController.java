@@ -25,6 +25,7 @@ import org.telosys.starterkits.service.CustomerService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Review.
@@ -36,11 +37,13 @@ public class ReviewController
 	@Resource
     private ReviewService reviewService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private BookService bookService;
 	@Resource
     private CustomerService customerService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -74,16 +77,22 @@ public class ReviewController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Review review, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(reviewService.load(review.getId()) != null) {
-				result.addError(new ObjectError("review", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(reviewService.load(review.getId()) != null) {
+					result.addError(new ObjectError("review", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			review = reviewService.save(review);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
-		} else {
+			if (!result.hasErrors()) {
+				review = reviewService.save(review);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
+			} else {
+				populateForm(uiModel, review);
+				return "review/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "review.error.create", e);
 			populateForm(uiModel, review);
 			return "review/create";
 		}
@@ -91,22 +100,32 @@ public class ReviewController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Review review, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			review = reviewService.save(review);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				review = reviewService.save(review);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/review/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, review.getBookId(), review.getCustomerCode());
+			} else {
+				populateForm(uiModel, review);
+				return "review/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "review.error.update", e);
 			populateForm(uiModel, review);
 			return "review/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}/{customerCode}")
-	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
-		ReviewId reviewid = new ReviewId();
-		reviewid.setBookId(bookId);
-		reviewid.setCustomerCode(customerCode);
-		reviewService.delete(reviewid);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("bookId") Integer bookId, @PathVariable("customerCode") String customerCode) {
+		try {
+			ReviewId reviewid = new ReviewId();
+			reviewid.setBookId(bookId);
+			reviewid.setCustomerCode(customerCode);
+			reviewService.delete(reviewid);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "review.error.delete", e);
+		}
 		return "redirect:/review";
 	}
 	

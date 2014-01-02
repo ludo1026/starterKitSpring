@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.BookService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Synopsis.
@@ -33,9 +34,11 @@ public class SynopsisController
 	@Resource
     private SynopsisService synopsisService;
 	@Resource
+    private BookService bookService;
+	@Resource
 	private ControllerHelper controllerHelper;
 	@Resource
-    private BookService bookService;
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -65,16 +68,22 @@ public class SynopsisController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Synopsis synopsis, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(synopsisService.load(synopsis.getBookId()) != null) {
-				result.addError(new ObjectError("synopsis", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(synopsisService.load(synopsis.getBookId()) != null) {
+					result.addError(new ObjectError("synopsis", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			synopsis = synopsisService.save(synopsis);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
-		} else {
+			if (!result.hasErrors()) {
+				synopsis = synopsisService.save(synopsis);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
+			} else {
+				populateForm(uiModel, synopsis);
+				return "synopsis/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "synopsis.error.create", e);
 			populateForm(uiModel, synopsis);
 			return "synopsis/create";
 		}
@@ -82,19 +91,29 @@ public class SynopsisController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Synopsis synopsis, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			synopsis = synopsisService.save(synopsis);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				synopsis = synopsisService.save(synopsis);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/synopsis/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, synopsis.getBookId());
+			} else {
+				populateForm(uiModel, synopsis);
+				return "synopsis/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "synopsis.error.update", e);
 			populateForm(uiModel, synopsis);
 			return "synopsis/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}")
-	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId) {
-		synopsisService.delete(bookId);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("bookId") Integer bookId) {
+		try {
+			synopsisService.delete(bookId);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "synopsis.error.delete", e);
+		}
 		return "redirect:/synopsis";
 	}
 	

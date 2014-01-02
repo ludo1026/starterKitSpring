@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.BadgeService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Badge.
@@ -34,6 +35,8 @@ public class BadgeController
     private BadgeService badgeService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -62,11 +65,17 @@ public class BadgeController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Badge badge, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			badge = badgeService.save(badge);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				badge = badgeService.save(badge);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
+			} else {
+				populateForm(uiModel, badge);
+				return "badge/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "badge.error.create", e);
 			populateForm(uiModel, badge);
 			return "badge/create";
 		}
@@ -74,19 +83,29 @@ public class BadgeController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Badge badge, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			badge = badgeService.save(badge);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				badge = badgeService.save(badge);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/badge/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, badge.getBadgeNumber());
+			} else {
+				populateForm(uiModel, badge);
+				return "badge/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "badge.error.update", e);
 			populateForm(uiModel, badge);
 			return "badge/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{badgeNumber}")
-	public String delete(Model uiModel, @PathVariable("badgeNumber") Integer badgeNumber) {
-		badgeService.delete(badgeNumber);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("badgeNumber") Integer badgeNumber) {
+		try {
+			badgeService.delete(badgeNumber);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "badge.error.delete", e);
+		}
 		return "redirect:/badge";
 	}
 	

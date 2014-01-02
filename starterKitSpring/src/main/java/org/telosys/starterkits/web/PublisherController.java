@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Publisher.
@@ -33,9 +34,11 @@ public class PublisherController
 	@Resource
     private PublisherService publisherService;
 	@Resource
+    private CountryService countryService;
+	@Resource
 	private ControllerHelper controllerHelper;
 	@Resource
-    private CountryService countryService;
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -65,11 +68,17 @@ public class PublisherController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Publisher publisher, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			publisher = publisherService.save(publisher);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				publisher = publisherService.save(publisher);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
+			} else {
+				populateForm(uiModel, publisher);
+				return "publisher/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "publisher.error.create", e);
 			populateForm(uiModel, publisher);
 			return "publisher/create";
 		}
@@ -77,19 +86,29 @@ public class PublisherController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Publisher publisher, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			publisher = publisherService.save(publisher);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				publisher = publisherService.save(publisher);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/publisher/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, publisher.getCode());
+			} else {
+				populateForm(uiModel, publisher);
+				return "publisher/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "publisher.error.update", e);
 			populateForm(uiModel, publisher);
 			return "publisher/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")
-	public String delete(Model uiModel, @PathVariable("code") Integer code) {
-		publisherService.delete(code);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("code") Integer code) {
+		try {
+			publisherService.delete(code);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "publisher.error.delete", e);
+		}
 		return "redirect:/publisher";
 	}
 	

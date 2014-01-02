@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.EmployeeGroupService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * EmployeeGroup.
@@ -34,6 +35,8 @@ public class EmployeeGroupController
     private EmployeeGroupService employeegroupService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -65,11 +68,17 @@ public class EmployeeGroupController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid EmployeeGroup employeegroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			employeegroup = employeegroupService.save(employeegroup);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				employeegroup = employeegroupService.save(employeegroup);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());
+			} else {
+				populateForm(uiModel, employeegroup);
+				return "employeegroup/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employeegroup.error.create", e);
 			populateForm(uiModel, employeegroup);
 			return "employeegroup/create";
 		}
@@ -77,22 +86,32 @@ public class EmployeeGroupController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid EmployeeGroup employeegroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			employeegroup = employeegroupService.save(employeegroup);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				employeegroup = employeegroupService.save(employeegroup);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/employeegroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employeegroup.getEmployeeCode(), employeegroup.getGroupId());
+			} else {
+				populateForm(uiModel, employeegroup);
+				return "employeegroup/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employeegroup.error.update", e);
 			populateForm(uiModel, employeegroup);
 			return "employeegroup/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{employeeCode}/{groupId}")
-	public String delete(Model uiModel, @PathVariable("employeeCode") String employeeCode, @PathVariable("groupId") Short groupId) {
-		EmployeeGroupId employeegroupid = new EmployeeGroupId();
-		employeegroupid.setEmployeeCode(employeeCode);
-		employeegroupid.setGroupId(groupId);
-		employeegroupService.delete(employeegroupid);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("employeeCode") String employeeCode, @PathVariable("groupId") Short groupId) {
+		try {
+			EmployeeGroupId employeegroupid = new EmployeeGroupId();
+			employeegroupid.setEmployeeCode(employeeCode);
+			employeegroupid.setGroupId(groupId);
+			employeegroupService.delete(employeegroupid);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employeegroup.error.delete", e);
+		}
 		return "redirect:/employeegroup";
 	}
 	

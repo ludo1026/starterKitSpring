@@ -25,6 +25,7 @@ import org.telosys.starterkits.service.EmployeeService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * BookOrder.
@@ -36,13 +37,15 @@ public class BookOrderController
 	@Resource
     private BookOrderService bookorderService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private ShopService shopService;
 	@Resource
     private CustomerService customerService;
 	@Resource
     private EmployeeService employeeService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -74,11 +77,17 @@ public class BookOrderController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid BookOrder bookorder, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			bookorder = bookorderService.save(bookorder);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/bookorder/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorder.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				bookorder = bookorderService.save(bookorder);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/bookorder/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorder.getId());
+			} else {
+				populateForm(uiModel, bookorder);
+				return "bookorder/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorder.error.create", e);
 			populateForm(uiModel, bookorder);
 			return "bookorder/create";
 		}
@@ -86,19 +95,29 @@ public class BookOrderController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid BookOrder bookorder, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			bookorder = bookorderService.save(bookorder);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/bookorder/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorder.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				bookorder = bookorderService.save(bookorder);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/bookorder/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorder.getId());
+			} else {
+				populateForm(uiModel, bookorder);
+				return "bookorder/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorder.error.update", e);
 			populateForm(uiModel, bookorder);
 			return "bookorder/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")
-	public String delete(Model uiModel, @PathVariable("id") Integer id) {
-		bookorderService.delete(id);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("id") Integer id) {
+		try {
+			bookorderService.delete(id);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorder.error.delete", e);
+		}
 		return "redirect:/bookorder";
 	}
 	

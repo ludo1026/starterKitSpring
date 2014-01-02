@@ -99,6 +99,7 @@ import ${ROOT_PKG}.service.${link.targetEntityType}Service;
 import ${ROOT_PKG}.web.bean.Message;
 import ${ROOT_PKG}.web.bean.TypeMessage;
 import ${ROOT_PKG}.web.helper.ControllerHelper;
+import ${ROOT_PKG}.web.helper.MessageHelper;
 
 /**
  * ${entity.name}.
@@ -109,8 +110,6 @@ public class ${entity.name}Controller
 {
 	@Resource
     private ${entity.name}Service ${entity.name.toLowerCase()}Service;
-	@Resource
-	private ControllerHelper controllerHelper;
 ## Lien vers les entités
 #foreach( $link in $entity.selectedLinks )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
@@ -118,6 +117,10 @@ public class ${entity.name}Controller
     private ${link.targetEntityType}Service ${link.targetEntityType.toLowerCase()}Service;
 #end
 #end
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -160,19 +163,25 @@ public class ${entity.name}Controller
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		try {
 #hasGeneratedValue( $entity, $entity.keyAttributes )
 #if( ! $hasGeneratedValue )
-		if (!result.hasErrors()) {
-			if(${entity.name.toLowerCase()}Service.load(${entity.name.toLowerCase()}.${keyGetter}()) != null) {
-				result.addError(new ObjectError("${entity.name.toLowerCase()}", "already.exists"));
+			if (!result.hasErrors()) {
+				if(${entity.name.toLowerCase()}Service.load(${entity.name.toLowerCase()}.${keyGetter}()) != null) {
+					result.addError(new ObjectError("${entity.name.toLowerCase()}", "already.exists"));
+				}
 			}
-		}
 #end
-		if (!result.hasErrors()) {
-			${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
-		} else {
+			if (!result.hasErrors()) {
+				${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
+			} else {
+				populateForm(uiModel, ${entity.name.toLowerCase()});
+				return "${entity.name.toLowerCase()}/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "${entity.name.toLowerCase()}.error.create", e);
 			populateForm(uiModel, ${entity.name.toLowerCase()});
 			return "${entity.name.toLowerCase()}/create";
 		}
@@ -180,27 +189,37 @@ public class ${entity.name}Controller
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.save(${entity.name.toLowerCase()});
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/${entity.name.toLowerCase()}/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, $keyGetterToArg);
+			} else {
+				populateForm(uiModel, ${entity.name.toLowerCase()});
+				return "${entity.name.toLowerCase()}/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "${entity.name.toLowerCase()}.error.update", e);
 			populateForm(uiModel, ${entity.name.toLowerCase()});
 			return "${entity.name.toLowerCase()}/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/${keyURLPath}")
-	public String delete(Model uiModel, $keyPathVariable) {
+	public String delete(RedirectAttributes redirectAttributes, $keyPathVariable) {
+		try {
 #if ( $entity.hasCompositePrimaryKey() )
-		$keyType ${keyType.toLowerCase()} = new $keyType();
+			$keyType ${keyType.toLowerCase()} = new $keyType();
 #foreach( $field in $entity.keyAttributes )
-		${keyType.toLowerCase()}.${field.setter}(${field.formatedName(0)});
+			${keyType.toLowerCase()}.${field.setter}(${field.formatedName(0)});
 #end
-		${entity.name.toLowerCase()}Service.delete(${keyType.toLowerCase()});
+			${entity.name.toLowerCase()}Service.delete(${keyType.toLowerCase()});
 #else
-		${entity.name.toLowerCase()}Service.delete(${keyName});
+			${entity.name.toLowerCase()}Service.delete(${keyName});
 #end
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "${entity.name.toLowerCase()}.error.delete", e);
+		}
 		return "redirect:/${entity.name.toLowerCase()}";
 	}
 	

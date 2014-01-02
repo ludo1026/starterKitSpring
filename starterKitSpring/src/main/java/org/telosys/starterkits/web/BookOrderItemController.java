@@ -25,6 +25,7 @@ import org.telosys.starterkits.service.BookOrderService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * BookOrderItem.
@@ -36,11 +37,13 @@ public class BookOrderItemController
 	@Resource
     private BookOrderItemService bookorderitemService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private BookService bookService;
 	@Resource
     private BookOrderService bookorderService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -74,16 +77,22 @@ public class BookOrderItemController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid BookOrderItem bookorderitem, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(bookorderitemService.load(bookorderitem.getId()) != null) {
-				result.addError(new ObjectError("bookorderitem", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(bookorderitemService.load(bookorderitem.getId()) != null) {
+					result.addError(new ObjectError("bookorderitem", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			bookorderitem = bookorderitemService.save(bookorderitem);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
-		} else {
+			if (!result.hasErrors()) {
+				bookorderitem = bookorderitemService.save(bookorderitem);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
+			} else {
+				populateForm(uiModel, bookorderitem);
+				return "bookorderitem/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorderitem.error.create", e);
 			populateForm(uiModel, bookorderitem);
 			return "bookorderitem/create";
 		}
@@ -91,22 +100,32 @@ public class BookOrderItemController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid BookOrderItem bookorderitem, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			bookorderitem = bookorderitemService.save(bookorderitem);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				bookorderitem = bookorderitemService.save(bookorderitem);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/bookorderitem/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, bookorderitem.getBookId(), bookorderitem.getBookOrderId());
+			} else {
+				populateForm(uiModel, bookorderitem);
+				return "bookorderitem/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorderitem.error.update", e);
 			populateForm(uiModel, bookorderitem);
 			return "bookorderitem/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{bookId}/{bookOrderId}")
-	public String delete(Model uiModel, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
-		BookOrderItemId bookorderitemid = new BookOrderItemId();
-		bookorderitemid.setBookId(bookId);
-		bookorderitemid.setBookOrderId(bookOrderId);
-		bookorderitemService.delete(bookorderitemid);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("bookId") Integer bookId, @PathVariable("bookOrderId") Integer bookOrderId) {
+		try {
+			BookOrderItemId bookorderitemid = new BookOrderItemId();
+			bookorderitemid.setBookId(bookId);
+			bookorderitemid.setBookOrderId(bookOrderId);
+			bookorderitemService.delete(bookorderitemid);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "bookorderitem.error.delete", e);
+		}
 		return "redirect:/bookorderitem";
 	}
 	

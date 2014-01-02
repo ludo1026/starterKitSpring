@@ -23,6 +23,7 @@ import org.telosys.starterkits.service.BadgeService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Employee.
@@ -34,11 +35,13 @@ public class EmployeeController
 	@Resource
     private EmployeeService employeeService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private ShopService shopService;
 	@Resource
     private BadgeService badgeService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -69,16 +72,22 @@ public class EmployeeController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Employee employee, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			if(employeeService.load(employee.getCode()) != null) {
-				result.addError(new ObjectError("employee", "already.exists"));
+		try {
+			if (!result.hasErrors()) {
+				if(employeeService.load(employee.getCode()) != null) {
+					result.addError(new ObjectError("employee", "already.exists"));
+				}
 			}
-		}
-		if (!result.hasErrors()) {
-			employee = employeeService.save(employee);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
-		} else {
+			if (!result.hasErrors()) {
+				employee = employeeService.save(employee);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
+			} else {
+				populateForm(uiModel, employee);
+				return "employee/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employee.error.create", e);
 			populateForm(uiModel, employee);
 			return "employee/create";
 		}
@@ -86,19 +95,29 @@ public class EmployeeController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Employee employee, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			employee = employeeService.save(employee);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				employee = employeeService.save(employee);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/employee/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, employee.getCode());
+			} else {
+				populateForm(uiModel, employee);
+				return "employee/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employee.error.update", e);
 			populateForm(uiModel, employee);
 			return "employee/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{code}")
-	public String delete(Model uiModel, @PathVariable("code") String code) {
-		employeeService.delete(code);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("code") String code) {
+		try {
+			employeeService.delete(code);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "employee.error.delete", e);
+		}
 		return "redirect:/employee";
 	}
 	

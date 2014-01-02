@@ -24,6 +24,7 @@ import org.telosys.starterkits.service.AuthorService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Book.
@@ -35,11 +36,13 @@ public class BookController
 	@Resource
     private BookService bookService;
 	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
     private PublisherService publisherService;
 	@Resource
     private AuthorService authorService;
+	@Resource
+	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -70,11 +73,17 @@ public class BookController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Book book, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			book = bookService.save(book);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				book = bookService.save(book);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
+			} else {
+				populateForm(uiModel, book);
+				return "book/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "book.error.create", e);
 			populateForm(uiModel, book);
 			return "book/create";
 		}
@@ -82,19 +91,29 @@ public class BookController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Book book, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			book = bookService.save(book);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				book = bookService.save(book);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/book/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, book.getId());
+			} else {
+				populateForm(uiModel, book);
+				return "book/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "book.error.update", e);
 			populateForm(uiModel, book);
 			return "book/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")
-	public String delete(Model uiModel, @PathVariable("id") Integer id) {
-		bookService.delete(id);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("id") Integer id) {
+		try {
+			bookService.delete(id);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "book.error.delete", e);
+		}
 		return "redirect:/book";
 	}
 	

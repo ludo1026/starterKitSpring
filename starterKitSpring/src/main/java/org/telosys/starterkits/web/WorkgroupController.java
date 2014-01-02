@@ -22,6 +22,7 @@ import org.telosys.starterkits.service.WorkgroupService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
 import org.telosys.starterkits.web.helper.ControllerHelper;
+import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Workgroup.
@@ -34,6 +35,8 @@ public class WorkgroupController
     private WorkgroupService workgroupService;
 	@Resource
 	private ControllerHelper controllerHelper;
+	@Resource
+	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {
@@ -62,11 +65,17 @@ public class WorkgroupController
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid Workgroup workgroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			workgroup = workgroupService.save(workgroup);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				workgroup = workgroupService.save(workgroup);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
+			} else {
+				populateForm(uiModel, workgroup);
+				return "workgroup/create";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "workgroup.error.create", e);
 			populateForm(uiModel, workgroup);
 			return "workgroup/create";
 		}
@@ -74,19 +83,29 @@ public class WorkgroupController
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public String update(@Valid Workgroup workgroup, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
-		if (!result.hasErrors()) {
-			workgroup = workgroupService.save(workgroup);
-			redirectAttributes.addFlashAttribute("message", new Message(TypeMessage.SUCCESS,"save.ok"));
-			return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				workgroup = workgroupService.save(workgroup);
+				messageHelper.addMessage(redirectAttributes, new Message(TypeMessage.SUCCESS,"save.ok"));
+				return "redirect:/workgroup/"+controllerHelper.encodeUrlPathSegments(httpServletRequest, workgroup.getId());
+			} else {
+				populateForm(uiModel, workgroup);
+				return "workgroup/edit";
+			}
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "workgroup.error.update", e);
 			populateForm(uiModel, workgroup);
 			return "workgroup/edit";
 		}
 	}
 
 	@RequestMapping(value = "/delete/{id}")
-	public String delete(Model uiModel, @PathVariable("id") Short id) {
-		workgroupService.delete(id);
+	public String delete(RedirectAttributes redirectAttributes, @PathVariable("id") Short id) {
+		try {
+			workgroupService.delete(id);
+		} catch(Exception e) {
+			messageHelper.addException(redirectAttributes, "workgroup.error.delete", e);
+		}
 		return "redirect:/workgroup";
 	}
 	
