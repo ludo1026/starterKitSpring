@@ -5,6 +5,7 @@
 .entity li a {
 	display: block;
 	width: 200px;
+	height: 30px;
 }
 .entity li a:hover {
 	color: #cc4444;
