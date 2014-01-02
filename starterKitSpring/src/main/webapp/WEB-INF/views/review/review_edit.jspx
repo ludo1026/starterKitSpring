@@ -32,21 +32,21 @@
 				<div class="form-group">
 					<label for="creation" class="col-sm-2 control-label"><s:message code="review.creation"/></label>
 					<div class="col-sm-10">
-						<form:input path="creation" class="form-control"/>
+						<form:input path="creation" class="form-control" size="29" maxLength="29"/>
 						<form:errors cssClass="label label-danger" id="_creation_error_id" path="creation" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="lastUpdate" class="col-sm-2 control-label"><s:message code="review.lastUpdate"/></label>
 					<div class="col-sm-10">
-						<form:input path="lastUpdate" class="form-control"/>
+						<form:input path="lastUpdate" class="form-control" size="29" maxLength="29"/>
 						<form:errors cssClass="label label-danger" id="_lastUpdate_error_id" path="lastUpdate" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="reviewNote" class="col-sm-2 control-label"><s:message code="review.reviewNote"/></label>
 					<div class="col-sm-10">
-						<form:input path="reviewNote" class="form-control"/>
+						<form:input path="reviewNote" class="form-control" size="10" maxLength="10"/>
 						<form:errors cssClass="label label-danger" id="_reviewNote_error_id" path="reviewNote" />
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 					<textarea/>
 					<label for="reviewText" class="col-sm-2 control-label"><s:message code="review.reviewText"/></label>
 					<div class="col-sm-10">
-						<form:input path="reviewText" class="form-control"/>
+						<form:input path="reviewText" class="form-control" size="100" maxLength="32700"/>
 						<form:errors cssClass="label label-danger" id="_reviewText_error_id" path="reviewText" />
 					</div>
 				</div>

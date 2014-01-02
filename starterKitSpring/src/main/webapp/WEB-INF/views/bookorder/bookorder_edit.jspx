@@ -28,14 +28,14 @@
 				<div class="form-group">
 					<label for="date" class="col-sm-2 control-label"><s:message code="bookorder.date"/></label>
 					<div class="col-sm-10">
-						<form:input path="date" class="form-control"/>
+						<form:input path="date" class="form-control" size="13" maxLength="13"/>
 						<form:errors cssClass="label label-danger" id="_date_error_id" path="date" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="state" class="col-sm-2 control-label"><s:message code="bookorder.state"/></label>
 					<div class="col-sm-10">
-						<form:input path="state" class="form-control"/>
+						<form:input path="state" class="form-control" size="10" maxLength="10"/>
 						<form:errors cssClass="label label-danger" id="_state_error_id" path="state" />
 					</div>
 				</div>

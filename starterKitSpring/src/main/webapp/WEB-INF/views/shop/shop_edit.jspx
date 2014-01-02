@@ -28,49 +28,49 @@
 				<div class="form-group">
 					<label for="address1" class="col-sm-2 control-label"><s:message code="shop.address1"/></label>
 					<div class="col-sm-10">
-						<form:input path="address1" class="form-control"/>
+						<form:input path="address1" class="form-control" size="80" maxLength="80"/>
 						<form:errors cssClass="label label-danger" id="_address1_error_id" path="address1" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="address2" class="col-sm-2 control-label"><s:message code="shop.address2"/></label>
 					<div class="col-sm-10">
-						<form:input path="address2" class="form-control"/>
+						<form:input path="address2" class="form-control" size="80" maxLength="80"/>
 						<form:errors cssClass="label label-danger" id="_address2_error_id" path="address2" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="city" class="col-sm-2 control-label"><s:message code="shop.city"/></label>
 					<div class="col-sm-10">
-						<form:input path="city" class="form-control"/>
+						<form:input path="city" class="form-control" size="45" maxLength="45"/>
 						<form:errors cssClass="label label-danger" id="_city_error_id" path="city" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="email" class="col-sm-2 control-label"><s:message code="shop.email"/></label>
 					<div class="col-sm-10">
-						<form:input path="email" class="form-control"/>
+						<form:input path="email" class="form-control" size="50" maxLength="50"/>
 						<form:errors cssClass="label label-danger" id="_email_error_id" path="email" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="name" class="col-sm-2 control-label"><s:message code="shop.name"/></label>
 					<div class="col-sm-10">
-						<form:input path="name" class="form-control"/>
+						<form:input path="name" class="form-control" size="80" maxLength="80"/>
 						<form:errors cssClass="label label-danger" id="_name_error_id" path="name" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="phone" class="col-sm-2 control-label"><s:message code="shop.phone"/></label>
 					<div class="col-sm-10">
-						<form:input path="phone" class="form-control"/>
+						<form:input path="phone" class="form-control" size="14" maxLength="14"/>
 						<form:errors cssClass="label label-danger" id="_phone_error_id" path="phone" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="zipCode" class="col-sm-2 control-label"><s:message code="shop.zipCode"/></label>
 					<div class="col-sm-10">
-						<form:input path="zipCode" class="form-control"/>
+						<form:input path="zipCode" class="form-control" size="10" maxLength="10"/>
 						<form:errors cssClass="label label-danger" id="_zipCode_error_id" path="zipCode" />
 					</div>
 				</div>

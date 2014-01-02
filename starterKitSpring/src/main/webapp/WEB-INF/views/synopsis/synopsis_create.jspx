@@ -17,7 +17,7 @@
 				<div class="form-group">
 					<label for="synopsis" class="col-sm-2 control-label"><s:message code="synopsis.synopsis"/></label>
 					<div class="col-sm-10">
-						<form:input path="synopsis" class="form-control"/>
+						<form:input path="synopsis" class="form-control" size="100" maxLength="32700"/>
 						<form:errors cssClass="label label-danger" id="_synopsis_error_id" path="synopsis" />
 					</div>
 				</div>
