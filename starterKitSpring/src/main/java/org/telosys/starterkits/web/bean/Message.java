@@ -1,19 +1,18 @@
 package org.telosys.starterkits.web.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Message implements Serializable {
 	
-	private static final long serialVersionUID = -1818602302478366826L;
-
+	private static final long serialVersionUID = -6488696546322780424L;
+	
 	private TypeMessage type;
 	
 	private String message;
 	
-	private List<String> messageArguments = new ArrayList<String>();
+	private List<String> messageArguments;
 
 	public Message() {
 	}
@@ -23,10 +22,10 @@ public class Message implements Serializable {
 		this.message = message;
 	}
 
-	public Message(TypeMessage type, String message, String... arguments) {
+	public Message(TypeMessage type, String message, String... messageArguments) {
 		this.type = type;
 		this.message = message;
-		this.messageArguments.addAll(Arrays.asList(arguments));
+		this.messageArguments.addAll(Arrays.asList(messageArguments));
 	}
 
 	public void addMessageArgument(String messageArgument) {
@@ -56,5 +55,5 @@ public class Message implements Serializable {
 	public void setMessageArguments(List<String> messageArguments) {
 		this.messageArguments = messageArguments;
 	}
-	
+
 }

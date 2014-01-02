@@ -15,7 +15,7 @@
 #set( $keyGetter = "getId" )
 #else
 #set( $keyField = $entity.keyAttributes[0] )
-#set( $keyType = "$keyField.wrapperType" )
+#set( $keyType = "$keyField.formatedType(0)" )
 #set( $keyName = "$keyField.formatedName(0)" )
 #set( $keySetter = $keyField.setter )
 #set( $keyGetter = $keyField.getter )

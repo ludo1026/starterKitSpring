@@ -32,7 +32,7 @@ ${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label}
 ## Validation
 ##--------------------------------------------------------------------------------------------------------
 #if( $field.isKeyElement() )
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
 NotNull.${entity.name.toLowerCase()}.${field.formatedName(0)}=${field.label} is required
 #end
 #else

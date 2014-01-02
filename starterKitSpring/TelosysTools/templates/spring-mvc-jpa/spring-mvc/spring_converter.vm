@@ -92,7 +92,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 #set( $keyType = "${entity.name}Id" )
 #else
 #foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.wrapperType" )
+#set( $keyType = "$field.formatedType(0)" )
 #end
 #end
 		// ${entity.name}
@@ -112,7 +112,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 #set( $keyGetter = "getId" )
 #else
 #foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.wrapperType" )
+#set( $keyType = "$field.formatedType(0)" )
 #set( $keyName = "$field.formatedName(0)" )
 #set( $keySetter = $field.setter )
 #set( $keyGetter = $field.getter )

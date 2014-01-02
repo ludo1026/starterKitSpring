@@ -33,7 +33,10 @@
 #set( $isGeneratedValue = false )
 #if( $field.isKeyElement() )
 #if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#if( $field.isAutoIncremented() || $field.isGeneratedValue() )
+#set( $isGeneratedValue = true )
+#end
+#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Short" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
 #set( $isGeneratedValue = true )
 #end
 #end
@@ -50,7 +53,7 @@
 #set( $keyGetter = "getId" )
 #else
 #set( $keyField = $entity.keyAttributes[0] )
-#set( $keyType = "$keyField.wrapperType" )
+#set( $keyType = "$keyField.formatedType(0)" )
 #set( $keyName = "$keyField.formatedName(0)" )
 #set( $keySetter = $keyField.setter )
 #set( $keyGetter = $keyField.getter )
@@ -104,11 +107,11 @@
 ## FIELDS
 #foreach( $field in $dataFields )
 				<div class="form-group">
-#if( $field.wrapperType == "Boolean" )
+#if( $field.formatedType(0) == "Boolean" )
 					<div class="col-sm-offset-2 col-sm-10">
 						<form:checkbox path="$field.name" class="form-control"/>
 						<label for="${field.formatedName(0)}" class="control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
-## #elseif( $field.wrapperType == "Date" )
+## #elseif( $field.formatedType(0) == "Date" )
 ##						<form:input path="$fieldName" id="${entity.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
 ##						<script type="text/javascript">
 ##							$('#${entity.name.toLowerCase()}_${fieldName}_input').datepicker({
@@ -132,7 +135,7 @@
 #set( $linkKeyName = "id" )
 #else
 #set( $linkKeyField = $linkEntity.keyAttributes[0] )
-#set( $linkKeyType = "$linkKeyField.wrapperType" )
+#set( $linkKeyType = "$linkKeyField.formatedType(0)" )
 #set( $linkKeyName = "$linkKeyField.formatedName(0)" )
 #end
 				<div class="form-group">

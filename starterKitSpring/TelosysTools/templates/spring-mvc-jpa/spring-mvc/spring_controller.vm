@@ -7,7 +7,7 @@ package ${target.javaPackageFromFolder(${SRC})};
 #set( $isGeneratedValue = false )
 #if( $field.isKeyElement() )
 #if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#if( $field.wrapperType == "Integer" || $field.wrapperType == "Short" || $field.wrapperType == "Long" || $field.wrapperType == "Double" || $field.wrapperType == "BigInteger" || $field.wrapperType == "BigDecimal" )
+#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Short" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
 #set( $isGeneratedValue = true )
 #end
 #end
@@ -33,7 +33,7 @@ package ${target.javaPackageFromFolder(${SRC})};
 #set( $keyGetter = "getId" )
 #else
 #set( $keyField = $entity.keyAttributes[0] )
-#set( $keyType = "$keyField.wrapperType" )
+#set( $keyType = "$keyField.formatedType(0)" )
 #set( $keyName = "$keyField.formatedName(0)" )
 #set( $keySetter = $keyField.setter )
 #set( $keyGetter = $keyField.getter )
@@ -56,7 +56,7 @@ package ${target.javaPackageFromFolder(${SRC})};
 #if( $keyPathVariable != "" ) #set( $keyPathVariable = $keyPathVariable + ", " ) #end
 #if( $keyGetterToArg != "" ) #set( $keyGetterToArg = $keyGetterToArg + ", " ) #end
 #set( $keyURLPath = $keyURLPath+"{"+${field.formatedName(0)}+"}" )
-#set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${field.formatedName(0)}+""") "+${field.wrapperType}+" "+${field.formatedName(0)} )
+#set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${field.formatedName(0)}+""") "+${field.formatedType(0)}+" "+${field.formatedName(0)} )
 #set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${field.getter}+"()" )
 #end
 #else
