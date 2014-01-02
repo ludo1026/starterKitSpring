@@ -9,3 +9,6 @@
 .entity li a:hover {
 	color: #cc4444;
 }
+.languages {
+	float: right;
+}
