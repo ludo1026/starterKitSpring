@@ -234,11 +234,13 @@ public class $entity.name implements Serializable
     // ENTITY PRIMARY KEY ( BASED ON A SINGLE FIELD )
     //----------------------------------------------------------------------
 #foreach( $field in $entity.keyAttributes )
-##$field.jpaAnnotations(4)
 $jpa.fieldAnnotations(4,$field)
+## add @GeneratedValue if the database doesn't have auto-incremented columns
+#if( ! $field.isAutoIncremented() && ! $field.isGeneratedValue() )
 #isGeneratedValue( $entity, $field )
 #if( $isGeneratedValue )
 	@GeneratedValue
+#end
 #end
 ## $field.beanValidationAnnotationsJSR303(4)
 #beanValidationAnnotations($entity, $field)
@@ -246,7 +248,6 @@ $jpa.fieldAnnotations(4,$field)
 #end
 
 #end
-
     //----------------------------------------------------------------------
     // ENTITY DATA FIELDS 
     //----------------------------------------------------------------------    

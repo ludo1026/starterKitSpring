@@ -164,11 +164,11 @@
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-2">
 						<s:url var="delete${entity.name}Url" value="/${entity.name.toLowerCase()}/delete${keyURLPath}"/>
-						<a role="button" class="btn btn-default btn-block" href="${_}{delete${entity.name}Url}"><s:message code="delete"/></a>
+						<a role="button" class="btn btn-danger btn-block" href="${_}{delete${entity.name}Url}"><s:message code="delete"/></a>
 					</div>
     				<div class="col-sm-offset-4 col-sm-2">
 		 				<s:url var="all${entity.name}Url" value="/${entity.name.toLowerCase()}"/>
-						<a role="button" class="btn btn-default btn-block" href="${_}{all${entity.name}Url}"><s:message code="back"/></a>
+						<a role="button" class="btn btn-default btn-block" href="${_}{all${entity.name}Url}"><s:message code="cancel"/></a>
 					</div>
     				<div class="col-sm-2">
 						<button type="submit" class="btn btn-primary btn-lg btn-block"><s:message code="save"/></button>

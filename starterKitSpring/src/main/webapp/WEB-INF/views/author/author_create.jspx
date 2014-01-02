@@ -29,13 +29,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-2">
-						<s:url var="deleteAuthorUrl" value="/author/delete/${author.id}"/>
-						<a role="button" class="btn btn-default btn-block" href="${deleteAuthorUrl}"><s:message code="delete"/></a>
-					</div>
-    				<div class="col-sm-offset-4 col-sm-2">
+					<div class="col-sm-offset-8 col-sm-2">
 		 				<s:url var="allAuthorUrl" value="/author"/>
-						<a role="button" class="btn btn-default btn-block" href="${allAuthorUrl}"><s:message code="back"/></a>
+						<a role="button" class="btn btn-default btn-block" href="${allAuthorUrl}"><s:message code="cancel"/></a>
 					</div>
     				<div class="col-sm-2">
 						<button type="submit" class="btn btn-primary btn-lg btn-block"><s:message code="save"/></button>

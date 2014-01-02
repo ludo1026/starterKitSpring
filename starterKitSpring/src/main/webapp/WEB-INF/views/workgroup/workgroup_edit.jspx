@@ -49,11 +49,11 @@
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-2">
 						<s:url var="deleteWorkgroupUrl" value="/workgroup/delete/${workgroup.id}"/>
-						<a role="button" class="btn btn-default btn-block" href="${deleteWorkgroupUrl}"><s:message code="delete"/></a>
+						<a role="button" class="btn btn-danger btn-block" href="${deleteWorkgroupUrl}"><s:message code="delete"/></a>
 					</div>
     				<div class="col-sm-offset-4 col-sm-2">
 		 				<s:url var="allWorkgroupUrl" value="/workgroup"/>
-						<a role="button" class="btn btn-default btn-block" href="${allWorkgroupUrl}"><s:message code="back"/></a>
+						<a role="button" class="btn btn-default btn-block" href="${allWorkgroupUrl}"><s:message code="cancel"/></a>
 					</div>
     				<div class="col-sm-2">
 						<button type="submit" class="btn btn-primary btn-lg btn-block"><s:message code="save"/></button>
