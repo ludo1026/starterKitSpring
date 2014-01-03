@@ -2,6 +2,7 @@ package org.telosys.starterkits.web;
 
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +24,13 @@ import org.telosys.starterkits.service.PublisherService;
 import org.telosys.starterkits.service.AuthorService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Book.
  */
 @Controller
 @RequestMapping("/book")
-public class BookController 
+public class BookController extends AbstractController 
 {
 	@Resource
     private BookService bookService;
@@ -39,10 +38,6 @@ public class BookController
     private PublisherService publisherService;
 	@Resource
     private AuthorService authorService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

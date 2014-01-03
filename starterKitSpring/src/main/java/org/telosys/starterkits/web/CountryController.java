@@ -1,6 +1,7 @@
 package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,22 +21,16 @@ import org.telosys.starterkits.bean.Country;
 import org.telosys.starterkits.service.CountryService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Country.
  */
 @Controller
 @RequestMapping("/country")
-public class CountryController 
+public class CountryController extends AbstractController 
 {
 	@Resource
     private CountryService countryService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

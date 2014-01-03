@@ -17,7 +17,7 @@
 				<div class="form-group">
 					<label for="workgroup_creationDate" class="col-sm-2 control-label"><s:message code="workgroup.creationDate"/></label>
 					<div class="col-sm-10">
-						<input:text name="creationDate" id="workgroup_creationDate" maxLength="13" />
+						<input:date name="creationDate" id="workgroup_creationDate" />
 						<input:errors name="creationDate" id="workgroup_creationDate_errors" />
 					</div>
 				</div>

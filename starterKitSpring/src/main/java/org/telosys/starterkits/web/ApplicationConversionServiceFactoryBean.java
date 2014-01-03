@@ -49,16 +49,8 @@ import org.telosys.starterkits.service.WorkgroupService;
 
 @Component
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
-
-	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-	@Override
-	protected void installFormatters(FormatterRegistry registry) {
-		super.installFormatters(registry);
-		// Register application converters and formatters
-	}
-    
-    public void afterPropertiesSet() {
+	public void afterPropertiesSet() {
         super.afterPropertiesSet();
         installTypeConverters(getObject());
         installLabelConverters(getObject());
@@ -66,8 +58,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	
 	protected void installTypeConverters(FormatterRegistry registry) {
 		registry.addConverter(getStringToStringConverter());
-		registry.addConverter(getStringToDateConverter());
-		registry.addConverter(getDateToStringConverter());
 	}
     
 	public Converter<String, String> getStringToStringConverter() {
@@ -76,34 +66,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
             @Override
             public String convert(String source) {
                 return StringUtils.trimToNull(source);
-            }
-        };
-    }
-
-	public Converter<String, Date> getStringToDateConverter() {
-        return new Converter<String, Date>() {
- 
-            @Override
-            public Date convert(String source) {
-                try {
-                    return sdf.parse(source);
-                } catch (ParseException e) {
-                    return null;
-                }
-            }
-        };
-    }
-
-	public Converter<Date, String> getDateToStringConverter() {
-        return new Converter<Date, String>() {
- 
-            @Override
-            public String convert(Date source) {
-                if(source == null) {
-                	return null;
-                } else {
-                    return sdf.format(source);
-                }
             }
         };
     }

@@ -66,7 +66,7 @@ package ${target.javaPackageFromFolder(${SRC})};
 #end
 
 import java.util.List;
-#foreach( $import in $entity.imports )
+#foreach( $import in $java.imports($entity) )
 import $import;
 #end
 
@@ -98,15 +98,13 @@ import ${ROOT_PKG}.service.${link.targetEntityType}Service;
 #end
 import ${ROOT_PKG}.web.bean.Message;
 import ${ROOT_PKG}.web.bean.TypeMessage;
-import ${ROOT_PKG}.web.helper.ControllerHelper;
-import ${ROOT_PKG}.web.helper.MessageHelper;
 
 /**
  * ${entity.name}.
  */
 @Controller
 @RequestMapping("/${entity.name.toLowerCase()}")
-public class ${entity.name}Controller 
+public class ${entity.name}Controller extends AbstractController 
 {
 	@Resource
     private ${entity.name}Service ${entity.name.toLowerCase()}Service;
@@ -117,10 +115,6 @@ public class ${entity.name}Controller
     private ${link.targetEntityType}Service ${link.targetEntityType.toLowerCase()}Service;
 #end
 #end
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

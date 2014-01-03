@@ -21,24 +21,18 @@ import org.telosys.starterkits.service.SynopsisService;
 import org.telosys.starterkits.service.BookService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Synopsis.
  */
 @Controller
 @RequestMapping("/synopsis")
-public class SynopsisController 
+public class SynopsisController extends AbstractController 
 {
 	@Resource
     private SynopsisService synopsisService;
 	@Resource
     private BookService bookService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

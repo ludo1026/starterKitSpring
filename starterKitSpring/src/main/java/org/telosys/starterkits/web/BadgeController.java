@@ -2,6 +2,7 @@ package org.telosys.starterkits.web;
 
 import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,22 +22,16 @@ import org.telosys.starterkits.bean.Badge;
 import org.telosys.starterkits.service.BadgeService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Badge.
  */
 @Controller
 @RequestMapping("/badge")
-public class BadgeController 
+public class BadgeController extends AbstractController 
 {
 	@Resource
     private BadgeService badgeService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

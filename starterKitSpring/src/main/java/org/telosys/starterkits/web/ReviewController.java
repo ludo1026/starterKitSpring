@@ -24,15 +24,13 @@ import org.telosys.starterkits.service.BookService;
 import org.telosys.starterkits.service.CustomerService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Review.
  */
 @Controller
 @RequestMapping("/review")
-public class ReviewController 
+public class ReviewController extends AbstractController 
 {
 	@Resource
     private ReviewService reviewService;
@@ -40,10 +38,6 @@ public class ReviewController
     private BookService bookService;
 	@Resource
     private CustomerService customerService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

@@ -1,6 +1,7 @@
 package org.telosys.starterkits.web;
 
 import java.util.List;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +23,13 @@ import org.telosys.starterkits.service.ShopService;
 import org.telosys.starterkits.service.BadgeService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Employee.
  */
 @Controller
 @RequestMapping("/employee")
-public class EmployeeController 
+public class EmployeeController extends AbstractController 
 {
 	@Resource
     private EmployeeService employeeService;
@@ -38,10 +37,6 @@ public class EmployeeController
     private ShopService shopService;
 	@Resource
     private BadgeService badgeService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

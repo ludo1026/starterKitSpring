@@ -21,22 +21,16 @@ import org.telosys.starterkits.bean.Workgroup;
 import org.telosys.starterkits.service.WorkgroupService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * Workgroup.
  */
 @Controller
 @RequestMapping("/workgroup")
-public class WorkgroupController 
+public class WorkgroupController extends AbstractController 
 {
 	@Resource
     private WorkgroupService workgroupService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

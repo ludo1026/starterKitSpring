@@ -21,22 +21,16 @@ import org.telosys.starterkits.bean.EmployeeGroupId;
 import org.telosys.starterkits.service.EmployeeGroupService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * EmployeeGroup.
  */
 @Controller
 @RequestMapping("/employeegroup")
-public class EmployeeGroupController 
+public class EmployeeGroupController extends AbstractController 
 {
 	@Resource
     private EmployeeGroupService employeegroupService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

@@ -28,7 +28,7 @@
 				<div class="form-group">
 					<label for="bookorder_date" class="col-sm-2 control-label"><s:message code="bookorder.date"/></label>
 					<div class="col-sm-10">
-						<input:text name="date" id="bookorder_date" maxLength="13" />
+						<input:date name="date" id="bookorder_date" />
 						<input:errors name="date" id="bookorder_date_errors" />
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="shop" class="col-sm-2 control-label"><s:message code="bookorder.shop"/></label>
+					<label for="shop_code" class="col-sm-2 control-label"><s:message code="bookorder.shop"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="shop_code" 
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="customer" class="col-sm-2 control-label"><s:message code="bookorder.customer"/></label>
+					<label for="customer_code" class="col-sm-2 control-label"><s:message code="bookorder.customer"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="customer_code" 
@@ -68,7 +68,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="employee" class="col-sm-2 control-label"><s:message code="bookorder.employee"/></label>
+					<label for="employee_code" class="col-sm-2 control-label"><s:message code="bookorder.employee"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="employee_code" 

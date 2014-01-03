@@ -24,7 +24,7 @@
 				<div class="form-group">
 					<label for="badge_endOfValidity" class="col-sm-2 control-label"><s:message code="badge.endOfValidity"/></label>
 					<div class="col-sm-10">
-						<input:text name="endOfValidity" id="badge_endOfValidity" maxLength="13" />
+						<input:date name="endOfValidity" id="badge_endOfValidity" />
 						<input:errors name="endOfValidity" id="badge_endOfValidity_errors" />
 					</div>
 				</div>

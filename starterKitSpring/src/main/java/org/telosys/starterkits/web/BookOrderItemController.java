@@ -24,15 +24,13 @@ import org.telosys.starterkits.service.BookService;
 import org.telosys.starterkits.service.BookOrderService;
 import org.telosys.starterkits.web.bean.Message;
 import org.telosys.starterkits.web.bean.TypeMessage;
-import org.telosys.starterkits.web.helper.ControllerHelper;
-import org.telosys.starterkits.web.helper.MessageHelper;
 
 /**
  * BookOrderItem.
  */
 @Controller
 @RequestMapping("/bookorderitem")
-public class BookOrderItemController 
+public class BookOrderItemController extends AbstractController 
 {
 	@Resource
     private BookOrderItemService bookorderitemService;
@@ -40,10 +38,6 @@ public class BookOrderItemController
     private BookService bookService;
 	@Resource
     private BookOrderService bookorderService;
-	@Resource
-	private ControllerHelper controllerHelper;
-	@Resource
-	private MessageHelper messageHelper;
 
 	@RequestMapping()
 	public String list(Model uiModel) {

@@ -106,16 +106,12 @@
 #if( $field.formatedType(0) == "Boolean" )
 					<div class="col-sm-offset-2 col-sm-10">
 						<input:checkbox name="${field.name}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" label="${entity.name.toLowerCase()}.${field.formatedName(0)}" />
-## #elseif( $field.formatedType(0) == "Date" )
-##						<form:input path="$fieldName" id="${entity.name.toLowerCase()}_${fieldName}_input" class="form-control"/>
-##						<script type="text/javascript">
-##							$('#${entity.name.toLowerCase()}_${fieldName}_input').datepicker({
-##							});
-##						</script>
 #else
 					<label for="${entity.name.toLowerCase()}_${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
-#if( $field.isLongText() )
+#if( $field.formatedType(0) == "Date" ||  $field.formatedType(0) == "Calendar" )
+						<input:date name="${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" />
+#elseif( $field.isLongText() )
 						<input:textarea name="${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" />
 #else
 						<input:text name="${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" maxLength="${field.databaseSize}" />
@@ -140,7 +136,7 @@
 #set( $linkKeyName = "$linkKeyField.formatedName(0)" )
 #end
 				<div class="form-group">
-					<label for="${link.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
+					<label for="${link.formatedName(0)}_${linkKeyName}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="${link.formatedName(0)}_${linkKeyName}" 

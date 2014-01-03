@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="book" class="col-sm-2 control-label"><s:message code="bookorderitem.book"/></label>
+					<label for="book_id" class="col-sm-2 control-label"><s:message code="bookorderitem.book"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="book_id" 
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="bookOrder" class="col-sm-2 control-label"><s:message code="bookorderitem.bookOrder"/></label>
+					<label for="bookOrder_id" class="col-sm-2 control-label"><s:message code="bookorderitem.bookOrder"/></label>
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="bookOrder_id" 
