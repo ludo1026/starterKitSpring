@@ -169,7 +169,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Author, String> getAuthorToStringConverter() {
         return new Converter<Author, java.lang.String>() {
             public String convert(Author Author) {
-				return new StringBuilder().append(Author.getId()).toString();
+				return new StringBuilder().append(Author).toString();
             }
         };
     }
@@ -196,7 +196,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Badge, String> getBadgeToStringConverter() {
         return new Converter<Badge, java.lang.String>() {
             public String convert(Badge Badge) {
-				return new StringBuilder().append(Badge.getBadgeNumber()).toString();
+				return new StringBuilder().append(Badge).toString();
             }
         };
     }
@@ -223,7 +223,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Book, String> getBookToStringConverter() {
         return new Converter<Book, java.lang.String>() {
             public String convert(Book Book) {
-				return new StringBuilder().append(Book.getId()).toString();
+				return new StringBuilder().append(Book).toString();
             }
         };
     }
@@ -250,7 +250,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<BookOrder, String> getBookOrderToStringConverter() {
         return new Converter<BookOrder, java.lang.String>() {
             public String convert(BookOrder BookOrder) {
-				return new StringBuilder().append(BookOrder.getId()).toString();
+				return new StringBuilder().append(BookOrder).toString();
             }
         };
     }
@@ -277,7 +277,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<BookOrderItem, String> getBookOrderItemToStringConverter() {
         return new Converter<BookOrderItem, java.lang.String>() {
             public String convert(BookOrderItem BookOrderItem) {
-				return new StringBuilder().append(BookOrderItem.getId()).toString();
+				return new StringBuilder().append(BookOrderItem).toString();
             }
         };
     }
@@ -304,7 +304,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Country, String> getCountryToStringConverter() {
         return new Converter<Country, java.lang.String>() {
             public String convert(Country Country) {
-				return new StringBuilder().append(Country.getCode()).toString();
+				return new StringBuilder().append(Country).toString();
             }
         };
     }
@@ -323,7 +323,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Customer, String> getCustomerToStringConverter() {
         return new Converter<Customer, java.lang.String>() {
             public String convert(Customer Customer) {
-				return new StringBuilder().append(Customer.getCode()).toString();
+				return new StringBuilder().append(Customer).toString();
             }
         };
     }
@@ -342,7 +342,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Employee, String> getEmployeeToStringConverter() {
         return new Converter<Employee, java.lang.String>() {
             public String convert(Employee Employee) {
-				return new StringBuilder().append(Employee.getCode()).toString();
+				return new StringBuilder().append(Employee).toString();
             }
         };
     }
@@ -361,7 +361,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<EmployeeGroup, String> getEmployeeGroupToStringConverter() {
         return new Converter<EmployeeGroup, java.lang.String>() {
             public String convert(EmployeeGroup EmployeeGroup) {
-				return new StringBuilder().append(EmployeeGroup.getId()).toString();
+				return new StringBuilder().append(EmployeeGroup).toString();
             }
         };
     }
@@ -388,7 +388,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Publisher, String> getPublisherToStringConverter() {
         return new Converter<Publisher, java.lang.String>() {
             public String convert(Publisher Publisher) {
-				return new StringBuilder().append(Publisher.getCode()).toString();
+				return new StringBuilder().append(Publisher).toString();
             }
         };
     }
@@ -415,7 +415,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Review, String> getReviewToStringConverter() {
         return new Converter<Review, java.lang.String>() {
             public String convert(Review Review) {
-				return new StringBuilder().append(Review.getId()).toString();
+				return new StringBuilder().append(Review).toString();
             }
         };
     }
@@ -442,7 +442,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Shop, String> getShopToStringConverter() {
         return new Converter<Shop, java.lang.String>() {
             public String convert(Shop Shop) {
-				return new StringBuilder().append(Shop.getCode()).toString();
+				return new StringBuilder().append(Shop).toString();
             }
         };
     }
@@ -461,7 +461,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Synopsis, String> getSynopsisToStringConverter() {
         return new Converter<Synopsis, java.lang.String>() {
             public String convert(Synopsis Synopsis) {
-				return new StringBuilder().append(Synopsis.getBookId()).toString();
+				return new StringBuilder().append(Synopsis).toString();
             }
         };
     }
@@ -488,7 +488,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<Workgroup, String> getWorkgroupToStringConverter() {
         return new Converter<Workgroup, java.lang.String>() {
             public String convert(Workgroup Workgroup) {
-				return new StringBuilder().append(Workgroup.getId()).toString();
+				return new StringBuilder().append(Workgroup).toString();
             }
         };
     }

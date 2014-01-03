@@ -78,10 +78,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="publisher_code" 
-							items="${publishers}"
-							entity="${book.publisher}"
-							link="publisher"
-							targetEntityId="code"
+							name="publisher"
+							entities="${publishers}"
+							entityId="code"
+							entitySelected="${book.publisher}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="publisher" id="book_publisher_errors" />
@@ -92,10 +92,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="author_id" 
-							items="${authors}"
-							entity="${book.author}"
-							link="author"
-							targetEntityId="id"
+							name="author"
+							entities="${authors}"
+							entityId="id"
+							entitySelected="${book.author}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="author" id="book_author_errors" />

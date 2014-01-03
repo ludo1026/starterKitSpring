@@ -33,10 +33,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="shop_code" 
-							items="${shops}"
-							entity="${bookorder.shop}"
-							link="shop"
-							targetEntityId="code"
+							name="shop"
+							entities="${shops}"
+							entityId="code"
+							entitySelected="${bookorder.shop}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="shop" id="bookorder_shop_errors" />
@@ -47,10 +47,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="customer_code" 
-							items="${customers}"
-							entity="${bookorder.customer}"
-							link="customer"
-							targetEntityId="code"
+							name="customer"
+							entities="${customers}"
+							entityId="code"
+							entitySelected="${bookorder.customer}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="customer" id="bookorder_customer_errors" />
@@ -61,10 +61,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="employee_code" 
-							items="${employees}"
-							entity="${bookorder.employee}"
-							link="employee"
-							targetEntityId="code"
+							name="employee"
+							entities="${employees}"
+							entityId="code"
+							entitySelected="${bookorder.employee}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="employee" id="bookorder_employee_errors" />

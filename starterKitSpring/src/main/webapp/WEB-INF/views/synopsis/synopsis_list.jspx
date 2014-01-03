@@ -23,7 +23,7 @@
 						<tr>
 							<td>${synopsis.bookId}</td>
 							<td>${synopsis.synopsis}</td>
-							<td>${synopsis.book}</td>
+							<td><s:eval expression="synopsis.book" /></td>
 							<s:url var="editSynopsisUrl" value="/synopsis/${synopsis.bookId}"/>
 							<td><a class="btn btn-info" href="${editSynopsisUrl}"><s:message code="edit"/></a></td>
 						</tr>

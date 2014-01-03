@@ -36,8 +36,8 @@
 							<td>${book.price}</td>
 							<td>${book.quantity}</td>
 							<td>${book.title}</td>
-							<td>${book.publisher}</td>
-							<td>${book.author}</td>
+							<td><s:eval expression="book.publisher" /></td>
+							<td><s:eval expression="book.author" /></td>
 							<s:url var="editBookUrl" value="/book/${book.id}"/>
 							<td><a class="btn btn-info" href="${editBookUrl}"><s:message code="edit"/></a></td>
 						</tr>

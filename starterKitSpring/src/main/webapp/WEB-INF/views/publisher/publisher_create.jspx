@@ -61,10 +61,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="country_code" 
-							items="${countrys}"
-							entity="${publisher.country}"
-							link="country"
-							targetEntityId="code"
+							name="country"
+							entities="${countrys}"
+							entityId="code"
+							entitySelected="${publisher.country}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="country" id="publisher_country_errors" />

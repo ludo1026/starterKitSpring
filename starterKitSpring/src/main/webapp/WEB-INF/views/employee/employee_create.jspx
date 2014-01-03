@@ -54,10 +54,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="shop_code" 
-							items="${shops}"
-							entity="${employee.shop}"
-							link="shop"
-							targetEntityId="code"
+							name="shop"
+							entities="${shops}"
+							entityId="code"
+							entitySelected="${employee.shop}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="shop" id="employee_shop_errors" />
@@ -68,10 +68,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="badge_badgeNumber" 
-							items="${badges}"
-							entity="${employee.badge}"
-							link="badge"
-							targetEntityId="badgeNumber"
+							name="badge"
+							entities="${badges}"
+							entityId="badgeNumber"
+							entitySelected="${employee.badge}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="badge" id="employee_badge_errors" />

@@ -33,7 +33,7 @@
 							<td>${publisher.name}</td>
 							<td>${publisher.phone}</td>
 							<td>${publisher.zipCode}</td>
-							<td>${publisher.country}</td>
+							<td><s:eval expression="publisher.country" /></td>
 							<s:url var="editPublisherUrl" value="/publisher/${publisher.code}"/>
 							<td><a class="btn btn-info" href="${editPublisherUrl}"><s:message code="edit"/></a></td>
 						</tr>

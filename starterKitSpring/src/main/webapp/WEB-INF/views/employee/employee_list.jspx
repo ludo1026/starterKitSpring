@@ -30,8 +30,8 @@
 							<td>${employee.firstName}</td>
 							<td>${employee.lastName}</td>
 							<td>${employee.manager}</td>
-							<td>${employee.shop}</td>
-							<td>${employee.badge}</td>
+							<td><s:eval expression="employee.shop" /></td>
+							<td><s:eval expression="employee.badge" /></td>
 							<s:url var="editEmployeeUrl" value="/employee/${employee.code}"/>
 							<td><a class="btn btn-info" href="${editEmployeeUrl}"><s:message code="edit"/></a></td>
 						</tr>

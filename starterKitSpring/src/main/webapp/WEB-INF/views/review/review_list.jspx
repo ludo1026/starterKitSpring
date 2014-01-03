@@ -32,8 +32,8 @@
 							<td>${review.lastUpdate}</td>
 							<td>${review.reviewNote}</td>
 							<td>${review.reviewText}</td>
-							<td>${review.book}</td>
-							<td>${review.customer}</td>
+							<td><s:eval expression="review.book" /></td>
+							<td><s:eval expression="review.customer" /></td>
 							<s:url var="editReviewUrl" value="/review/${review.bookId}/${review.customerCode}"/>
 							<td><a class="btn btn-info" href="${editReviewUrl}"><s:message code="edit"/></a></td>
 						</tr>

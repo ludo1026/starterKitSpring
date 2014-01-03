@@ -146,10 +146,10 @@
 					<div class="col-sm-10">
 						<input:selectEntity 
 							id="${link.formatedName(0)}_${linkKeyName}" 
-							items="${_}{${link.targetEntityType.toLowerCase()}s}"
-							entity="${_}{${entity.name.toLowerCase()}.${link.formatedName(0)}}"
-							link="${link.formatedName(0)}"
-							targetEntityId="${linkKeyName}"
+							name="${link.formatedName(0)}"
+							entities="${_}{${link.targetEntityType.toLowerCase()}s}"
+							entityId="${linkKeyName}"
+							entitySelected="${_}{${entity.name.toLowerCase()}.${link.formatedName(0)}}"
 							cssClass="form-control" 
 						/>
 						<input:errors name="${link.formatedName(0)}" id="${entity.name.toLowerCase()}_${link.formatedName(0)}_errors" />

@@ -27,9 +27,9 @@
 							<td>${bookorder.id}</td>
 							<td>${bookorder.date}</td>
 							<td>${bookorder.state}</td>
-							<td>${bookorder.shop}</td>
-							<td>${bookorder.customer}</td>
-							<td>${bookorder.employee}</td>
+							<td><s:eval expression="bookorder.shop" /></td>
+							<td><s:eval expression="bookorder.customer" /></td>
+							<td><s:eval expression="bookorder.employee" /></td>
 							<s:url var="editBookOrderUrl" value="/bookorder/${bookorder.id}"/>
 							<td><a class="btn btn-info" href="${editBookOrderUrl}"><s:message code="edit"/></a></td>
 						</tr>

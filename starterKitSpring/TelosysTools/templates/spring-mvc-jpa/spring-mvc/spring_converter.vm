@@ -124,7 +124,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<${entity.name}, String> get${entity.name}ToStringConverter() {
         return new Converter<${entity.name}, java.lang.String>() {
             public String convert(${entity.name} ${entity.name}) {
-				return new StringBuilder().append(${entity.name}.${keyGetter}()).toString();
+				return new StringBuilder().append(${entity.name}).toString();
             }
         };
     }

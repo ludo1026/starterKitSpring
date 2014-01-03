@@ -28,8 +28,8 @@
 							<td>${bookorderitem.bookOrderId}</td>
 							<td>${bookorderitem.price}</td>
 							<td>${bookorderitem.quantity}</td>
-							<td>${bookorderitem.book}</td>
-							<td>${bookorderitem.bookOrder}</td>
+							<td><s:eval expression="bookorderitem.book" /></td>
+							<td><s:eval expression="bookorderitem.bookOrder" /></td>
 							<s:url var="editBookOrderItemUrl" value="/bookorderitem/${bookorderitem.bookId}/${bookorderitem.bookOrderId}"/>
 							<td><a class="btn btn-info" href="${editBookOrderItemUrl}"><s:message code="edit"/></a></td>
 						</tr>
