@@ -1,3 +1,4 @@
+#set( $tools = $loader.newInstance("Tools") )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
 ## Key fields = fields in Primary Key    
@@ -73,8 +74,7 @@
 ## LINKS : afficher uniquement les liens qui sont modifiables (pas dans la clé primaire)
 #foreach( $link in $entity.links )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
-#isLinkUsedByFields( $link, $fieldLinks )
-#if( ! $isLinkUsedByFields )
+#if( ! $tools.isLinkUsedByFields( $link, $fieldLinks ) )
 				<div class="form-group">
 					<label for="${link.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
 					<div class="col-sm-10">

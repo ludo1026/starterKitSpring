@@ -15,7 +15,7 @@
 </table>
 <table catalog="" databaseType="TABLE" javaBean="Book" name="book" schema="public">
 <column dbDefaultValue="" dbName="id" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="int4" inputType="number" javaName="id" javaType="java.lang.Integer" jdbcTypeCode="4" label="Id" notNull="false" selected="true"/>
-<column boolFalse="0" boolTrue="1" dbDefaultValue="" dbName="availability" dbNotNull="false" dbPosition="2" dbSize="5" dbTypeName="int2" inputType="number" javaName="availability" javaType="java.lang.Boolean" jdbcTypeCode="5" label="Availability" notNull="false" selected="true"/>
+<column dbDefaultValue="" dbName="availability" dbNotNull="false" dbPosition="2" dbSize="5" dbTypeName="int2" inputType="number" javaName="availability" javaType="java.lang.Short" jdbcTypeCode="5" label="Availability" notNull="false" selected="true"/>
 <column dbDefaultValue="" dbName="best_seller" dbNotNull="false" dbPosition="3" dbSize="5" dbTypeName="int2" inputType="number" javaName="bestSeller" javaType="java.lang.Short" jdbcTypeCode="5" label="Best Seller" notNull="false" selected="true"/>
 <column dbDefaultValue="" dbName="discount" dbNotNull="false" dbPosition="4" dbSize="10" dbTypeName="int4" inputType="number" javaName="discount" javaType="java.lang.Integer" jdbcTypeCode="4" label="Discount" notNull="false" selected="true"/>
 <column dbDefaultValue="" dbName="isbn" dbNotNull="true" dbPosition="5" dbSize="13" dbTypeName="varchar" inputType="text" javaName="isbn" javaType="java.lang.String" jdbcTypeCode="12" label="Isbn" maxLength="13" notEmpty="true" notNull="true" selected="true"/>
@@ -41,8 +41,8 @@
 <joinColumn insertable="false" name="author_id" nullable="true" referencedColumnName="id" unique="false" updatable="false"/>
 </joinColumns>
 </link>
-<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_p0xkn0le6si7xr146tcpbel2q" id="LINK_FK_fk_p0xkn0le6si7xr146tcpbel2q_I" inverseSideOf="LINK_FK_fk_p0xkn0le6si7xr146tcpbel2q_O" javaName="listOfReview" javaType="java.util.List" joinTableName="" mappedBy="book" optional="UNDEFINED" owningSide="false" sourceTableName="book" targetEntity="Review" targetTableName="review" used="true"/>
 <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_v5ov6emi3dnxdk97c2vr2o0n" id="LINK_FK_fk_v5ov6emi3dnxdk97c2vr2o0n_I" inverseSideOf="LINK_FK_fk_v5ov6emi3dnxdk97c2vr2o0n_O" javaName="listOfBookOrderItem" javaType="java.util.List" joinTableName="" mappedBy="book" optional="UNDEFINED" owningSide="false" sourceTableName="book" targetEntity="BookOrderItem" targetTableName="book_order_item" used="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_p0xkn0le6si7xr146tcpbel2q" id="LINK_FK_fk_p0xkn0le6si7xr146tcpbel2q_I" inverseSideOf="LINK_FK_fk_p0xkn0le6si7xr146tcpbel2q_O" javaName="listOfReview" javaType="java.util.List" joinTableName="" mappedBy="book" optional="UNDEFINED" owningSide="false" sourceTableName="book" targetEntity="Review" targetTableName="review" used="true"/>
 </table>
 <table catalog="" databaseType="TABLE" javaBean="BookOrder" name="book_order" schema="public">
 <column dbDefaultValue="" dbName="id" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="int4" inputType="number" javaName="id" javaType="java.lang.Integer" jdbcTypeCode="4" label="Id" notNull="false" selected="true"/>
@@ -60,12 +60,12 @@
 <fk name="fk_b5nxf57i05va1c35pa1gmxgkj">
 <fkcol colname="customer_code" colref="code" deferrable="7" deleterule="3" sequence="1" tablename="book_order" tableref="customer" updaterule="3"/>
 </fk>
-<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_g85tjma6kcusa05iylmxfcenj" id="LINK_FK_fk_g85tjma6kcusa05iylmxfcenj_I" inverseSideOf="LINK_FK_fk_g85tjma6kcusa05iylmxfcenj_O" javaName="listOfBookOrderItem" javaType="java.util.List" joinTableName="" mappedBy="bookOrder" optional="UNDEFINED" owningSide="false" sourceTableName="book_order" targetEntity="BookOrderItem" targetTableName="book_order_item" used="true"/>
 <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="fk_55y7x4b4hystyqrtnbhdxr6la" id="LINK_FK_fk_55y7x4b4hystyqrtnbhdxr6la_O" inverseSideOf="" javaName="shop" javaType="Shop" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="book_order" targetEntity="Shop" targetTableName="shop" used="true">
 <joinColumns>
 <joinColumn insertable="false" name="shop_code" nullable="true" referencedColumnName="code" unique="false" updatable="false"/>
 </joinColumns>
 </link>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_g85tjma6kcusa05iylmxfcenj" id="LINK_FK_fk_g85tjma6kcusa05iylmxfcenj_I" inverseSideOf="LINK_FK_fk_g85tjma6kcusa05iylmxfcenj_O" javaName="listOfBookOrderItem" javaType="java.util.List" joinTableName="" mappedBy="bookOrder" optional="UNDEFINED" owningSide="false" sourceTableName="book_order" targetEntity="BookOrderItem" targetTableName="book_order_item" used="true"/>
 <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="fk_b5nxf57i05va1c35pa1gmxgkj" id="LINK_FK_fk_b5nxf57i05va1c35pa1gmxgkj_O" inverseSideOf="" javaName="customer" javaType="Customer" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="book_order" targetEntity="Customer" targetTableName="customer" used="true">
 <joinColumns>
 <joinColumn insertable="false" name="customer_code" nullable="true" referencedColumnName="code" unique="false" updatable="false"/>
@@ -121,8 +121,8 @@
 <fk name="fk_eu56cm7ikjce8dppyy8mpygcn">
 <fkcol colname="country_code" colref="code" deferrable="7" deleterule="3" sequence="1" tablename="customer" tableref="country" updaterule="3"/>
 </fk>
-<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_kw35ow17l5ueaf0fqj3lm92gb" id="LINK_FK_fk_kw35ow17l5ueaf0fqj3lm92gb_I" inverseSideOf="LINK_FK_fk_kw35ow17l5ueaf0fqj3lm92gb_O" javaName="listOfReview" javaType="java.util.List" joinTableName="" mappedBy="customer" optional="UNDEFINED" owningSide="false" sourceTableName="customer" targetEntity="Review" targetTableName="review" used="true"/>
 <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_b5nxf57i05va1c35pa1gmxgkj" id="LINK_FK_fk_b5nxf57i05va1c35pa1gmxgkj_I" inverseSideOf="LINK_FK_fk_b5nxf57i05va1c35pa1gmxgkj_O" javaName="listOfBookOrder" javaType="java.util.List" joinTableName="" mappedBy="customer" optional="UNDEFINED" owningSide="false" sourceTableName="customer" targetEntity="BookOrder" targetTableName="book_order" used="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="fk_kw35ow17l5ueaf0fqj3lm92gb" id="LINK_FK_fk_kw35ow17l5ueaf0fqj3lm92gb_I" inverseSideOf="LINK_FK_fk_kw35ow17l5ueaf0fqj3lm92gb_O" javaName="listOfReview" javaType="java.util.List" joinTableName="" mappedBy="customer" optional="UNDEFINED" owningSide="false" sourceTableName="customer" targetEntity="Review" targetTableName="review" used="true"/>
 <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="fk_eu56cm7ikjce8dppyy8mpygcn" id="LINK_FK_fk_eu56cm7ikjce8dppyy8mpygcn_O" inverseSideOf="" javaName="country" javaType="Country" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="customer" targetEntity="Country" targetTableName="country" used="true">
 <joinColumns>
 <joinColumn insertable="false" name="country_code" nullable="true" referencedColumnName="code" unique="false" updatable="false"/>

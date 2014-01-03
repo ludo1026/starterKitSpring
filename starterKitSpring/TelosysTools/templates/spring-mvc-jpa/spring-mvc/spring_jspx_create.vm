@@ -1,3 +1,4 @@
+#set( $tools = $loader.newInstance("Tools") )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
 ## Key fields = fields in Primary Key    
@@ -11,37 +12,6 @@
 ##--------------------------------------------------------------------------------------------------------
 ## Mapped fields = fields in Primary Key or not in selected Links    
 #set( $allMappedFields = $fn.concatLists($entity.keyAttributes, $dataFields) )
-##--------------------------------------------------------------------------------------------------------
-## Macro
-##--------------------------------------------------------------------------------------------------------
-## Liens utilisant les champs
-##--------------------------------------------------------------------------------------------------------
-#macro( isLinkUsedByFields, $link, $fields)
-#set( $isLinkUsedByFields = false )
-#foreach( $field in $fields )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $isLinkUsedByFields = true )
-#end
-#end
-#end
-#end
-##--------------------------------------------------------------------------------------------------------
-## Generated value
-##--------------------------------------------------------------------------------------------------------
-#macro( isGeneratedValue, $entity, $field)
-#set( $isGeneratedValue = false )
-#if( $field.isKeyElement() )
-#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#if( $field.isAutoIncremented() || $field.isGeneratedValue() )
-#set( $isGeneratedValue = true )
-#end
-#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Short" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
-#set( $isGeneratedValue = true )
-#end
-#end
-#end
-#end
 ##--------------------------------------------------------------------------------------------------------
 ## Informations sur la clé primaire d'une entité
 ##--------------------------------------------------------------------------------------------------------
@@ -92,8 +62,7 @@
 ## KEY
 #foreach( $field in $keyFields )
 #if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#isGeneratedValue( $entity, $field )
-#if( ! $isGeneratedValue )
+#if( ! $tools.isGeneratedValue( $entity, $field ) )
 				<div class="form-group">
 					<label for="${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">

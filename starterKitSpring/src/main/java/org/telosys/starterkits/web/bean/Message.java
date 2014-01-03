@@ -1,7 +1,6 @@
 package org.telosys.starterkits.web.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class Message implements Serializable {
 	
 	private String message;
 	
-	private List<String> messageArguments = new ArrayList<String>();
+	private List<String> messageArguments;
 
 	public Message() {
 	}
@@ -26,9 +25,7 @@ public class Message implements Serializable {
 	public Message(TypeMessage type, String message, String... messageArguments) {
 		this.type = type;
 		this.message = message;
-		if(messageArguments != null) {
-			this.messageArguments.addAll(Arrays.asList(messageArguments));
-		}
+		this.messageArguments.addAll(Arrays.asList(messageArguments));
 	}
 
 	public void addMessageArgument(String messageArgument) {

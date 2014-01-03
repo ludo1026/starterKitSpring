@@ -15,8 +15,9 @@
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
 	    		
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<input:checkbox name="availability" id="book_availability" label="book.availability" />
+					<label for="book_availability" class="col-sm-2 control-label"><s:message code="book.availability"/></label>
+					<div class="col-sm-10">
+						<input:text name="availability" id="book_availability" maxLength="5" />
 						<input:errors name="availability" id="book_availability_errors" />
 					</div>
 				</div>

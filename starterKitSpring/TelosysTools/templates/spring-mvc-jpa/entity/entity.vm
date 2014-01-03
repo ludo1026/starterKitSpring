@@ -1,3 +1,4 @@
+#set( $tools = $loader.newInstance("Tools") )
 ##--------------------------------------------------------------------------------------------------------
 ## Key fields = fields in Primary Key    
 #set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
@@ -10,137 +11,6 @@
 ##--------------------------------------------------------------------------------------------------------
 ## Mapped fields = fields in Primary Key or not in selected Links    
 #set( $allMappedFields = $fn.concatLists($entity.keyAttributes, $dataFields) )
-##--------------------------------------------------------------------------------------------------------
-## Champs qui sont dans les liens
-#macro( isFieldUsedInLinks, $field, $links )
-#set( $isFieldUsedInLinks = false )
-#foreach( $link in $links )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $isFieldUsedInLinks = true )
-#end
-#end
-#end
-#end
-#end
-## Liens utilisant les champs
-#macro( isLinkUsedByFields, $link, $fields)
-#set( $isLinkUsedByFields = false )
-#if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
-#foreach( $field in $fields )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $isLinkUsedByFields = true )
-#end
-#end
-#end
-#end
-#end
-#end
-## Liens correspondants aux champs
-#macro( linksForField, $links, $field)
-#set( $linksForField = [] )
-#foreach( $link in $links )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $linksForField.add($link) )
-#end
-#end
-#end
-#end
-#end
-#macro( linksForFields, $links, $fields)
-#set( $linksForFields = [] )
-#foreach( $field in $fields )
-#foreach( $link in $links )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $linksForFields.add($link) )
-#end
-#end
-#end
-#end
-#end
-#end
-## Champs correspondants aux liens
-#macro( fieldsForLink, $link, $fields)
-#set( $fieldsForLink = [] )
-#foreach( $field in $fields )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $fieldsForLink.add($field) )
-#end
-#end
-#end
-#end
-#end
-#macro( fieldsForLinks, $links, $fields)
-#set( $fieldsForLinks = [] )
-#foreach( $link in $links )
-#foreach( $field in $fields )
-#if( $link.hasJoinColumns() )
-#foreach( $joinColumn in $link.joinColumns )
-#if( $joinColumn == $field.databaseName )
-#set( $ttt = $fieldsForLinks.add($field) )
-#end
-#end
-#end
-#end
-#end
-#end
-##/**
-## * Get target entity fields. Use macro : fieldsForLinks
-## * $entityCurrent current entity
-## * $entityTarget target entity
-## * $link link between current entity and target entity
-## * $fieldsOfEntityCurrent current entity fields
-## */
-#macro( fieldsMappingForLink, $entityCurrent, $entityTarget, $link, $fieldsOfEntityCurrent )
-#set( $fieldsMappingForLink = {})
-#if( "$fieldsOfEntityCurrent" != "" )
-## Link fields
-#fieldsForLink( $link, $fieldsOfEntityCurrent )
-#foreach( $fieldForLink in $fieldsForLink )
-## Foreign keys of current entity
-#foreach( $fk in $entityCurrent.databaseForeignKeys )
-## Foreign key column
-#foreach( $fkcol in $fk.columns )
-## Search foreign key column for link field
-#if( $fieldForLink.databaseName == $fkcol.columnName )
-## Target entity field
-#foreach( $fieldOfEntityTarget in $entityTarget.attributes )
-## Search target entity field for foreign key
-#if( $fieldOfEntityTarget.databaseName == $fkcol.referencedColumnName )
-#set( $fieldsMappingForLink[${fieldForLink}] = ${fieldOfEntityTarget} )
-#end
-#end
-#end
-#end
-#end
-#end
-#end
-#end
-##--------------------------------------------------------------------------------------------------------
-## Generated value
-##--------------------------------------------------------------------------------------------------------
-#macro( isGeneratedValue, $entity, $field)
-#set( $isGeneratedValue = false )
-#if( $field.isKeyElement() )
-#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#if( $field.isAutoIncremented() || $field.isGeneratedValue() )
-#set( $isGeneratedValue = true )
-#end
-#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Short" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
-#set( $isGeneratedValue = true )
-#end
-#end
-#end
-#end
 ##--------------------------------------------------------------------------------------------------------
 /*
  * Created on $today.date ( Time $today.time )
@@ -177,11 +47,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.* ;
 //import org.hibernate.validator.constraints.* ;
 
-#foreach( $import in $entity.imports )
+#foreach( $import in $java.imports($entity) )
 import $import;
-#end
-#if( $fieldsLink )
-import java.util.List;
 #end
 
 #foreach( $import in $jpa.imports($entity) )
@@ -223,12 +90,11 @@ public class $entity.name implements Serializable
 $jpa.fieldAnnotations(4,$field)
 ## add @GeneratedValue if the database doesn't have auto-incremented columns
 #if( ! $field.isAutoIncremented() && ! $field.isGeneratedValue() )
-#isGeneratedValue( $entity, $field )
-#if( $isGeneratedValue )
+#if( $tools.isGeneratedValue( $entity, $field ) )
 	@GeneratedValue
 #end
 #end
-$field.beanValidationAnnotationsJSR303(4)
+$beanValidation.annotations(4,$field)
     private $field.formatedType(0) $field.formatedName(0)#if($field.hasInitialValue()) = ${field.initialValue} #end;
 #end
 
@@ -247,7 +113,7 @@ $field.beanValidationAnnotationsJSR303(4)
 ## #end
 ##$field.jpaAnnotations(4)
 $jpa.fieldAnnotations(4,$field)
-$field.beanValidationAnnotationsJSR303(4)
+$beanValidation.annotations(4,$field)
     private $field.formatedType(0) $field.formatedName(0)#if($field.hasInitialValue()) = ${field.initialValue} #end;
 
 #end
@@ -341,7 +207,7 @@ $jpa.linkAnnotations(4, $link, $allMappedFields )
 #end
 #if ( $link.setter )    public void ${link.setter}( ${link.linkType} ${link.javaName} )
     {
-#fieldsMappingForLink( $entity, $model.getEntityByClassName($link.targetEntityType), $link, $allMappedFields )
+#set( $fieldsMappingForLink = $tools.fieldsMappingForLink( $entity, $model.getEntityByClassName($link.targetEntityType), $link, $allMappedFields ) )
 #foreach( $fieldMappingForLink in $fieldsMappingForLink.entrySet() )
 		if(${link.javaName} != null && this.${fieldMappingForLink.key.getter}() == null) {
 			this.${fieldMappingForLink.key.setter}(${link.javaName}.${fieldMappingForLink.value.getter}());
