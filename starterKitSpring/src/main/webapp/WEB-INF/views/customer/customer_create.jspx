@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:input="urn:jsptagdir:/WEB-INF/tags/input" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
@@ -22,85 +22,80 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="age" class="col-sm-2 control-label"><s:message code="customer.age"/></label>
+					<label for="customer_age" class="col-sm-2 control-label"><s:message code="customer.age"/></label>
 					<div class="col-sm-10">
-						<form:input path="age" class="form-control" size="10" maxLength="10"/>
-						<form:errors cssClass="label label-danger" id="_age_error_id" path="age" />
+						<input:text name="age" id="customer_age" maxLength="10" />
+						<input:errors name="age" id="customer_age_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="city" class="col-sm-2 control-label"><s:message code="customer.city"/></label>
+					<label for="customer_city" class="col-sm-2 control-label"><s:message code="customer.city"/></label>
 					<div class="col-sm-10">
-						<form:input path="city" class="form-control" size="45" maxLength="45"/>
-						<form:errors cssClass="label label-danger" id="_city_error_id" path="city" />
+						<input:text name="city" id="customer_city" maxLength="45" />
+						<input:errors name="city" id="customer_city_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="firstName" class="col-sm-2 control-label"><s:message code="customer.firstName"/></label>
+					<label for="customer_firstName" class="col-sm-2 control-label"><s:message code="customer.firstName"/></label>
 					<div class="col-sm-10">
-						<form:input path="firstName" class="form-control" size="40" maxLength="40"/>
-						<form:errors cssClass="label label-danger" id="_firstName_error_id" path="firstName" />
+						<input:text name="firstName" id="customer_firstName" maxLength="40" />
+						<input:errors name="firstName" id="customer_firstName_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="lastName" class="col-sm-2 control-label"><s:message code="customer.lastName"/></label>
+					<label for="customer_lastName" class="col-sm-2 control-label"><s:message code="customer.lastName"/></label>
 					<div class="col-sm-10">
-						<form:input path="lastName" class="form-control" size="40" maxLength="40"/>
-						<form:errors cssClass="label label-danger" id="_lastName_error_id" path="lastName" />
+						<input:text name="lastName" id="customer_lastName" maxLength="40" />
+						<input:errors name="lastName" id="customer_lastName_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="login" class="col-sm-2 control-label"><s:message code="customer.login"/></label>
+					<label for="customer_login" class="col-sm-2 control-label"><s:message code="customer.login"/></label>
 					<div class="col-sm-10">
-						<form:input path="login" class="form-control" size="20" maxLength="20"/>
-						<form:errors cssClass="label label-danger" id="_login_error_id" path="login" />
+						<input:text name="login" id="customer_login" maxLength="20" />
+						<input:errors name="login" id="customer_login_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="password" class="col-sm-2 control-label"><s:message code="customer.password"/></label>
+					<label for="customer_password" class="col-sm-2 control-label"><s:message code="customer.password"/></label>
 					<div class="col-sm-10">
-						<form:input path="password" class="form-control" size="20" maxLength="20"/>
-						<form:errors cssClass="label label-danger" id="_password_error_id" path="password" />
+						<input:text name="password" id="customer_password" maxLength="20" />
+						<input:errors name="password" id="customer_password_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="phone" class="col-sm-2 control-label"><s:message code="customer.phone"/></label>
+					<label for="customer_phone" class="col-sm-2 control-label"><s:message code="customer.phone"/></label>
 					<div class="col-sm-10">
-						<form:input path="phone" class="form-control" size="20" maxLength="20"/>
-						<form:errors cssClass="label label-danger" id="_phone_error_id" path="phone" />
+						<input:text name="phone" id="customer_phone" maxLength="20" />
+						<input:errors name="phone" id="customer_phone_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="reviewer" class="col-sm-2 control-label"><s:message code="customer.reviewer"/></label>
+					<label for="customer_reviewer" class="col-sm-2 control-label"><s:message code="customer.reviewer"/></label>
 					<div class="col-sm-10">
-						<form:input path="reviewer" class="form-control" size="5" maxLength="5"/>
-						<form:errors cssClass="label label-danger" id="_reviewer_error_id" path="reviewer" />
+						<input:text name="reviewer" id="customer_reviewer" maxLength="5" />
+						<input:errors name="reviewer" id="customer_reviewer_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="zipCode" class="col-sm-2 control-label"><s:message code="customer.zipCode"/></label>
+					<label for="customer_zipCode" class="col-sm-2 control-label"><s:message code="customer.zipCode"/></label>
 					<div class="col-sm-10">
-						<form:input path="zipCode" class="form-control" size="10" maxLength="10"/>
-						<form:errors cssClass="label label-danger" id="_zipCode_error_id" path="zipCode" />
+						<input:text name="zipCode" id="customer_zipCode" maxLength="10" />
+						<input:errors name="zipCode" id="customer_zipCode_errors" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="country" class="col-sm-2 control-label"><s:message code="customer.country"/></label>
 					<div class="col-sm-10">
-						<select id="_country_code" class="form-control" name="country">
-							<option></option>
-							<c:forEach items="${countrys}" var="country">
-								<c:choose>
-									<c:when test="${not empty customer.country and not empty customer.country.code and country.code == customer.country.code}">
-										<option value="${country.code}" selected="selected">${country}</option>
-									</c:when>
-									<c:otherwise>
-										<option value="${country.code}">${country}</option>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-						</select>
-						<form:errors />
+						<input:selectEntity 
+							id="country_code" 
+							items="${countrys}"
+							entity="${customer.country}"
+							link="country"
+							targetEntityId="code"
+							cssClass="form-control" 
+						/>
+						<input:errors name="country" id="customer_country_errors" />
 					</div>
 				</div>
 				<div class="form-group">

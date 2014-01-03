@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:input="urn:jsptagdir:/WEB-INF/tags/input" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
@@ -15,64 +15,59 @@
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
 	    		
 				<div class="form-group">
-					<label for="city" class="col-sm-2 control-label"><s:message code="publisher.city"/></label>
+					<label for="publisher_city" class="col-sm-2 control-label"><s:message code="publisher.city"/></label>
 					<div class="col-sm-10">
-						<form:input path="city" class="form-control" size="45" maxLength="45"/>
-						<form:errors cssClass="label label-danger" id="_city_error_id" path="city" />
+						<input:text name="city" id="publisher_city" maxLength="45" />
+						<input:errors name="city" id="publisher_city_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="contact" class="col-sm-2 control-label"><s:message code="publisher.contact"/></label>
+					<label for="publisher_contact" class="col-sm-2 control-label"><s:message code="publisher.contact"/></label>
 					<div class="col-sm-10">
-						<form:input path="contact" class="form-control" size="45" maxLength="45"/>
-						<form:errors cssClass="label label-danger" id="_contact_error_id" path="contact" />
+						<input:text name="contact" id="publisher_contact" maxLength="45" />
+						<input:errors name="contact" id="publisher_contact_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="email" class="col-sm-2 control-label"><s:message code="publisher.email"/></label>
+					<label for="publisher_email" class="col-sm-2 control-label"><s:message code="publisher.email"/></label>
 					<div class="col-sm-10">
-						<form:input path="email" class="form-control" size="45" maxLength="45"/>
-						<form:errors cssClass="label label-danger" id="_email_error_id" path="email" />
+						<input:text name="email" id="publisher_email" maxLength="45" />
+						<input:errors name="email" id="publisher_email_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="name" class="col-sm-2 control-label"><s:message code="publisher.name"/></label>
+					<label for="publisher_name" class="col-sm-2 control-label"><s:message code="publisher.name"/></label>
 					<div class="col-sm-10">
-						<form:input path="name" class="form-control" size="45" maxLength="45"/>
-						<form:errors cssClass="label label-danger" id="_name_error_id" path="name" />
+						<input:text name="name" id="publisher_name" maxLength="45" />
+						<input:errors name="name" id="publisher_name_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="phone" class="col-sm-2 control-label"><s:message code="publisher.phone"/></label>
+					<label for="publisher_phone" class="col-sm-2 control-label"><s:message code="publisher.phone"/></label>
 					<div class="col-sm-10">
-						<form:input path="phone" class="form-control" size="14" maxLength="14"/>
-						<form:errors cssClass="label label-danger" id="_phone_error_id" path="phone" />
+						<input:text name="phone" id="publisher_phone" maxLength="14" />
+						<input:errors name="phone" id="publisher_phone_errors" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="zipCode" class="col-sm-2 control-label"><s:message code="publisher.zipCode"/></label>
+					<label for="publisher_zipCode" class="col-sm-2 control-label"><s:message code="publisher.zipCode"/></label>
 					<div class="col-sm-10">
-						<form:input path="zipCode" class="form-control" size="10" maxLength="10"/>
-						<form:errors cssClass="label label-danger" id="_zipCode_error_id" path="zipCode" />
+						<input:text name="zipCode" id="publisher_zipCode" maxLength="10" />
+						<input:errors name="zipCode" id="publisher_zipCode_errors" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="country" class="col-sm-2 control-label"><s:message code="publisher.country"/></label>
 					<div class="col-sm-10">
-						<select id="_country_code" class="form-control" name="country">
-							<option></option>
-							<c:forEach items="${countrys}" var="country">
-								<c:choose>
-									<c:when test="${not empty publisher.country and not empty publisher.country.code and country.code == publisher.country.code}">
-										<option value="${country.code}" selected="selected">${country}</option>
-									</c:when>
-									<c:otherwise>
-										<option value="${country.code}">${country}</option>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-						</select>
-						<form:errors />
+						<input:selectEntity 
+							id="country_code" 
+							items="${countrys}"
+							entity="${publisher.country}"
+							link="country"
+							targetEntityId="code"
+							cssClass="form-control" 
+						/>
+						<input:errors name="country" id="publisher_country_errors" />
 					</div>
 				</div>
 				<div class="form-group">

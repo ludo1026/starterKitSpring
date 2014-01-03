@@ -1,0 +1,41 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:output omit-xml-declaration="yes" />
+
+	<jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="id" />
+	<jsp:directive.attribute name="items" type="java.util.List" required="true" rtexprvalue="true" description="items" />
+	<jsp:directive.attribute name="entity" type="java.lang.Object" required="true" rtexprvalue="true" description="entity" />
+	<jsp:directive.attribute name="link" type="java.lang.String" required="true" rtexprvalue="true" description="link field name" />
+	<jsp:directive.attribute name="targetEntityId" type="java.lang.String" required="true" rtexprvalue="true" description="target entity id" />
+	<jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="css class" />
+
+	<!-- default values -->
+	
+	<c:if test="${empty cssClass}">
+		<c:set var="cssClass" value="form-control" />
+	</c:if>
+	
+	<!-- content -->
+	
+	<!-- 
+	<c:set var="_link" value="" />
+	<c:if test="${not empty entity[fn:escapeXml(link)]}">
+		<c:set var="_link" value="${entity[fn:escapeXml(link)]}" />
+	</c:if>
+	 -->
+	
+	<select id="${id}" class="form-control" name="${link}">
+		<option></option>
+		<c:forEach items="${items}" var="targetEntity">
+			<c:choose>
+				<c:when test="${not empty entity and entity[fn:escapeXml(targetEntityId)] == targetEntity[fn:escapeXml(targetEntityId)]}">
+					<option value="${targetEntity[fn:escapeXml(targetEntityId)]}" selected="selected">${targetEntity}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${targetEntity[fn:escapeXml(targetEntityId)]}">${targetEntity}</option>
+				</c:otherwise>
+			</c:choose>
+		 -->
+		</c:forEach>
+	</select>
+	
+</jsp:root>
