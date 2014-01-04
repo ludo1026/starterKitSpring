@@ -54,7 +54,7 @@
 #end
 ##--------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:input="urn:jsptagdir:/WEB-INF/tags/input" xmlns:display="urn:jsptagdir:/WEB-INF/tags/display" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:joda="http://www.joda.org/joda/time/tags" xmlns:s="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:input="urn:jsptagdir:/WEB-INF/tags/input" version="2.0">
 <jsp:directive.page contentType="text/html;charset=UTF-8"/>
 <jsp:output omit-xml-declaration="yes"/>
 
@@ -105,7 +105,6 @@
 					<label for="${entity.name.toLowerCase()}_${field.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${field.formatedName(0)}"/></label>
 					<div class="col-sm-10">
 #if( $field.formatedType(0) == "Date" ||  $field.formatedType(0) == "Calendar" )
-						<display:date value="${entity.name.toLowerCase()}.${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}_ro" />
 						<input:date name="${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" />
 #elseif( $field.isLongText() )
 						<input:textarea name="${field.formatedName(0)}" id="${entity.name.toLowerCase()}_${field.formatedName(0)}" />
