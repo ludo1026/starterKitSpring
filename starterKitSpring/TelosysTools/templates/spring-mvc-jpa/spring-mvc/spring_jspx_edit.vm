@@ -66,11 +66,8 @@
 			
 	    	<s:url value="/${entity.name.toLowerCase()}" var="url_form_submit" />
 			<form:form class="form-horizontal" modelAttribute="${entity.name.toLowerCase()}" cssClass="well form-horizontal" method="PUT" action="${_}{url_form_submit}">
-				
 				<form:errors path="*" cssClass="alert alert-danger" element="div" />
-
 ## READ ONLY
-
 ## LINKS : afficher uniquement les liens qui sont modifiables (pas dans la clé primaire)
 #foreach( $link in $entity.links )
 #if( !$link.isCardinalityManyToMany() && !$link.isCardinalityOneToMany() )
@@ -84,9 +81,7 @@
 #end
 #end
 #end
-
 ## FOR UPDATE
-	    		
 ## KEY
 #foreach( $field in $keyFields )
 #if( ! $field.isUsedInLinkJoinColumn($entity.links) )

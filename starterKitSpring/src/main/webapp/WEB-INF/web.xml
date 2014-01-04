@@ -29,6 +29,20 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- Locale -->
+    <filter>
+	    <filter-name>I18nFilter</filter-name>
+	    <filter-class>org.telosys.starterkits.web.filter.I18nFilter</filter-class>
+		<init-param>
+			<param-name>defaultLocale</param-name>
+			<param-value>fr_FR</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>I18nFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<!-- Encoding -->
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -66,7 +80,7 @@
 <!-- 		<filter-name>Spring OpenEntityManagerInViewFilter</filter-name> -->
 <!-- 		<url-pattern>/*</url-pattern> -->
 <!-- 	</filter-mapping> -->
-    
+	
     <session-config>
         <session-timeout>10</session-timeout>
     </session-config>
