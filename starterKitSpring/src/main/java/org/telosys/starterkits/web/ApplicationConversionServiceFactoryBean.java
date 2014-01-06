@@ -42,9 +42,52 @@ import org.telosys.starterkits.service.ReviewService;
 import org.telosys.starterkits.service.ShopService;
 import org.telosys.starterkits.service.SynopsisService;
 import org.telosys.starterkits.service.WorkgroupService;
+import org.telosys.starterkits.web.formatter.AuthorFormatter;
+import org.telosys.starterkits.web.formatter.BadgeFormatter;
+import org.telosys.starterkits.web.formatter.BookFormatter;
+import org.telosys.starterkits.web.formatter.BookOrderFormatter;
+import org.telosys.starterkits.web.formatter.BookOrderItemFormatter;
+import org.telosys.starterkits.web.formatter.CountryFormatter;
+import org.telosys.starterkits.web.formatter.CustomerFormatter;
+import org.telosys.starterkits.web.formatter.EmployeeFormatter;
+import org.telosys.starterkits.web.formatter.EmployeeGroupFormatter;
+import org.telosys.starterkits.web.formatter.PublisherFormatter;
+import org.telosys.starterkits.web.formatter.ReviewFormatter;
+import org.telosys.starterkits.web.formatter.ShopFormatter;
+import org.telosys.starterkits.web.formatter.SynopsisFormatter;
+import org.telosys.starterkits.web.formatter.WorkgroupFormatter;
 
 @Component
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
+
+	@Resource
+	private AuthorFormatter authorFormatter;
+	@Resource
+	private BadgeFormatter badgeFormatter;
+	@Resource
+	private BookFormatter bookFormatter;
+	@Resource
+	private BookOrderFormatter bookorderFormatter;
+	@Resource
+	private BookOrderItemFormatter bookorderitemFormatter;
+	@Resource
+	private CountryFormatter countryFormatter;
+	@Resource
+	private CustomerFormatter customerFormatter;
+	@Resource
+	private EmployeeFormatter employeeFormatter;
+	@Resource
+	private EmployeeGroupFormatter employeegroupFormatter;
+	@Resource
+	private PublisherFormatter publisherFormatter;
+	@Resource
+	private ReviewFormatter reviewFormatter;
+	@Resource
+	private ShopFormatter shopFormatter;
+	@Resource
+	private SynopsisFormatter synopsisFormatter;
+	@Resource
+	private WorkgroupFormatter workgroupFormatter;
 	
 	public void afterPropertiesSet() {
         super.afterPropertiesSet();
@@ -125,8 +168,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Author, String> getAuthorToStringConverter() {
         return new Converter<Author, java.lang.String>() {
-            public String convert(Author Author) {
-				return new StringBuilder().append(Author).toString();
+            public String convert(Author author) {
+				return authorFormatter.display(author);
             }
         };
     }
@@ -152,8 +195,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Badge, String> getBadgeToStringConverter() {
         return new Converter<Badge, java.lang.String>() {
-            public String convert(Badge Badge) {
-				return new StringBuilder().append(Badge).toString();
+            public String convert(Badge badge) {
+				return badgeFormatter.display(badge);
             }
         };
     }
@@ -179,8 +222,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Book, String> getBookToStringConverter() {
         return new Converter<Book, java.lang.String>() {
-            public String convert(Book Book) {
-				return new StringBuilder().append(Book).toString();
+            public String convert(Book book) {
+				return bookFormatter.display(book);
             }
         };
     }
@@ -206,8 +249,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<BookOrder, String> getBookOrderToStringConverter() {
         return new Converter<BookOrder, java.lang.String>() {
-            public String convert(BookOrder BookOrder) {
-				return new StringBuilder().append(BookOrder).toString();
+            public String convert(BookOrder bookorder) {
+				return bookorderFormatter.display(bookorder);
             }
         };
     }
@@ -233,8 +276,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<BookOrderItem, String> getBookOrderItemToStringConverter() {
         return new Converter<BookOrderItem, java.lang.String>() {
-            public String convert(BookOrderItem BookOrderItem) {
-				return new StringBuilder().append(BookOrderItem).toString();
+            public String convert(BookOrderItem bookorderitem) {
+				return bookorderitemFormatter.display(bookorderitem);
             }
         };
     }
@@ -260,8 +303,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Country, String> getCountryToStringConverter() {
         return new Converter<Country, java.lang.String>() {
-            public String convert(Country Country) {
-				return new StringBuilder().append(Country).toString();
+            public String convert(Country country) {
+				return countryFormatter.display(country);
             }
         };
     }
@@ -279,8 +322,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Customer, String> getCustomerToStringConverter() {
         return new Converter<Customer, java.lang.String>() {
-            public String convert(Customer Customer) {
-				return new StringBuilder().append(Customer).toString();
+            public String convert(Customer customer) {
+				return customerFormatter.display(customer);
             }
         };
     }
@@ -298,8 +341,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Employee, String> getEmployeeToStringConverter() {
         return new Converter<Employee, java.lang.String>() {
-            public String convert(Employee Employee) {
-				return new StringBuilder().append(Employee).toString();
+            public String convert(Employee employee) {
+				return employeeFormatter.display(employee);
             }
         };
     }
@@ -317,8 +360,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<EmployeeGroup, String> getEmployeeGroupToStringConverter() {
         return new Converter<EmployeeGroup, java.lang.String>() {
-            public String convert(EmployeeGroup EmployeeGroup) {
-				return new StringBuilder().append(EmployeeGroup).toString();
+            public String convert(EmployeeGroup employeegroup) {
+				return employeegroupFormatter.display(employeegroup);
             }
         };
     }
@@ -344,8 +387,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Publisher, String> getPublisherToStringConverter() {
         return new Converter<Publisher, java.lang.String>() {
-            public String convert(Publisher Publisher) {
-				return new StringBuilder().append(Publisher).toString();
+            public String convert(Publisher publisher) {
+				return publisherFormatter.display(publisher);
             }
         };
     }
@@ -371,8 +414,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Review, String> getReviewToStringConverter() {
         return new Converter<Review, java.lang.String>() {
-            public String convert(Review Review) {
-				return new StringBuilder().append(Review).toString();
+            public String convert(Review review) {
+				return reviewFormatter.display(review);
             }
         };
     }
@@ -398,8 +441,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Shop, String> getShopToStringConverter() {
         return new Converter<Shop, java.lang.String>() {
-            public String convert(Shop Shop) {
-				return new StringBuilder().append(Shop).toString();
+            public String convert(Shop shop) {
+				return shopFormatter.display(shop);
             }
         };
     }
@@ -417,8 +460,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Synopsis, String> getSynopsisToStringConverter() {
         return new Converter<Synopsis, java.lang.String>() {
-            public String convert(Synopsis Synopsis) {
-				return new StringBuilder().append(Synopsis).toString();
+            public String convert(Synopsis synopsis) {
+				return synopsisFormatter.display(synopsis);
             }
         };
     }
@@ -444,8 +487,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 
     public Converter<Workgroup, String> getWorkgroupToStringConverter() {
         return new Converter<Workgroup, java.lang.String>() {
-            public String convert(Workgroup Workgroup) {
-				return new StringBuilder().append(Workgroup).toString();
+            public String convert(Workgroup workgroup) {
+				return workgroupFormatter.display(workgroup);
             }
         };
     }

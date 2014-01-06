@@ -1,3 +1,5 @@
+#set( $tools = $loader.newInstance("Tools") )
+##--------------------------------------------------------------------------------------------------------
 package ${target.javaPackageFromFolder(${SRC})};
 
 import java.text.ParseException;
@@ -20,9 +22,17 @@ import ${ENTITY_PKG}.${entity.name}Id;
 #foreach( $entity in $selectedEntities )
 import ${ROOT_PKG}.service.${entity.name}Service;
 #end
+#foreach( $entity in $selectedEntities )
+import ${ROOT_PKG}.web.formatter.${entity.name}Formatter;
+#end
 
 @Component
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
+
+#foreach( $entity in $selectedEntities )
+	@Resource
+	private ${entity.name}Formatter ${entity.name.toLowerCase()}Formatter;
+#end
 	
 	public void afterPropertiesSet() {
         super.afterPropertiesSet();
@@ -45,61 +55,41 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	
     public void installLabelConverters(FormatterRegistry registry) {
 #foreach( $entity in $selectedEntities )
-#if ( $entity.hasCompositePrimaryKey() )
-#set( $keyType = "${entity.name}Id" )
-#else
-#foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.formatedType(0)" )
-#end
-#end
 		// ${entity.name}
         registry.addConverter(get${entity.name}ToStringConverter());
         registry.addConverter(getIdTo${entity.name}Converter());
-#if( $keyType != "String" )
+#if( ${tools.keyType($entity)} != "String" )
         registry.addConverter(getStringTo${entity.name}Converter());
 #end
 #end
     }
     
 #foreach( $entity in $selectedEntities )
-#if ( $entity.hasCompositePrimaryKey() )
-#set( $keyType = "${entity.name}Id" )
-#set( $keyName = "id" )
-#set( $keySetter = "setId" )
-#set( $keyGetter = "getId" )
-#else
-#foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.formatedType(0)" )
-#set( $keyName = "$field.formatedName(0)" )
-#set( $keySetter = $field.setter )
-#set( $keyGetter = $field.getter )
-#end
-#end
 	@Resource
 	private ${entity.name}Service ${entity.name.toLowerCase()}Service;
 
     public Converter<${entity.name}, String> get${entity.name}ToStringConverter() {
         return new Converter<${entity.name}, java.lang.String>() {
-            public String convert(${entity.name} ${entity.name}) {
-				return new StringBuilder().append(${entity.name}).toString();
+            public String convert(${entity.name} ${entity.name.toLowerCase()}) {
+				return ${entity.name.toLowerCase()}Formatter.display(${entity.name.toLowerCase()});
             }
         };
     }
     
-#if( $keyType != "String" )
+#if( ${tools.keyType($entity)} != "String" )
     public Converter<String, ${entity.name}> getStringTo${entity.name}Converter() {
         return new Converter<java.lang.String, ${entity.name}>() {
-            public ${entity.name} convert(String ${keyName}) {
-                return getObject().convert(getObject().convert(${keyName}, ${keyType}.class), ${entity.name}.class);
+            public ${entity.name} convert(String ${tools.keyName($entity)}) {
+                return getObject().convert(getObject().convert(${tools.keyName($entity)}, ${tools.keyType($entity)}.class), ${entity.name}.class);
             }
         };
     }
     
 #end    
-    public Converter<${keyType}, ${entity.name}> getIdTo${entity.name}Converter() {
-        return new Converter<${keyType}, ${entity.name}>() {
-            public ${entity.name} convert(${keyType} ${keyName}) {
-                return ${entity.name.toLowerCase()}Service.load(${keyName});
+    public Converter<${tools.keyType($entity)}, ${entity.name}> getIdTo${entity.name}Converter() {
+        return new Converter<${tools.keyType($entity)}, ${entity.name}>() {
+            public ${entity.name} convert(${tools.keyType($entity)} ${tools.keyName($entity)}) {
+                return ${entity.name.toLowerCase()}Service.load(${tools.keyName($entity)});
             }
         };
     }

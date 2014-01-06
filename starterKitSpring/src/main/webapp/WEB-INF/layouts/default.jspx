@@ -16,7 +16,7 @@
 		<c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
 	</c:set>
 	<spring:message code="application_name" var="app_name" htmlEscape="false" />
-	<title><spring:message code="${app_name}" /></title>
+	<title><c:out value="${app_name}" /></title>
 
 	<!-- style -->
 	<spring:url value="/css/bootstrap.min.css" var="css_url_bootstrap" />

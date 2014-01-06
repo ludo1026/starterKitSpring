@@ -42,7 +42,7 @@
 				<div class="form-group">
 					<label for="${link.formatedName(0)}" class="col-sm-2 control-label"><s:message code="${entity.name.toLowerCase()}.${link.formatedName(0)}"/></label>
 					<div class="col-sm-10">
-						<c:out value="${_}{${entity.name.toLowerCase()}.${link.formatedName(0)}}" />
+						<s:eval expression="${entity.name.toLowerCase()}.${link.formatedName(0)}" />
 					</div>
 				</div>
 #end
