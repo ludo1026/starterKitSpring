@@ -9,12 +9,9 @@ import org.telosys.tools.generator.context.JavaBeanClassAttribute;
 import org.telosys.tools.generator.context.JavaBeanClassForeignKey;
 import org.telosys.tools.generator.context.JavaBeanClassForeignKeyColumn;
 import org.telosys.tools.generator.context.JavaBeanClassLink;
+import org.telosys.tools.generator.context.Model;
 
 public class Tools {
-	
-	public void test() {
-		
-	}
 	
 	/**
 	 * Retourne l'attribut de la clé.
