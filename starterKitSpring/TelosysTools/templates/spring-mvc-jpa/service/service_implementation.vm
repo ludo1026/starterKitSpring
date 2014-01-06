@@ -1,3 +1,5 @@
+#set( $tools = $loader.newInstance("Tools") )
+##--------------------------------------------------------------------------------------------------------
 package ${target.javaPackageFromFolder(${SRC})};
 
 import java.util.ArrayList;
@@ -12,14 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ${ENTITY_PKG}.${beanClass.name};
 #if ( $beanClass.hasCompositePrimaryKey() )
-import ${ENTITY_PKG}.${beanClass.name}Id;
-#set( $keyType = "${beanClass.name}Id" )
-#set( $keyName = "id" )
-#else
-#foreach( $field in $entity.keyAttributes )
-#set( $keyType = "$field.formatedType(0)" )
-#set( $keyName = "$field.formatedName(0)" )
-#end
+import ${ENTITY_PKG}.${tools.keyType($entity)};
 #end
 import ${ROOT_PKG}.dao.jpa.${beanClass.name}Dao;
 import ${ROOT_PKG}.dao.repository.${beanClass.name}Repository;
@@ -37,16 +32,16 @@ public class ${beanClass.name}ServiceImpl implements ${beanClass.name}Service {
 	@Resource
 	private ${beanClass.name}Repository ${beanClass.name.toLowerCase()}Repository;
 	
-	public ${beanClass.name} load(final $keyType $keyName) {
-		return ${beanClass.name.toLowerCase()}Repository.findOne($keyName);
+	public ${beanClass.name} load(final ${tools.keyType($entity)} ${tools.keyName($entity)}) {
+		return ${beanClass.name.toLowerCase()}Repository.findOne(${tools.keyName($entity)});
 	}
 	
 	public ${beanClass.name} save(final ${beanClass.name} ${beanClass.name.toLowerCase()}) {
 		return ${beanClass.name.toLowerCase()}Repository.save(${beanClass.name.toLowerCase()});
 	}
 
-	public void delete(final $keyType $keyName) {
-		${beanClass.name.toLowerCase()}Repository.delete($keyName);
+	public void delete(final ${tools.keyType($entity)} ${tools.keyName($entity)}) {
+		${beanClass.name.toLowerCase()}Repository.delete(${tools.keyName($entity)});
 	}
 
 	public List<${beanClass.name}> search(final Map<String,Object> criteria) {

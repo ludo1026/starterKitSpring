@@ -7,24 +7,6 @@
 ## Data fields = fields not in Primary Key and not in selected Links    
 #set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
 ##--------------------------------------------------------------------------------------------------------
-## Informations sur la clé primaire d'une entité
-#macro( defineKeyInfoForEntity, $entity )
-#if ( $entity.hasCompositePrimaryKey() )
-#set( $keyType = "${entity.name}Id" )
-#set( $keyName = "id" )
-#set( $keySetter = "setId" )
-#set( $keyGetter = "getId" )
-#else
-#set( $keyField = $entity.keyAttributes[0] )
-#set( $keyType = "$keyField.formatedType(0)" )
-#set( $keyName = "$keyField.formatedName(0)" )
-#set( $keySetter = $keyField.setter )
-#set( $keyGetter = $keyField.getter )
-#end
-#end
-##--------------------------------------------------------------------------------------------------------
-#defineKeyInfoForEntity( $entity )
-##--------------------------------------------------------------------------------------------------------
 ## PRIMARY KEY IN URL
 ## keyURLPath
 #set( $keyURLPath = "")
@@ -34,7 +16,7 @@
 #set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${field.formatedName(0)}+"}" )
 #end
 #else
-#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${keyName}+"}" )
+#set( $keyURLPath = $keyURLPath+"/${"+${entity.name.toLowerCase()}+"."+${tools.keyName($entity)}+"}" )
 #end
 ##--------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>

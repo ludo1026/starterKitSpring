@@ -1,46 +1,8 @@
+#set( $tools = $loader.newInstance("Tools") )
 ##--------------------------------------------------------------------------------------------------------
 package ${target.javaPackageFromFolder(${SRC})};
 ##--------------------------------------------------------------------------------------------------------
-## Generated value
-##--------------------------------------------------------------------------------------------------------
-#macro( isGeneratedValue, $entity, $field)
-#set( $isGeneratedValue = false )
-#if( $field.isKeyElement() )
-#if( ! $field.isUsedInLinkJoinColumn($entity.links) )
-#if( $field.formatedType(0) == "Integer" || $field.formatedType(0) == "Short" || $field.formatedType(0) == "Long" || $field.formatedType(0) == "Double" || $field.formatedType(0) == "BigInteger" || $field.formatedType(0) == "BigDecimal" )
-#set( $isGeneratedValue = true )
-#end
-#end
-#end
-#end
-#macro( hasGeneratedValue, $entity, $fields)
-#set( $hasGeneratedValue = false )
-#foreach( $field in $fields )
-#isGeneratedValue( $entity, $field )
-#if( $isGeneratedValue )
-#set( $hasGeneratedValue = true )
-#end
-#end
-#end
-##--------------------------------------------------------------------------------------------------------
 ## Informations sur la clé primaire d'une entité
-##--------------------------------------------------------------------------------------------------------
-#macro( defineKeyInfoForEntity, $entity )
-#if ( $entity.hasCompositePrimaryKey() )
-#set( $keyType = "${entity.name}Id" )
-#set( $keyName = "id" )
-#set( $keySetter = "setId" )
-#set( $keyGetter = "getId" )
-#else
-#set( $keyField = $entity.keyAttributes[0] )
-#set( $keyType = "$keyField.formatedType(0)" )
-#set( $keyName = "$keyField.formatedName(0)" )
-#set( $keySetter = $keyField.setter )
-#set( $keyGetter = $keyField.getter )
-#end
-#end
-##--------------------------------------------------------------------------------------------------------
-#defineKeyInfoForEntity( $entity )
 ##--------------------------------------------------------------------------------------------------------
 ## PRIMARY KEY IN URL
 ## keyURLPath
@@ -60,9 +22,9 @@ package ${target.javaPackageFromFolder(${SRC})};
 #set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${field.getter}+"()" )
 #end
 #else
-#set( $keyURLPath = $keyURLPath+"{"+${keyName}+"}" )
-#set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${keyName}+""") "+${keyType}+" "+${keyName} )
-#set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${keyGetter}+"()" )
+#set( $keyURLPath = $keyURLPath+"{"+${tools.keyName($entity)}+"}" )
+#set( $keyPathVariable = $keyPathVariable+"@PathVariable("""+${tools.keyName($entity)}+""") "+${tools.keyType($entity)}+" "+${tools.keyName($entity)} )
+#set( $keyGetterToArg = $keyGetterToArg+${entity.name.toLowerCase()}+"."+${tools.keyGetter($entity)}+"()" )
 #end
 
 import java.util.List;
@@ -143,13 +105,13 @@ public class ${entity.name}Controller extends AbstractController
 	@RequestMapping(value = "/${keyURLPath}")
 	public String displayEditForm(Model uiModel, $keyPathVariable) {
 #if ( $entity.hasCompositePrimaryKey() )
-		$keyType ${keyType.toLowerCase()} = new $keyType();
+		${tools.keyType($entity)} ${tools.keyType($entity).toLowerCase()} = new ${tools.keyType($entity)}();
 #foreach( $field in $entity.keyAttributes )
-		${keyType.toLowerCase()}.${field.setter}(${field.formatedName(0)});
+		${tools.keyType($entity).toLowerCase()}.${field.setter}(${field.formatedName(0)});
 #end
-		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${keyType.toLowerCase()});
+		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${tools.keyType($entity).toLowerCase()});
 #else
-		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${keyName});
+		${entity.name} ${entity.name.toLowerCase()} = ${entity.name.toLowerCase()}Service.load(${tools.keyName($entity)});
 #end
 		this.populateForm(uiModel, ${entity.name.toLowerCase()});
 		return "${entity.name.toLowerCase()}/edit";
@@ -158,10 +120,9 @@ public class ${entity.name}Controller extends AbstractController
 	@RequestMapping(method = RequestMethod.POST)
 	public String create(@Valid ${entity.name} ${entity.name.toLowerCase()}, BindingResult result, Model uiModel, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
 		try {
-#hasGeneratedValue( $entity, $entity.keyAttributes )
-#if( ! $hasGeneratedValue )
+#if( ! $tools.hasGeneratedValue( $entity, $entity.keyAttributes ) )
 			if (!result.hasErrors()) {
-				if(${entity.name.toLowerCase()}Service.load(${entity.name.toLowerCase()}.${keyGetter}()) != null) {
+				if(${entity.name.toLowerCase()}Service.load(${entity.name.toLowerCase()}.${tools.keyGetter($entity)}()) != null) {
 					result.addError(new ObjectError("${entity.name.toLowerCase()}", "already.exists"));
 				}
 			}
@@ -203,13 +164,13 @@ public class ${entity.name}Controller extends AbstractController
 	public String delete(RedirectAttributes redirectAttributes, $keyPathVariable) {
 		try {
 #if ( $entity.hasCompositePrimaryKey() )
-			$keyType ${keyType.toLowerCase()} = new $keyType();
+			${tools.keyType($entity)} ${tools.keyType($entity).toLowerCase()} = new ${tools.keyType($entity)}();
 #foreach( $field in $entity.keyAttributes )
-			${keyType.toLowerCase()}.${field.setter}(${field.formatedName(0)});
+			${tools.keyType($entity).toLowerCase()}.${field.setter}(${field.formatedName(0)});
 #end
-			${entity.name.toLowerCase()}Service.delete(${keyType.toLowerCase()});
+			${entity.name.toLowerCase()}Service.delete(${tools.keyType($entity).toLowerCase()});
 #else
-			${entity.name.toLowerCase()}Service.delete(${keyName});
+			${entity.name.toLowerCase()}Service.delete(${tools.keyName($entity)});
 #end
 		} catch(Exception e) {
 			messageHelper.addException(redirectAttributes, "${entity.name.toLowerCase()}.error.delete", e);

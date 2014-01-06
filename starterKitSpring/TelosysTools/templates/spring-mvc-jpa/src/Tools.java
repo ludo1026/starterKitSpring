@@ -12,6 +12,80 @@ import org.telosys.tools.generator.context.JavaBeanClassLink;
 
 public class Tools {
 	
+	public void test() {
+		
+	}
+	
+	/**
+	 * Retourne l'attribut de la clé.
+	 * @param entity Entité
+	 * @return Attribut de la clé
+	 */
+	public JavaBeanClassAttribute keyField(JavaBeanClass entity) {
+		if(entity.hasCompositePrimaryKey()) {
+			return null;
+		} else {
+			JavaBeanClassAttribute attribute = entity.getKeyAttributes().get(0);
+			return attribute;
+		}
+	}
+	
+	/**
+	 * Retourne le type de la clé.
+	 * @param entity Entité
+	 * @return Type de la clé
+	 */
+	public String keyType(JavaBeanClass entity) {
+		if(entity.hasCompositePrimaryKey()) {
+			return entity.getName()+"Id";
+		} else {
+			JavaBeanClassAttribute attribute = entity.getKeyAttributes().get(0);
+			return attribute.formatedType(0);
+		}
+	}
+	
+	/**
+	 * Retourne le nom de la clé.
+	 * @param entity Entité
+	 * @return Nom de la clé
+	 */
+	public String keyName(JavaBeanClass entity) {
+		if(entity.hasCompositePrimaryKey()) {
+			return "id";
+		} else {
+			JavaBeanClassAttribute attribute = entity.getKeyAttributes().get(0);
+			return attribute.formatedName(0);
+		}
+	}
+
+	/**
+	 * Retourne le getter de la clé.
+	 * @param entity Entité
+	 * @return Getter de la clé
+	 */
+	public String keyGetter(JavaBeanClass entity) {
+		if(entity.hasCompositePrimaryKey()) {
+			return "getId";
+		} else {
+			JavaBeanClassAttribute attribute = entity.getKeyAttributes().get(0);
+			return attribute.getGetter();
+		}
+	}
+
+	/**
+	 * Retourne le setter de la clé.
+	 * @param entity Entité
+	 * @return Setter de la clé
+	 */
+	public String keySetter(JavaBeanClass entity) {
+		if(entity.hasCompositePrimaryKey()) {
+			return "setId";
+		} else {
+			JavaBeanClassAttribute attribute = entity.getKeyAttributes().get(0);
+			return attribute.getSetter();
+		}
+	}
+	
 	/**
 	 * Indique si le champ de la clé primaire est une valeur auto-générée.
 	 * @param entity Entité
@@ -37,6 +111,22 @@ public class Tools {
 			}
 		}
 		return isGeneratedValue;
+	}
+	
+	/**
+	 * Indique si l'entité a un champ dont la valeur est auto-générée.
+	 * @param entity Entité
+	 * @param fields Champs
+	 * @return booléen
+	 */
+	public boolean hasGeneratedValue( JavaBeanClass entity, List<JavaBeanClassAttribute> fields) {
+		boolean hasGeneratedValue = false;
+		for( JavaBeanClassAttribute field : fields ) {
+			if( isGeneratedValue( entity, field ) ) {
+				hasGeneratedValue = true;
+			}
+		}
+		return hasGeneratedValue;
 	}
 
 	/**

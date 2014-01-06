@@ -12,10 +12,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.stereotype.Component;
 import org.telosys.starterkits.bean.Author;
-import org.telosys.starterkits.bean.Publisher;
-import org.telosys.starterkits.service.AuthorService;
-import org.telosys.starterkits.service.PublisherService;
-import org.telosys.starterkits.bean.Author;
 import org.telosys.starterkits.bean.Badge;
 import org.telosys.starterkits.bean.Book;
 import org.telosys.starterkits.bean.BookOrder;
@@ -63,7 +59,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	public Converter<String, String> getStringToStringConverter() {
         return new Converter<String, String>() {
  
-            @Override
             public String convert(String source) {
                 return StringUtils.trimToNull(source);
             }
